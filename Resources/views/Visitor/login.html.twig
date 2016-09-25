@@ -1,0 +1,44 @@
+{% form_theme form 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig' %}
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+ <form class="dev-page-main-form dev-js-validation" novalidate="" action="{{ path('login_check') }}" method="POST">
+
+                  <div class="form-group">
+                 {{ form_widget(form._username, {'attr': {'class': 'username', 'placeholder': 'user name'|trans({}, 'visitor'), 'tabindex': 1} }) }}
+                  </div>
+                   <div class="form-group">
+                 {{ form_widget(form._password, {'attr': {'class': 'password', 'autocomplete': 'off', 'placeholder': 'password'|trans({}, 'login'), 'tabindex': 2, 'data-remove-password-validation': 'true'} }) }}
+                   </div>
+                           {% if form.recaptcha is defined %}
+                        <div class="form-group{% if error and error.message == 'Captcha is invalid' %} has-error{% endif %}">
+                            {{ form_widget(form.recaptcha) }}
+                            {% if error and error.message == 'Captcha is invalid' %}
+                                <div class="help-block">
+                                    {{ error.message|trans({}, 'login') }}
+                                </div>
+                            {% endif %}
+                        </div> <!-- /.form-group -->
+                        {% endif %}
+                <div class="pull-right">
+                      <label>
+                            {{ form_widget(form._remember_me, {'attr': {'tabindex': 3} }) }}
+                       {% trans from 'login' %}remember me{% endtrans %}
+                       </label>
+
+                    </div>
+                         <div class="pull-left">
+                              {#<a href="{{ path('visitor_forgot_password') }}" class="forgetLink" tabindex="4">
+                                  {% trans from 'login' %}Forgot your password ?{% endtrans %}
+                               </a>#}
+
+                                </div> <!-- pull-right end -->
+                <div class="clearfix"></div>
+                <button type="submit" tabindex="5">{% trans from 'login' %}enter{% endtrans %}</button>
+
+{#                     <a href="{{ path('visitor_singup') }}" class="signBtn" tabindex="6">تسجيل</a>#}
+
+            </form>
+
+

@@ -1,0 +1,46 @@
+{
+    "name": "Ibtikar/GlanceUMSBundle",
+    "type": "laravel-library",
+    "description": "Ibtikar share economy user management system used mongodb",
+    "keywords": ["User management"],
+    "homepage": "https://github.com/Ibtikar/GlanceUMSBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ibtikar"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "Ibtikar/GlanceDashboardBundle": "dev-master",
+        "symfony/form": "~3.0",
+        "symfony/framework-bundle": "~3.0",
+        "symfony/security-bundle": "~2.3|~3.0",
+        "symfony/twig-bundle": "~2.3|~3.0",
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "composer/installers": "~1.0",
+        "egulias/email-validator": "~1.2",
+        "excelwebzone/recaptcha-bundle": "^1.4",
+        "whiteoctober/breadcrumbs-bundle": "^1.2",
+        "symfony/assetic-bundle": "^2.8",
+        "symfony/finder": "^3.1",
+        "doctrine/mongodb-odm": "~1.0",
+        "doctrine/mongodb-odm-bundle": "~3.0"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "~1.3",
+        "swiftmailer/swiftmailer": "~4.3|~5",
+        "symfony/validator": "~2.3|~3.0",
+        "symfony/yaml": "~2.3|~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ibtikar\\GlanceUMSBundle\\": ""
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "src/{$name}": ["Ibtikar/GlanceUMSBundle"]
+        }
+    }
+}

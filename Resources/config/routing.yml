@@ -1,0 +1,18 @@
+ibtikar_glance_ums_staff:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/staff.yml"
+    prefix:   /backend
+
+ibtikar_glance_ums_visitor:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/staff.yml"
+    prefix:   /backend
+
+login:
+    path:  /login
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:login }
+    schemes:  [%httpProtocol%]
+
+login_check:
+    path:  /login-check
+
+logout:
+    path:  /logout

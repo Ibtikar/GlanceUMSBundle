@@ -1,0 +1,23 @@
+# also edit the route path in the user login action
+staff_login:
+    path:  /login
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:login }
+    schemes:  [%httpProtocol%]
+
+staff_contact:
+    path:  /contact
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:contact }
+
+staff_forgot_password:
+    path:  /forgot-password
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:forgotPassword }
+
+staff_changePassword:
+    path:  /change-password
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changePassword }
+    schemes:  [%httpProtocol%]
+
+staff_change_password_from_email:
+    path:  /change-password-email/{email}/{token}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changePasswordFromEmail }
+    schemes:  [%httpProtocol%]
