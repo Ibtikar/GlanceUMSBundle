@@ -18,7 +18,7 @@ use Ibtikar\GlanceDashboardBundle\Document\Document;
 /**
  * @MongoDB\InheritanceType("SINGLE_COLLECTION")
  * @MongoDB\DiscriminatorField("type")
- * @MongoDB\DiscriminatorMap({"visitor"="Ibtikar\VisitorBundle\Document\Visitor", "staff"="Ibtikar\BackendBundle\Document\Staff"})
+ * @MongoDB\DiscriminatorMap({"visitor"="Ibtikar\GlanceUMSBundle\Document\Visitor", "staff"="Ibtikar\GlanceUMSBundle\Document\Staff"})
  * @MongoDB\Document(repositoryClass="Ibtikar\GlanceUMSBundle\Document\UserRepository")
  * @MongoDB\HasLifecycleCallbacks
  * @MongoDBUnique(fields={"email"}, repositoryMethod="findUserByEmail", groups={"email", "Default", "visitorSignup", "api-edit"})
@@ -1080,5 +1080,49 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     public function getLastLoginFrom()
     {
         return $this->lastLoginFrom;
+    }
+
+    /**
+     * Set country
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Country $country
+     * @return self
+     */
+    public function setCountry(\Ibtikar\GlanceDashboardBundle\Document\Country $country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return Ibtikar\GlanceDashboardBundle\Document\Country $country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set city
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\City $city
+     * @return self
+     */
+    public function setCity(\Ibtikar\GlanceDashboardBundle\Document\City $city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return Ibtikar\GlanceDashboardBundle\Document\City $city
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 }

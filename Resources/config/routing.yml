@@ -3,8 +3,8 @@ ibtikar_glance_ums_staff:
     prefix:   /backend
 
 ibtikar_glance_ums_visitor:
-    resource: "@IbtikarGlanceUMSBundle/Resources/config/staff.yml"
-    prefix:   /backend
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/visitor.yml"
+    prefix:   /
 
 login:
     path:  /login
@@ -13,6 +13,11 @@ login:
 
 login_check:
     path:  /login-check
+
+post_login:
+    path:  /post-login
+    defaults: { _controller: IbtikarGlanceUMSBundle:User:postLogin }
+    schemes:  [%httpProtocol%]
 
 logout:
     path:  /logout

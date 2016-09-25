@@ -1,0 +1,68 @@
+security:
+#    always_authenticate_before_granting: true
+    encoders:
+        Ibtikar\GlanceUMSBundle\Document\User:
+            algorithm: sha512
+            encode-as-base64: true
+            iterations: 10
+
+    role_hierarchy:
+        %permissions%
+
+    providers:
+        database_provider:
+            mongodb: { class: Ibtikar\GlanceUMSBundle\Document\User}
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+
+        secured_area:
+            pattern:    ^/
+            anonymous: ~
+
+            form_login:
+#            ajax_form_login:
+                check_path: login
+                login_path: login
+                provider: database_provider
+                username_parameter: form[_username]
+                password_parameter: form[_password]
+                failure_path_parameter: form[_failure_path]
+                default_target_path: post_login
+                always_use_default_target_path: true
+                require_previous_session: false
+
+            logout:
+                path: logout
+                target: login
+                handlers: [logout_handler]
+
+            remember_me:
+                httponly: true
+                secure: %secureURL%
+                name: '%cookiesNamePrefix%SRM'
+                domain: '%cookies_domain%'
+                remember_me_parameter: form[_remember_me]
+                secret:      "%secret%"
+                # the next lifetime is in seconds (7days) max 86391359
+                lifetime: 604800
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/backend/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/backend$, roles: [ROLE_STAFF] }
+#        - { path: ^/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - { path: ^/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - { path: ^/social-login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+#        - { path: ^/social-login-process, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+
+#        - { path: ^/api/doc, roles: [ROLE_API_DOCUMENTATION_VIEW, ROLE_ADMIN] }
+#        - { path: ^/profile$, roles: [ROLE_VISITOR, ROLE_STAFF] }
+#        - { path: ^/change-password$, roles: [ROLE_VISITOR] }
+#        - { path: /visitor-logged-in/, roles: [ROLE_VISITOR] }
+#        # backend routes

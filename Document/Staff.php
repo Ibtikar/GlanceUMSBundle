@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibtikar\BackendBundle\Document;
+namespace Ibtikar\GlanceUMSBundle\Document;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,7 +11,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Ibtikar\GlanceUMSBundle\Validator\Constraints as CustomAssert;
 use Ibtikar\GlanceUMSBundle\Document\User;
 use Ibtikar\AppBundle\Document\Material;
-use Ibtikar\BackendBundle\Document\Hobby;
 use Ibtikar\GlanceDashboardBundle\Document\Document;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -140,47 +139,4 @@ class Staff extends User {
         return $this->mustChangePassword;
     }
 
-    /**
-     * Set country
-     *
-     * @param Ibtikar\BackendBundle\Document\Country $country
-     * @return self
-     */
-    public function setCountry(\Ibtikar\BackendBundle\Document\Country $country)
-    {
-        $this->country = $country;
-        return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return Ibtikar\BackendBundle\Document\Country $country
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * Set city
-     *
-     * @param Ibtikar\BackendBundle\Document\City $city
-     * @return self
-     */
-    public function setCity(\Ibtikar\BackendBundle\Document\City $city)
-    {
-        $this->city = $city;
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return Ibtikar\BackendBundle\Document\City $city
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
 }

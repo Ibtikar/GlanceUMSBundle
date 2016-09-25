@@ -36,9 +36,9 @@ class LogoutHandler implements LogoutHandlerInterface {
         $session->remove('firstTimeRedirected');
         $response->headers->clearCookie($this->container->getParameter('logged_cookie_name'), '/', $this->container->getParameter('cookies_domain'));
         $session->remove('security.secured_area.target_path');
-        if (isset(\Hybrid_Auth::$config["providers"])) {
-            \Hybrid_Auth::logoutAllProviders();
-        }
+//        if (isset(\Hybrid_Auth::$config["providers"])) {
+//            \Hybrid_Auth::logoutAllProviders();
+//        }
 
         if ($this->container->get('authorization_checker')->isGranted('ROLE_STAFF')) {
             $response->headers->set('Location', $this->container->get('router')->generate('staff_login'));

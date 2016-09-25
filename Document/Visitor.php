@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibtikar\VisitorBundle\Document;
+namespace Ibtikar\GlanceUMSBundle\Document;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -130,47 +130,5 @@ class Visitor extends User {
         return $this->mustChangePassword;
     }
 
-    /**
-     * Set country
-     *
-     * @param Ibtikar\BackendBundle\Document\Country $country
-     * @return self
-     */
-    public function setCountry(\Ibtikar\BackendBundle\Document\Country $country)
-    {
-        $this->country = $country;
-        return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return Ibtikar\BackendBundle\Document\Country $country
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * Set city
-     *
-     * @param Ibtikar\BackendBundle\Document\City $city
-     * @return self
-     */
-    public function setCity(\Ibtikar\BackendBundle\Document\City $city)
-    {
-        $this->city = $city;
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return Ibtikar\BackendBundle\Document\City $city
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
+  
 }

@@ -181,7 +181,7 @@ class UserController extends BackendController {
             $rediretUrl = $session->remove('_security.secured_area.target_path');
             if (!$rediretUrl) {
                 if ($this->container->get('security.authorization_checker')->isGranted('ROLE_STAFF')) {
-                    $rediretUrl = $this->generateUrl('backend_home');
+                    $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
                 } else {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');

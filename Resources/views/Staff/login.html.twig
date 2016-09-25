@@ -11,31 +11,30 @@
 {% block stylesheets %}
     {{ parent() }}
     <!-- Favicons AND TOUCH ICONS   -->
-    <link rel="icon" href="assets/images/<?php echo $styleSheetName; ?>/favicon.ico">
-    <link rel="apple-touch-icon" href="assets/images/<?php echo $styleSheetName; ?>/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/<?php echo $styleSheetName; ?>/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/<?php echo $styleSheetName; ?>/apple-touch-icon-114x114.png">
+ <link rel="icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/favicon.ico')}}">
+    <link rel="apple-touch-icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon.png')}}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-72x72.png')}}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-114x114.png')}}">
 
-    <!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-    <link href="{{ asset('design/assets/css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('design/assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('design/assets/css/core.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('design/assets/css/components.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/core.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/components.css')}}" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
 
-    <link href="{{ asset('design/assets/css/custom.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/custom.css')}}" rel="stylesheet" type="text/css">
 
 
-    <link href="{{ asset('design/assets/css/'~ style_Sheet_name ~'.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/'~ style_Sheet_name ~'.css')}}" rel="stylesheet" type="text/css">
 
 
 
 
 {% endblock %}
-{% block bodyClass %}class="login-container bg-slate-800"{%endblock %}
 
 {% block body %}
+    <div class="login-container bg-slate-800">
         <!-- Page container -->
         <div class="page-container loginPage">
 
@@ -49,15 +48,15 @@
                     <form class="dev-js-validation" novalidate="" action="{{ path('login') }}" method="POST">
                         <div class="panel panel-body login-form">
 
-                            <a>
+        {#                    <a>
                                 <img alt="" class="position-left" src="assets/images/flags/gb.png">
                                 English
 
-                            </a>
+                            </a>#}
 
                             <div class="text-center loginLogo">
 
-                                <img src="{{ asset('design/assets/images/'~ style_Sheet_name ~'/login-logo.png')}}" alt="glance" class="img-responsive"/>
+                                <img src="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~ style_Sheet_name ~'/login-logo.png')}}" alt="glance" class="img-responsive"/>
                             </div>
 
 
@@ -79,7 +78,6 @@
                                 <div class="form-control-feedback">
                                     <i class="icon-user text-muted"></i>
                                 </div>
-                                <span class="help-block">العنوان اقل من ٣ احرف </span>
                             </div>
 
 
@@ -142,19 +140,19 @@
 
         </div>
     </div>
-
+</div>
     <!-- /page container -->
 
     {% block javascripts %}
         <!-- Core JS files -->
-        <script type="text/javascript" src="{{ asset('design/assets/js/plugins/loaders/pace.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('design/assets/js/core/libraries/jquery.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('design/assets/js/core/libraries/bootstrap.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/plugins/loaders/pace.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/core/libraries/jquery.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/core/libraries/bootstrap.min.js')}}"></script>
 
         <!-- /core JS files -->
 
         <!-- Theme JS files -->
-        <script type="text/javascript" src="{{ asset('design/assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
 
 
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
