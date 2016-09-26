@@ -25,7 +25,7 @@ security:
 
             form_login:
 #            ajax_form_login:
-                check_path: login
+                check_path: login_check
                 login_path: login
                 provider: database_provider
                 username_parameter: form[_username]
@@ -55,7 +55,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/backend/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - { path: ^/backend$, roles: [ROLE_STAFF] }
+        - { path: ^/backend/$, roles: [ROLE_STAFF] }
 #        - { path: ^/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY}
 #        - { path: ^/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
 #        - { path: ^/social-login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
