@@ -14,7 +14,7 @@ Installation steps
     composer require Ibtikar/GlanceUMSBundle
 
 3.Add to your appkernel the next line
-    new Ibtikar\ShareEconomyUMSBundle\IbtikarShareEconomyUMSBundle(),
+        new Ibtikar\GlanceUMSBundle\IbtikarGlanceUMSBundle(),
 
 4.Add this route to your routing file
 
