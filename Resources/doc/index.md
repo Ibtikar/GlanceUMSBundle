@@ -18,9 +18,10 @@ Installation steps
 
 4.Add this route to your routing file
 
-    ibtikar_share_economy_ums:
+    ibtikar_glance_ums:
         resource: "@IbtikarGlanceUMSBundle/Resources/config/routing.yml"
         prefix:   /
+
 
 
 
