@@ -26,6 +26,19 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
         $adminUser->setCity($this->getReference("الرياض"));
         $manager->persist($adminUser);
 
+        $testUser = new Staff();
+        $testUser->setEmployeeId(2);
+        $testUser->setUserPassword('ibtikaradmin123');
+        $testUser->setEmail('rana.khaled@ibtikar.net.sa');
+        $testUser->setFirstName('test');
+        $testUser->setLastName('test');
+        $testUser->setUsername('goodyTest');
+        $testUser->setAdmin(true);
+        $testUser->setEmailVerified(TRUE);
+        $testUser->setMustChangePassword(TRUE);
+        $testUser->setCity($this->getReference("الرياض"));
+        $manager->persist($testUser);
+
 
 
         $manager->flush();

@@ -450,7 +450,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * @return string the object name
      */
-    public function getPath()
+    public function __toString()
     {
         return "$this->firstName $this->lastName";
     }

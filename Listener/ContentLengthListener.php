@@ -4,11 +4,7 @@ namespace Ibtikar\GlanceUMSBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-/**
- * Description of ContentLengthListener
- *
- * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
- */
+
 class ContentLengthListener {
 
     private $container;

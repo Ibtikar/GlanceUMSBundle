@@ -37,10 +37,12 @@ class UserController extends BackendController {
             $session->set('redirectUrl', $request->get('redirectUrl'));
         }
         $securityTargetPath = $session->get('_security.secured_area.target_path');
+//        var_dump($securityTargetPath);
+//        exit;
         $redirectUrl = $session->get('redirectUrl', '');
         if ((strpos($securityTargetPath, 'backend') !== false || strpos($redirectUrl, 'backend') !== false) && strpos($request->getUri(), 'backend') === false && $session->get('firstTimeRedirected', false) === false) {
             $session->set('firstTimeRedirected', true);
-            return $this->redirect($this->generateUrl('staff_login'));
+            return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
 
         $user = $this->getUser();
@@ -75,7 +77,7 @@ class UserController extends BackendController {
             if ($loginTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
                 $session->set('secret', $this->container->getParameter('secret'));
                 $formBuilder->add('recaptcha', EWZRecaptchaType::class, array(
-                    'language' => 'ar', 'attr' => array(
+                    'language' => 'ar', 'attr' => array('errorMessage'=>  $this->trans('This value should not be blank.', array(), 'login'),
                         'options' => array(
                             'theme' => 'light',
                             'type' => 'image',
@@ -92,14 +94,14 @@ class UserController extends BackendController {
         }
         $form = $formBuilder->getForm();
         $user = $this->getUser();
-        if (!$user) {
+//        if (!$user) {
             return $this->render($this->loginView, array(
                         'form' => $form->createView(),
                         'error' => $error
             ));
-        } else {
-            return $this->redirect($this->generateUrl('home_page'));
-        }
+//        } else {
+//            return $this->redirect($this->generateUrl('home_page'));
+//        }
     }
 
     private function getUserByEmailAndChangePasswordToken($email, $token) {
@@ -148,7 +150,7 @@ class UserController extends BackendController {
             if ($user instanceof Visitor) {
                 return $this->redirect($this->generateUrl('login'));
             }
-            return $this->redirect($this->generateUrl('staff_login'));
+            return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
         return $this->postLoginAction();
     }
@@ -181,7 +183,13 @@ class UserController extends BackendController {
             $rediretUrl = $session->remove('_security.secured_area.target_path');
             if (!$rediretUrl) {
                 if ($this->container->get('security.authorization_checker')->isGranted('ROLE_STAFF')) {
-                    $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
+//                     \Doctrine\Common\Util\Debug::dump($this->getUser());
+//                     exit;
+                    if ($this->getUser()->getMustChangePassword()) {
+                        $rediretUrl = $this->generateUrl('ibtikar_glance_ums_staff_changePassword');
+                    } else {
+                        $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
+                    }
                 } else {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
@@ -233,7 +241,7 @@ class UserController extends BackendController {
 
                 $this->sendMail($user, $data);
                 $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('done sucessfully'));
-                return $this->redirect($this->generateUrl('staff_login'));
+                return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
             }
         }
 
@@ -313,7 +321,7 @@ class UserController extends BackendController {
     public function changePasswordAction(Request $request) {
         $breadcrumbs = $this->get('white_october_breadcrumbs');
 //        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('Change Password', $this->generateUrl('staff_changePassword'));
+        $breadcrumbs->addItem('Change Password', $this->generateUrl('ibtikar_glance_ums_staff_changePassword'));
 
         $user = $this->getUser();
         $formBuilder = $this->createFormBuilder($user, array(

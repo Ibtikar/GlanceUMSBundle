@@ -11,7 +11,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <!-- Favicons AND TOUCH ICONS   -->
- <link rel="icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/favicon.ico')}}">
+    <link rel="icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/favicon.ico')}}">
     <link rel="apple-touch-icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-72x72.png')}}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-114x114.png')}}">
@@ -48,32 +48,41 @@
                     <form class="dev-js-validation" novalidate="" action="{{ path('login') }}" method="POST">
                         <div class="panel panel-body login-form">
 
-        {#                    <a>
-                                <img alt="" class="position-left" src="assets/images/flags/gb.png">
-                                English
+                            {#                    <a>
+                                                    <img alt="" class="position-left" src="assets/images/flags/gb.png">
+                                                    English
 
-                            </a>#}
+                                                </a>#}
 
                             <div class="text-center loginLogo">
 
                                 <img src="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~ style_Sheet_name ~'/login-logo.png')}}" alt="glance" class="img-responsive"/>
                             </div>
 
+                            {% if error %}
 
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                            <div class="row">
-                                <div class="col-md-12">
+                                        <div class="alert alert-danger no-border">
+                                            <button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
+                                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                                        </div>
 
-                                    <div class="alert alert-danger no-border">
-                                        <button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
-                                        العنوان اقل من ٣ احرف
                                     </div>
-
                                 </div>
-                            </div>
+                            {% endif %}
+
+
+                            {% for flashMessage in app.session.flashbag.get('success') %}
+                                <div class="alert alert-success remove-5s">
+                                    <button data-dismiss="alert" class="close" type="button"><span>×</span><span class="sr-only">Close</span></button>
+                                    {{ flashMessage }}
+                                </div>
+                            {% endfor %}
 
                             <div class="form-group has-feedback-right">
-                            {{ form_widget(form._username, {'attr': {'class': 'form-control','autofocus':'','placeholder': 'user name'|trans({}, 'login'), 'tabindex': 1} }) }}
+                                {{ form_widget(form._username, {'attr': {'class': 'form-control','autofocus':'','placeholder': 'user name'|trans({}, 'login'), 'tabindex': 1} }) }}
 
                                 <div class="form-control-feedback">
                                     <i class="icon-user text-muted"></i>
@@ -82,7 +91,7 @@
 
 
                             <div class="form-group has-feedback has-feedback-right">
-                            {{ form_widget(form._password, {'attr': {'class': 'form-control', 'autocomplete': 'off', 'placeholder': 'password'|trans({}, 'login'), 'tabindex': 2, 'data-remove-password-validation': 'true'} }) }}
+                                {{ form_widget(form._password, {'attr': {'class': 'form-control', 'autocomplete': 'off', 'placeholder': 'password'|trans({}, 'login'), 'tabindex': 2, 'data-remove-password-validation': 'true'} }) }}
 
                                 <div class="form-control-feedback">
                                     <i class="icon-lock2 text-muted"></i>
@@ -93,32 +102,25 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label class="checkbox-inline">
-                                           {{ form_widget(form._remember_me, {'attr': {'tabindex': 4 ,'class': 'styled'} }) }}
-                                    {% trans from 'login' %}remember me{% endtrans %}
+                                            {{ form_widget(form._remember_me, {'attr': {'tabindex': 4 ,'class': 'styled'} }) }}
+                                            {% trans from 'login' %}remember me{% endtrans %}
                                         </label>
                                     </div>
 
                                     <div class="col-sm-6 text-right">
-                                        <a href="{{ path('staff_forgot_password') }}">{% trans from 'login' %}Forgot your password ?{% endtrans %}</a>
+                                        <a href="{{ path('ibtikar_glance_ums_staff_forgot_password') }}">{% trans from 'login' %}Forgot your password ?{% endtrans %}</a>
                                     </div>
                                 </div>
                             </div>
 
-                            {#<div class="form-group">
-                                <script src='https://www.google.com/recaptcha/api.js'></script>
-                                <div class="g-recaptcha" data-sitekey="6LcKcykTAAAAAO02w_M0K6E8DPd1yJScFrYxHJyu" data-theme="light" ></div>
-                            </div>#}
 
-                                   {% if form.recaptcha is defined %}
-                        <div class="form-group{% if error and error.message == 'Captcha is invalid' %} has-error{% endif %}">
-                            {{ form_widget(form.recaptcha) }}
-                            {% if error and error.message == 'Captcha is invalid' %}
-                                <div class="help-block">
-                                    {{ error.message|trans({}, 'login') }}
-                                </div>
+
+                            {% if form.recaptcha is defined %}
+                                <div class="form-group{% if error and error.message == 'Captcha is invalid' %} has-error{% endif %}">
+                                    {{ form_widget(form.recaptcha) }}
+
+                                </div> <!-- /.form-group -->
                             {% endif %}
-                        </div> <!-- /.form-group -->
-                        {% endif %}
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">{% trans from 'login' %}enter{% endtrans %} <i class="icon-circle-left2 position-right"></i></button>
@@ -130,17 +132,20 @@
 
                         <span class="help-block text-center no-margin whiteText"> بدخولك لقد تم الموافقة علي
                             <a href="#">الشروط</a> و <a href="#">  لائحة الخصوصية </a></span>
-                     {{ form_end(form) }}
-                    <!-- /advanced login -->
+                            {{ form_end(form) }}
+                        <!-- /advanced login -->
 
-                <!-- /main content -->
+                        <!-- /main content -->
+
+                </div>
+                <!-- /page content -->
 
             </div>
-            <!-- /page content -->
-
         </div>
     </div>
-</div>
+
+
+
     <!-- /page container -->
 
     {% block javascripts %}
@@ -158,27 +163,23 @@
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/additional-methods.min.js')}}"></script>
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/messages_ar.js')}}"></script>
-         <script src="{{ asset('bundles/ibtikarglancedashboard/js/backend.js') }}"></script>
+        <script src="{{ asset('bundles/ibtikarglancedashboard/js/backend.js') }}"></script>
 
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/validation.js')}}"></script>
 
 
         <!-- /theme JS files -->
         <script>
-             var availableMessage = '{% trans %}valid{% endtrans %}';
-        var unAvailableMessage = '{% trans %}not valid{% endtrans %}';
-        function doSomething() {
-         if (grecaptcha.getResponse() == '') {
-             $('#keycode').val(1)
-
-                            return true;
-                        } else {
-                               $('#keycode').val('')
-                            return false;
-                        }
-        validateElement($('#keycode'))
-
-        alert(1); }
+            var availableMessage = '{% trans %}valid{% endtrans %}';
+            var unAvailableMessage = '{% trans %}not valid{% endtrans %}';
+            function validateCaptch() {
+                if (grecaptcha.getResponse() != '') {
+                    $('#keycode').val(1)
+                } else {
+                    $('#keycode').val('')
+                }
+                validateElement($('#keycode'))
+            }
             $(function () {
 
                 // Style checkboxes and radios
@@ -188,61 +189,62 @@
         </script>
 
     {% endblock %}
-        {% endblock %}
+{% endblock %}
 
-   {% form_theme form _self %}
+{% form_theme form _self %}
 
 
-        {% block ewz_recaptcha_widget %}
-{% spaceless %}
-    {% if form.vars.ewz_recaptcha_enabled %}
-        {% if not form.vars.ewz_recaptcha_ajax %}
-            <script type="text/javascript"
-                src="{{ form.vars.url_challenge }}"
-                {% if attr.options.defer is defined and attr.options.defer %}defer{% endif %}
-                {% if attr.options.async is defined and attr.options.async %}async{% endif %}
-            ></script>
-            <div class="g-recaptcha" data-theme="{{ attr.options.theme }}" data-size="{{ attr.options.size }}" data-type="{{ attr.options.type }}" data-sitekey="{{ form.vars.public_key }}" {% if attr.options.expiredCallback is defined %}data-expired-callback="{{ attr.options.expiredCallback }}"{% endif %}  {% if attr.options.callback is defined %}data-callback="{{ attr.options.callback }}"{% endif %}></div>
-                 <input type="hidden" title="Please verify this" class="required" name="keycode" id="keycode">
-            <noscript>
+{% block ewz_recaptcha_widget %}
+    {% spaceless %}
+        {% if form.vars.ewz_recaptcha_enabled %}
+            {% if not form.vars.ewz_recaptcha_ajax %}
+                <script type="text/javascript"
+                        src="{{ form.vars.url_challenge }}"
+                        {% if attr.options.defer is defined and attr.options.defer %}defer{% endif %}
+                        {% if attr.options.async is defined and attr.options.async %}async{% endif %}
+                ></script>
+                <div class="g-recaptcha" data-theme="{{ attr.options.theme }}" data-size="{{ attr.options.size }}" data-type="{{ attr.options.type }}" data-sitekey="{{ form.vars.public_key }}" data-expired-callback="validateCaptch"  data-callback="validateCaptch"></div>
+                <input type="hidden" title="{{ attr.errorMessage}}" class="required" name="keycode" id="keycode">
+                <noscript>
                 <div style="width: 302px; height: 352px;">
                     <div style="width: 302px; height: 352px; position: relative;">
                         <div style="width: 302px; height: 352px; position: absolute;">
                             <iframe src="https://www.google.com/recaptcha/api/fallback?k={{ form.vars.public_key }}"
                                     frameborder="0" scrolling="no"
                                     style="width: 302px; height:352px; border-style: none;"
-                            >
+                                    >
                             </iframe>
                         </div>
                         <div style="width: 250px; height: 80px; position: absolute; border-style: none; bottom: 21px; left: 25px; margin: 0; padding: 0; right: 25px;">
                             <textarea id="g-recaptcha-response" name="g-recaptcha-response"
                                       class="g-recaptcha-response"
                                       style="width: 250px; height: 80px; border: 1px solid #c1c1c1; margin: 0; padding: 0; resize: none;"
-                            >
+                                      >
                             </textarea>
                         </div>
                     </div>
                 </div>
-            </noscript>
-        {% else %}
-            <div id="ewz_recaptcha_div"></div>
+                </noscript>
+            {% else %}
+                <div id="ewz_recaptcha_div"></div>
 
-            <script type="text/javascript">
-            (function() {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.onload = function() {
-                    Recaptcha.create('{{ form.vars.public_key }}', 'ewz_recaptcha_div', {{ attr.options|default({})|json_encode|raw }});
-                };
-                script.src = '{{ form.vars.url_api }}';
-                {% if attr.options.defer is defined and attr.options.defer %}script.defer = true;{% endif %}
-                {% if attr.options.async is defined and attr.options.async %}script.async = true;{% endif %}
-                document.getElementsByTagName('head')[0].appendChild(script);
-            })();
-            </script>
+                <script type="text/javascript">
+                    (function () {
+                        var script = document.createElement('script');
+                        script.type = 'text/javascript';
+                        script.onload = function () {
+                            Recaptcha.create('{{ form.vars.public_key }}', 'ewz_recaptcha_div', {{ attr.options|default({})|json_encode|raw }});
+                        };
+                        script.src = '{{ form.vars.url_api }}';
+                    {% if attr.options.defer is defined and attr.options.defer %}script.defer = true;{% endif %}
+                    {% if attr.options.async is defined and attr.options.async %}script.async = true;{% endif %}
+                            document.getElementsByTagName('head')[0].appendChild(script);
+                        })();
+                </script>
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endspaceless %}
+    {% endspaceless %}
 {% endblock ewz_recaptcha_widget %}
+
 
 

@@ -2,26 +2,29 @@ parameters:
 #    security.authentication.listener.form.class: Ibtikar\UserBundle\Listener\PreLogin
     captcha_appear_after_failed_attempts: 3
 services:
-#    ibtikar_user.example:
-#        class: Ibtikar\GlanceUMSBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
 #    ajax_listener:
 #        class: Ibtikar\GlanceUMSBundle\Listener\AjaxAuthenticationListener
 #        tags:
 #          - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 255 }
 #        arguments: ["@router","@session","@translator"]
-#
-#    Ibtikar.security.authentication_failure_event_listener:
-#      class: Ibtikar\GlanceUMSBundle\Listener\AuthenticationListener
-#      tags:
-#          - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
-#      arguments: ["@session"]
+
+    post_login:
+        class: Ibtikar\GlanceUMSBundle\Listener\PostLogin
+        arguments: ["@doctrine_mongodb"]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login }
+
+    Ibtikar.security.authentication_failure_event_listener:
+      class: Ibtikar\GlanceUMSBundle\Listener\AuthenticationListener
+      tags:
+          - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+      arguments: ["@session"]
 #    # authentication success event listener
-#    Ibtikar.security.interactive_login_listener:
-#        class: Ibtikar\GlanceUMSBundle\Listener\AuthenticationListener
-#        tags:
-#            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
-#        arguments: ["@session"]
+    Ibtikar.security.interactive_login_listener:
+        class: Ibtikar\GlanceUMSBundle\Listener\AuthenticationListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+        arguments: ["@session"]
 #
 #    content_length_listener:
 #        class: Ibtikar\GlanceUMSBundle\Listener\ContentLengthListener

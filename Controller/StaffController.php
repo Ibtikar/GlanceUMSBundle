@@ -18,7 +18,7 @@ class StaffController extends UserController {
     protected $repoClass = 'IbtikarGlanceUMSBundle:Staff';
     protected $loginView = 'IbtikarGlanceUMSBundle:Staff:login.html.twig';
     protected $changePasswordFromEmailView = 'IbtikarGlanceUMSBundle:Staff:changePasswordFromEmail.html.twig';
-    protected $changePasswordView = 'IbtikarGlanceUMSBundle:Profile:changePassword.html.twig';
+    protected $changePasswordView = 'IbtikarGlanceUMSBundle:Staff:changePassword.html.twig';
     protected $translationDomain = 'staff';
     private $validationTranslationDomain = 'validators';
     public $oneItem = 'Staff member';
