@@ -139,4 +139,14 @@ class Staff extends User {
         return $this->mustChangePassword;
     }
 
+    public function getPersonTitle() {
+        if ($this->gender === 'male') {
+            return 'الأستاذ';
+        } else if ($this->gender === 'female') {
+            return 'الأستاذة';
+        } else {
+            return 'الأستاذ/ الأستاذة';
+        }
+    }
+
 }

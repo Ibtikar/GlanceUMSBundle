@@ -372,11 +372,7 @@ class UserController extends BackendController {
         ));
     }
 
-    /**
-     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
-     * @param string $email
-     * @param string $token
-     */
+
     public function changePasswordFromEmailAction(Request $request,$email, $token) {
         $user = $this->getUserByEmailAndChangePasswordToken($email, $token);
         $dm = $this->get('doctrine_mongodb')->getManager();
@@ -384,6 +380,9 @@ class UserController extends BackendController {
             $user->setEmailVerified(true);
             $dm->flush();
         }
+        $emailValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
+        $emailValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
+
         $formBuilder = $this->createFormBuilder($user, array(
                     'validation_groups' => 'change-password'
                 ))
@@ -392,10 +391,10 @@ class UserController extends BackendController {
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
-                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '')),
-                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '')),
-                ))
-                ->add('Change', SubmitType::class);
+                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage,'data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage)),
+                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage)),
+                ));
+//                ->add('Change', SubmitType::class);
         $form = $formBuilder->getForm();
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -415,16 +414,6 @@ class UserController extends BackendController {
         ));
     }
 
-    /**
-     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
-     * @return Response
-     */
-    public function addAsContactModalAction() {
-        return $this->render('IbtikarGlanceUMSBundle::addAsContactModal.html.twig', array(
-                    'groups' => $this->get('doctrine_mongodb')->getManager()->getRepository('IbtikarGlanceUMSBundle:ContactGroup')->getAllowedGroupsForUser($this->getUser(), $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')),
-                    'translationDomain' => $this->translationDomain,
-        ));
-    }
 
     public function checkFieldUniqueAction(Request $request) {
 

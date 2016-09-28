@@ -12,6 +12,8 @@ use Ibtikar\BackendBundle\Document\Job;
 use Ibtikar\BackendBundle\Document\Hobby;
 use Ibtikar\GlanceDashboardBundle\Document\Document;
 use Ibtikar\GlanceDashboardBundle\Service\ArabicMongoRegex;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StaffController extends UserController {
 
@@ -207,14 +209,13 @@ class StaffController extends UserController {
         $session = $request->getSession();
         $error = null;
         $success = null;
-        $showCaptchaErrors = true;
-        $captchaTrials = $session->get('forgotPasswordTrials', 1);
+        $emailRequiredErrorMessage= $this->trans("Please enter your email address",array(), $this->translationDomain);
+        $emailvalidateErrorMessage= $this->trans("Please enter your valid email address",array(), $this->translationDomain);
+
         $formBuilder = $this->createFormBuilder()
                 ->setMethod('POST')
-                ->add('loginCredentials', null, array('attr' => array('autocomplete' => 'off'), 'constraints' => array(new Constraints\NotBlank())));
-        if ($captchaTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
-            $formBuilder->add('captcha', 'genemu_captcha');
-        }
+                ->add('loginCredentials', EmailType::class, array('attr' => array('autocomplete' => 'off', 'data-msg-required'=> $emailRequiredErrorMessage,'data-msg-email'=>$emailvalidateErrorMessage,'data-rule-email'=>"true"), 'constraints' => array(new Constraints\NotBlank())));
+
         $form = $formBuilder->getForm();
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -225,28 +226,20 @@ class StaffController extends UserController {
                 $staffRepo = $dm->getRepository('IbtikarGlanceUMSBundle:Staff');
                 $staff = null;
                 // check if the user entered his user name, change the regex in Staff document
-                if (preg_match('/^([^_\W]-*)+$/u', $loginCredentials) === 1) {
-                    $staff = $staffRepo->findOneBy(array('username' => $loginCredentials, 'deleted' => false));
-                    if (!$staff) {
-                        $error = $this->trans('User name was not found, please provide correct user name.');
-                    }
-                } else {
+
                     $staff = $staffRepo->findOneBy(array('email' => strtolower($loginCredentials), 'deleted' => false));
                     if (!$staff) {
-                        $error = $this->trans('Email was not found, please provide correct email.');
+                        $error = $this->trans('Email was not found, please provide correct email.',array(),  $this->translationDomain);
                     }
-                }
                 if ($staff) {
                     if ($staff->getEnabled()) {
                         // reset the form data and remove the captcha field
-                        $session->remove('forgotPasswordTrials');
-                        $formBuilder->remove('captcha');
                         $form = $formBuilder->getForm();
                         // send the change password email
                         $staff->refreshForgotPasswordToken();
                         $dm->flush();
 
-                        $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName('staff forgot password');
+                        $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('staff forgot password');
                         $body = str_replace(
                                 array(
                             '%fullname%',
@@ -255,7 +248,7 @@ class StaffController extends UserController {
                                 ), array(
                             $staff->__toString(),
                             $emailTemplate->getMessage(),
-                            $this->generateUrl('staff_change_password_from_email', array('token' => $staff->getChangePasswordToken(), 'email' => $staff->getEmail()), true)
+                            $this->generateUrl('ibtikar_glance_ums_staff_change_password_from_email', array('token' => $staff->getChangePasswordToken(), 'email' => $staff->getEmail()), UrlGeneratorInterface::ABSOLUTE_URL)
                                 ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle(), false))
                         );
                         $mailer = $this->get('swiftmailer.mailer.spool_mailer');
@@ -267,26 +260,15 @@ class StaffController extends UserController {
                         ;
                         $mailer->send($message);
                         // set success message
-                        $success = $this->trans('A message will be sent to your email containing a link to allow you to change your password.');
+                        $success = $this->trans('A message will be sent to your email containing a link to allow you to change your password.',array(),  $this->translationDomain);
                     } else {
-                        $error = str_replace(array('%user-title%', '%user-name%'), array($staff->getPersonTitle()->getName(), $staff->__toString()), $this->trans('%user-title% %user-name% your account was deactivated by the admin, contact your admin for more information.'));
+                        $error = str_replace(array('%user-title%', '%user-name%'), array($staff->getPersonTitle()->getName(), $staff->__toString()), $this->trans('%user-title% %user-name% your account was deactivated by the admin, contact your admin for more information.',array(),  $this->translationDomain));
                     }
                 }
             }
-            if($success === null) {
-                $captchaTrials++;
-                $session->set('forgotPasswordTrials', $captchaTrials);
-                // check if this is the first time to show the captcha field
-                if ($captchaTrials == ($this->container->getParameter('captcha_appear_after_failed_attempts') + 1)) {
-                    $formBuilder->add('captcha', 'genemu_captcha');
-                    $form = $formBuilder->getForm();
-                    $form->handleRequest($request);
-                    $showCaptchaErrors = false;
-                }
-            }
+
         }
         return $this->render('IbtikarGlanceUMSBundle:Staff:forgotPassword.html.twig', array(
-                    'showCaptchaErrors' => $showCaptchaErrors,
                     'success' => $success,
                     'error' => $error,
                     'form' => $form->createView(),
@@ -564,12 +546,7 @@ class StaffController extends UserController {
         return $createExcel->createFileResponse();
     }
 
-    /**
-     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
-     * @param \Ibtikar\UserBundle\Document\Document $document
-     * @param string $status
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
+
     protected function validateActivate(Document $document, $status) {
         $errorMessage = parent::validateActivate($document, $status);
         if($document->getAdmin()) {
