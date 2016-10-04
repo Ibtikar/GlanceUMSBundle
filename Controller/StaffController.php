@@ -262,7 +262,7 @@ class StaffController extends UserController {
                         // set success message
                         $success = $this->trans('A message will be sent to your email containing a link to allow you to change your password.',array(),  $this->translationDomain);
                     } else {
-                        $error = str_replace(array('%user-title%', '%user-name%'), array($staff->getPersonTitle()->getName(), $staff->__toString()), $this->trans('%user-title% %user-name% your account was deactivated by the admin, contact your admin for more information.',array(),  $this->translationDomain));
+                        $error = str_replace(array('%user-title%', '%user-name%'), array($staff->getPersonTitle()->getName(), $staff->__toString()), $this->trans('your account was deactivated by the admin, contact your admin for more information.',array(),  $this->translationDomain));
                     }
                 }
             }

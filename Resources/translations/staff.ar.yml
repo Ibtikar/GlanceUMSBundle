@@ -4,4 +4,4 @@
 'Email was not found, please provide correct email.': 'البريد الإلكتروني المدخل غير صحيح'
 'A message will be sent to your email containing a link to allow you to change your password.': 'لقد تم ارسال رسالة الى بريدك الالكتروني تحتوي على رابط استعادة كلمة المرور'
 'email': 'البريد الإلكتروني'
-'%user-title% %user-name% your account was deactivated by the admin, contact your admin for more information.': '%user-title% %user-name% لقد تم إيقاف حسابكم من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
+'your account was deactivated by the admin, contact your admin for more information.': ' لقد تم ايقاب حسابك من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
