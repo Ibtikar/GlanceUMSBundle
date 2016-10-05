@@ -214,7 +214,7 @@ class StaffController extends UserController {
 
         $formBuilder = $this->createFormBuilder()
                 ->setMethod('POST')
-                ->add('loginCredentials', EmailType::class, array('attr' => array('autocomplete' => 'off', 'data-msg-required'=> $emailRequiredErrorMessage,'data-msg-email'=>$emailvalidateErrorMessage,'data-rule-email'=>"true"), 'constraints' => array(new Constraints\NotBlank())));
+                ->add('loginCredentials', EmailType::class, array('attr' => array('autocomplete' => 'off', 'data-msg-required'=> $emailRequiredErrorMessage,'data-msg-email'=>$emailvalidateErrorMessage,'data-rule-email'=>"true"), 'constraints' => array(new Constraints\NotBlank(), new Constraints\Email())));
 
         $form = $formBuilder->getForm();
         if ($request->getMethod() === 'POST') {
@@ -233,9 +233,6 @@ class StaffController extends UserController {
                     }
                 if ($staff) {
                     if ($staff->getEnabled()) {
-                        // reset the form data and remove the captcha field
-                        $form = $formBuilder->getForm();
-                        // send the change password email
                         $staff->refreshForgotPasswordToken();
                         $dm->flush();
 
