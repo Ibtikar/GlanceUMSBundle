@@ -392,7 +392,7 @@ class StaffController extends UserController {
                     $imageOperations->SquareImageResize($staff->getAbsolutePath());
                 }
                 $imageOperations->autoRotate($staff->getCoverPhotoAbsolutePath());
-                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('done sucessfully'));
+                $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 return $this->redirect($request->getUri());
             }
         }
@@ -784,7 +784,7 @@ class StaffController extends UserController {
                         'validation_groups' => array('Edit','Default')
                     ));
                 }
-                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('done sucessfully'));
+                $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 if($formType == "restore")
                     return new JsonResponse(array('status' => 'success'));
             }

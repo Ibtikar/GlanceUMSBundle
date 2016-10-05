@@ -28,7 +28,6 @@ class UserController extends BackendController {
     protected $changePasswordFromEmailView = 'IbtikarGlanceUMSBundle:Visitor:changePasswordFromEmail.html.twig';
     protected $changePasswordView = 'IbtikarGlanceUMSBundle:Visitor:changePassword.html.twig';
     protected $mustChangePassword = 'IbtikarGlanceUMSBundle:Staff:changePassword.html.twig';
-    protected $contactUsView = 'IbtikarGlanceUMSBundle:Staff:contactUs.html.twig';
 
     public function loginAction(Request $request) {
 
@@ -37,11 +36,8 @@ class UserController extends BackendController {
             $session->set('redirectUrl', $request->get('redirectUrl'));
         }
         $securityTargetPath = $session->get('_security.secured_area.target_path');
-//        var_dump($securityTargetPath);
-//        exit;
         $redirectUrl = $session->get('redirectUrl', '');
         if ((strpos($securityTargetPath, 'backend') !== false || strpos($redirectUrl, 'backend') !== false) && strpos($request->getUri(), 'backend') === false && $session->get('firstTimeRedirected', false) === false) {
-            $session->set('firstTimeRedirected', true);
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
 
@@ -94,14 +90,11 @@ class UserController extends BackendController {
         }
         $form = $formBuilder->getForm();
         $user = $this->getUser();
-//        if (!$user) {
             return $this->render($this->loginView, array(
                         'form' => $form->createView(),
                         'error' => $error
             ));
-//        } else {
-//            return $this->redirect($this->generateUrl('home_page'));
-//        }
+
     }
 
     private function getUserByEmailAndChangePasswordToken($email, $token) {
@@ -183,8 +176,7 @@ class UserController extends BackendController {
             $rediretUrl = $session->remove('_security.secured_area.target_path');
             if (!$rediretUrl) {
                 if ($this->container->get('security.authorization_checker')->isGranted('ROLE_STAFF')) {
-//                     \Doctrine\Common\Util\Debug::dump($this->getUser());
-//                     exit;
+
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('ibtikar_glance_ums_staff_changePassword');
                     } else {
@@ -205,51 +197,7 @@ class UserController extends BackendController {
         return $redirectResponse;
     }
 
-    /**
-     * @author Ahmad Gamal <a.gamal@ibtikar.net.sa>
-     */
-    public function contactAction(Request $request) {
-        $session = $request->getSession();
-        $identity = $session->get('identity');
 
-        if (!$identity) {
-            return $this->redirect($this->generateUrl('backend_home'));
-        }
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $username = $dm->getRepository($this->staffRepo)->findOneBy(array('username' => $identity, 'deleted' => false, 'enabled' => false));
-
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $user = $dm->getRepository('IbtikarGlanceUMSBundle:User')->loadUserByUsername($identity);
-        if (!$user) {
-            return $this->redirect($this->generateUrl('backend_home'));
-        }
-
-        $formBuilder = $this->createFormBuilder(array())
-                ->setMethod('POST')
-                ->add('subject', 'text', array('required' => true, 'constraints' => array(new NotBlank())))
-                ->add('message', 'textarea', array('required' => true, 'constraints' => array(new NotBlank())));
-
-        $form = $formBuilder->getForm();
-
-        $request = $this->getRequest();
-
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $this->sendMail($user, $data);
-                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('done sucessfully'));
-                return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
-            }
-        }
-
-        return $this->render($this->contactUsView, array(
-                    'form' => $form->createView(),
-                    'translationDomain' => 'messages'
-        ));
-    }
 
     private function sendMail($user, $data) {
         $dm = $this->get('doctrine_mongodb')->getManager();
@@ -312,31 +260,28 @@ class UserController extends BackendController {
         return $this->render('IbtikarGlanceUMSBundle:Exception:error.html.twig', array('exception' => new \Exception('Wrong id'), 'status_code' => 404), $response);
     }
 
-    /**
-     * this action is used to make sure that the user created by the backend must change the password sent to him
-     * it is also used by the staff member to edit his password
-     * @author Moemen Hussein <momen.shaaban@ibtikar.net.sa>
-     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
-     */
+
     public function changePasswordAction(Request $request) {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
+//        $breadcrumbs = $this->get('white_october_breadcrumbs');
 //        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('Change Password', $this->generateUrl('ibtikar_glance_ums_staff_changePassword'));
+//        $breadcrumbs->addItem('Change Password', $this->generateUrl('ibtikar_glance_ums_staff_changePassword'));
+        $emailValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
+        $emailValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
 
         $user = $this->getUser();
         $formBuilder = $this->createFormBuilder($user, array(
-                    'validation_groups' => array('change-password', 'old-password')
+                    'validation_groups' => array('change-password', 'old-password'),'attr'=>array('class'=>'dev-js-validation')
                 ))
                 ->setMethod('POST')
                 ->add('oldPassword', PasswordType::class, array(
                     'attr' => array('autocomplete' => 'off', 'data-remove-password-validation' => 'true')
                 ))
-                ->add('userPassword', RepeatedType::class, array(
+              ->add('userPassword', RepeatedType::class, array(
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
-                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '')),
-                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '')),
+                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage,'data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage)),
+                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage)),
                 ))
                 ->add('Change', SubmitType::class);
         $form = $formBuilder->getForm();
@@ -347,7 +292,7 @@ class UserController extends BackendController {
                 $user->setValidPassword();
                 $user->setMustChangePassword(false);
                 $dm->flush();
-                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('done sucessfully'));
+                $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 if ($this->get('session')->getFlashBag()->get('firstLogin')) {
                     $redirectUrl = $this->generateUrl('backend_home');
                 } else {
@@ -363,7 +308,7 @@ class UserController extends BackendController {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STAFF') && $user->getMustChangePassword()) {
             $this->changePasswordView = $this->mustChangePassword;
-            $this->get('session')->getFlashBag()->set('firstLogin', true);
+//            $this->get('session')->getFlashBag()->set('firstLogin', true);
         }
 
         return $this->render($this->changePasswordView, array(

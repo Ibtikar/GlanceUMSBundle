@@ -1,66 +1,12 @@
-{% extends '::base.html.twig' %}
+{% extends "IbtikarShareEconomyDashboardDesignBundle:Layout:not_loggedin.html.twig" %}
 
 {% block title %}{% trans from 'login' %}Staff login{% endtrans %}{% endblock %}
 
-{% block meta %}
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-     <!-- Favicons AND TOUCH ICONS   -->
-    <link rel="icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/favicon.ico')}}">
-    <link rel="apple-touch-icon" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon.png')}}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-76x76.png')}}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-120x120.png')}}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~style_Sheet_name~'/apple-touch-icon-152x152.png')}}">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-    <!-- Global stylesheets -->
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/core.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/components.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/colors.css')}}" rel="stylesheet" type="text/css">
-
-    <!-- /global stylesheets -->
-
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/custom.css')}}" rel="stylesheet" type="text/css">
-
-    <link href="{{ asset('bundles/ibtikarglancedashboard/assets/css/'~style_Sheet_name~'.css')}}" rel="stylesheet" type="text/css">
-
-
-
-
-{% endblock %}
-
 {% block body %}
-    <div class="login-container bg-slate-800">
-        <!-- Page container -->
-        <div class="page-container loginPage">
-
-            <!-- Page content -->
-            <div class="page-content">
-
-                <!-- Main content -->
-                <div class="content-wrapper">
 
                     <!-- Advanced login -->
                     <form class="dev-js-validation" novalidate="" action="{{ path('login_check') }}" method="POST">
-                        <div class="panel panel-body login-form">
 
-                            {#                    <a>
-                                                    <img alt="" class="position-left" src="assets/images/flags/gb.png">
-                                                    English
-
-                                                </a>#}
-
-                            <div class="text-center loginLogo">
-
-                                <img src="{{ asset('bundles/ibtikarglancedashboard/assets/images/'~ style_Sheet_name ~'/login-logo.png')}}" alt="glance" class="img-responsive"/>
-                            </div>
 
                             {% if error %}
 
@@ -130,38 +76,17 @@
                             </div>
 
 
-                        </div>
 
 
                      {#   <span class="help-block text-center no-margin whiteText"> بدخولك لقد تم الموافقة علي
                             <a href="#">الشروط</a> و <a href="#">  لائحة الخصوصية </a></span>#}
                             {{ form_end(form) }}
-                        <!-- /advanced login -->
-
-                        <!-- /main content -->
-
-                </div>
-                <!-- /page content -->
-
-            </div>
-        </div>
-    </div>
-
 
 
     <!-- /page container -->
 
     {% block javascripts %}
-        <!-- Core JS files -->
-        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/plugins/loaders/pace.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/core/libraries/jquery.min.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/core/libraries/bootstrap.min.js')}}"></script>
-
-        <!-- /core JS files -->
-
-        <!-- Theme JS files -->
-        <script type="text/javascript" src="{{ asset('bundles/ibtikarglancedashboard/assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
-
+        {{ parent()}}
 
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
         <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/jquery-validation/additional-methods.min.js')}}"></script>
@@ -183,12 +108,7 @@
                 }
                 validateElement($('#keycode'))
             }
-            $(function () {
-
-                // Style checkboxes and radios
-                $('.styled').uniform();
-
-            });
+  
         </script>
 
     {% endblock %}
