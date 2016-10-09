@@ -6,3 +6,5 @@
 'Repeat Password': 'تأكيد كلمة المرور'
 'Old password': 'كلمه المرور القديمه'
 'done sucessfully': 'تمت العملية بنجاح'
+'valid': 'متاح'
+'not valid': 'غير متاح'
