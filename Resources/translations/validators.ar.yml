@@ -1,4 +1,4 @@
 'The Password must be at least {{ limit }} characters and numbers length': 'يجب ان تكون كلمة المرور مكونه من 8 خانات وتحتوي على ارقام وحروف'
 'The Password must be {{ limit }} maximum characters and numbers length': 'يجب ان تكون كلمة المرور مكونه من {{ limit }} خانه على الأكثر وتحتوي على ارقام وحروف'
-'The password fields must match.': 'كلمة المرور غير مطابقة يجب  ادخالها بشكل صحيح'
+'The password fields must match.': 'القيم المدخلة غير متطابقة'
 'Current password is not valid': 'لقد قمت بادخال كلمة مرور مطابقه لكلمة المرور القديمه... من فضلك ادخل كلمة مرور جديده'
