@@ -6,3 +6,4 @@
 'This value is already used.': 'غير متاح'
 'Your name must be at least {{ limit }} characters long': 'يجب أن تكون عدد الحروف {{ limit }} أو أكثر'
 'Your name cannot be longer than {{ limit }} characters long': 'عذراَ! الحد الأقصى هو {{ limit }} حرف'
+This value should be the user's current password. : 'كلمة المرور المدخله غير صحيحة'
