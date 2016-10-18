@@ -149,4 +149,17 @@ class Staff extends User {
         }
     }
 
+    public function getRoles()
+    {
+        $permissions = parent::getRoles();
+        $permissions [] = 'ROLE_STAFF';
+
+//        if ($this->role) {
+//            $permissions = array_merge($permissions, $this->role->getPermissions());
+//        }
+//        foreach ($this->permissions as $roomPermissions) {
+//            $permissions = array_merge($permissions, $roomPermissions);
+//        }
+        return array_unique($permissions);
+    }
 }

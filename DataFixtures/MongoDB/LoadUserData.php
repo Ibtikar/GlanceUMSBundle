@@ -33,7 +33,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
         $testUser->setFirstName('test');
         $testUser->setLastName('test');
         $testUser->setUsername('goodyTest');
-        $testUser->setAdmin(true);
+        $testUser->setAdmin(FALSE);
         $testUser->setEmailVerified(TRUE);
         $testUser->setMustChangePassword(TRUE);
         $testUser->setCity($this->getReference("الرياض"));
