@@ -138,6 +138,8 @@ class StaffController extends UserController {
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $randPass= $staff->generate_password();
+                $staff->setUserPassword($randPass);
 
                 $dm->persist($staff);
 //                $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName('add staff');
@@ -186,6 +188,8 @@ class StaffController extends UserController {
 //                ;
 //                $mailer->send($message);
                 $dm->flush();
+                var_dump($randPass);
+                exit;
 //                $imageOperations = $this->get('image_operations');
 //                $imageOperations->autoRotate($staff->getAbsolutePath());
 //                if ($staff->getImageNeedResize()) {

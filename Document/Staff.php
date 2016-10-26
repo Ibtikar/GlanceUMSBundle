@@ -272,4 +272,34 @@ class Staff extends User {
     {
         return $this->fakeMobile;
     }
+
+    public function isEqualTo(UserInterface $user) {
+        if (parent::isEqualTo($user)) {
+            // Check that the roles are the same, in any order
+            // Check that the roles are the same, in any order
+            $isEqual = count($this->getRoles()) == count($user->getRoles());
+            if ($isEqual) {
+                foreach ($this->getRoles() as $role) {
+                    $isEqual = $isEqual && in_array($role, $user->getRoles());
+                }
+            }
+            return $isEqual;
+
+        }
+        return false;
+    }
+
+    function generate_password($length = 10) {
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
+                '0123456789`-=~!@#$%^&*()_+,./<>?;:[]{}\|';
+
+        $str = '';
+        $max = strlen($chars) - 1;
+
+        for ($i = 0; $i < $length; $i++)
+            $str .= $chars[mt_rand(0, $max)];
+
+        return $str;
+    }
+
 }
