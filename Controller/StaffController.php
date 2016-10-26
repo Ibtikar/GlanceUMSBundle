@@ -114,6 +114,9 @@ class StaffController extends UserController {
         $ErrorMessage['imageSize'] = $translator->trans('File size must be less than 3mb', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageExtension'] = $translator->trans('picture not correct.', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageDimensions'] = $translator->trans('Image dimension must be more than 200*200', array(), $this->validationTranslationDomain);
+        $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid email address",array(), $this->translationDomain);
+        $ErrorMessage['mobileError']= $this->trans("Please enter your valid email address",array(), $this->translationDomain);
+
         $staff = new Staff();
         $securityContext = $this->get('security.authorization_checker');
         $form = $this->createForm(StaffType::class, $staff, array(
@@ -195,7 +198,7 @@ class StaffController extends UserController {
         }
         return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
                 'form' => $form->createView(),
-                'title' => 'add satff',
+                'title' => $this->trans('add staff',array(),  $this->translationDomain),
                 'breadcrumb'=>$breadCrumbArray,
                 'countries' => json_encode($countryArray),
                 'countryCodes' => json_encode(array_keys($countryArray)),

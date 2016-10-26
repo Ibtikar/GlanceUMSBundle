@@ -5,7 +5,6 @@
 'A message will be sent to your email containing a link to allow you to change your password.': 'سوف تصلك رسالة لإستعادة كلمة المرور'
 'email': 'البريد الإلكتروني'
 'your account was deactivated by the admin, contact your admin for more information.': ' لقد تم ايقاب حسابك من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
-
 'First name': 'الاسم الاول'
 'Last name': ' الاسم الاخير'
 'Email': 'البريد الالكتروني '
@@ -20,6 +19,6 @@
 'Choose City': 'اختر المدينه'
 'male': ذكر
 'female' : انثى
-'add satff':  إدخال عضو جديد
+'add staff':  إدخال عضو جديد
 
 
