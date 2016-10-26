@@ -8,22 +8,19 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Ibtikar\GlanceUMSBundle\Validator\Constraints as CustomAssert;
+use Ibtikar\GlanceDashboardBundle\Validator\Constraints as CustomAssert;
 use Ibtikar\GlanceUMSBundle\Document\User;
-use Ibtikar\AppBundle\Document\Material;
 use Ibtikar\GlanceDashboardBundle\Document\Document;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
 /**
  * @MongoDB\Document(repositoryClass="Ibtikar\GlanceUMSBundle\Document\UserRepository")
+ * @CustomAssert\InternationalPhone
  */
 class Staff extends User {
 
-      /**
-     * @Assert\NotBlank
-     * @MongoDB\String
-     */
-    private $employeeId;
+
 
     /**
      * @Assert\Length(min=5, groups={"username", "Default"})
@@ -32,46 +29,48 @@ class Staff extends User {
      * @Assert\NotBlank(groups={"username", "Default"})
      * @MongoDB\String
      * @Assert\Length(
-     *      max = 330,
+     *      max = 150,
      *      maxMessage = "Your name cannot be longer than {{ limit }} characters long"
      * )
      */
     private $username;
 
-
-     /**
-     * @Assert\NotBlank(groups={"gender", "Default", "api-edit"})
+    /**
      * @MongoDB\String
      */
-    private $gender = 'male';
+    private $gender;
 
     /**
      * @MongoDB\Boolean
      */
     protected $mustChangePassword = true;
 
+    /**
+     * @Assert\NotBlank
+     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Job", simple=true)
+     */
+    protected $job;
 
     /**
-     * Set employeeId
-     *
-     * @param string $employeeId
-     * @return self
+     * @Assert\NotBlank
+     * @MongoDB\ReferenceMany(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Role", simple=true)
      */
-    public function setEmployeeId($employeeId)
-    {
-        $this->employeeId = $employeeId;
-        return $this;
-    }
+    protected $role;
 
     /**
-     * Get employeeId
-     *
-     * @return string $employeeId
+     * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Phone")
      */
-    public function getEmployeeId()
-    {
-        return $this->employeeId;
-    }
+    private $mobile;
+
+    /**
+     * @MongoDB\String
+     */
+    private $fakeMobile;
+
+
+    public $countryCode;
+
+
 
     /**
      * Set username
@@ -139,7 +138,8 @@ class Staff extends User {
         return $this->mustChangePassword;
     }
 
-    public function getPersonTitle() {
+    public function getPersonTitle()
+    {
         if ($this->gender === 'male') {
             return 'الأستاذ';
         } else if ($this->gender === 'female') {
@@ -149,17 +149,127 @@ class Staff extends User {
         }
     }
 
+    /**
+     * @return array
+     */
+    public static function getValidGenders()
+    {
+        return array(
+            'male' => 'male',
+            'female' => 'female'
+        );
+    }
+
     public function getRoles()
     {
         $permissions = parent::getRoles();
         $permissions [] = 'ROLE_STAFF';
 
-//        if ($this->role) {
-//            $permissions = array_merge($permissions, $this->role->getPermissions());
-//        }
-//        foreach ($this->permissions as $roomPermissions) {
-//            $permissions = array_merge($permissions, $roomPermissions);
-//        }
+
+        foreach ($this->role as $rolePermissions) {
+            $permissions = array_merge($permissions, $rolePermissions->getPermissions());
+        }
         return array_unique($permissions);
+    }
+
+
+
+    /**
+     * Set job
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Job $job
+     * @return self
+     */
+    public function setJob(\Ibtikar\GlanceDashboardBundle\Document\Job $job)
+    {
+        $this->job = $job;
+        return $this;
+    }
+
+    /**
+     * Get job
+     *
+     * @return Ibtikar\GlanceDashboardBundle\Document\Job $job
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+
+    /**
+     * Add role
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Role $role
+     */
+    public function addRole(\Ibtikar\GlanceDashboardBundle\Document\Role $role)
+    {
+        $this->role[] = $role;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Role $role
+     */
+    public function removeRole(\Ibtikar\GlanceDashboardBundle\Document\Role $role)
+    {
+        $this->role->removeElement($role);
+    }
+
+    /**
+     * Get role
+     *
+     * @return \Doctrine\Common\Collections\Collection $role
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+
+
+
+    /**
+     * Set mobile
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Phone $mobile
+     * @return self
+     */
+    public function setMobile(\Ibtikar\GlanceDashboardBundle\Document\Phone $mobile)
+    {
+        $this->mobile = $mobile;
+        return $this;
+    }
+
+    /**
+     * Get mobile
+     *
+     * @return Ibtikar\GlanceDashboardBundle\Document\Phone $mobile
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * Set fakeMobile
+     *
+     * @param string $fakeMobile
+     * @return self
+     */
+    public function setFakeMobile($fakeMobile)
+    {
+        $this->fakeMobile = $fakeMobile;
+        return $this;
+    }
+
+    /**
+     * Get fakeMobile
+     *
+     * @return string $fakeMobile
+     */
+    public function getFakeMobile()
+    {
+        return $this->fakeMobile;
     }
 }

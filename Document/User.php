@@ -99,7 +99,6 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      * @Assert\Length(min=8, max=4096, maxMessage="The Password must be {{ limit }} maximum characters and numbers length", minMessage="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
      * @Assert\Regex(pattern="/[\D+]+/u", message="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
      * @Assert\Regex(pattern="/\d+/u", message="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
-     * @Assert\NotBlank(groups={"create", "change-password", "visitorSignup"})
      */
     protected $userPassword;
 
