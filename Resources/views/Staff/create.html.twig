@@ -37,13 +37,13 @@ function intializePhone(){
 
                    success: function(data) {
                        var selectedValue = $('#staff_city').val();
-                       $('#staff_city').html(data).select2('val', '');
+                       $('#staff_city').html(data).val('');
                        var $oldSelectedOption = $('#staff_city option[value="' + selectedValue + '"]');
                        if($oldSelectedOption.length > 0) {
                            $oldSelectedOption.prop('selected', true);
                        }
                         $('#staff_city').trigger('change');
-
+                        unhighlightElement($('#staff_city'))
                    }
                });
                    }
