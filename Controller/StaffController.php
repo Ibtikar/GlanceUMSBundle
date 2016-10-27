@@ -164,7 +164,7 @@ class StaffController extends UserController {
                     $staff->getUsername(),
                     $randPass,
                     $emailTemplate->getMessage(),
-                    $this->generateUrl('ibtikar_glance_ums_staff_login', array(), true),
+                    $this->generateUrl('ibtikar_glance_ums_staff_login', array(), UrlGeneratorInterface::ABSOLUTE_URL),
                     $staff->getJob()->getTitle(),
                     $this->container->getParameter('themeColor')
                         ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
