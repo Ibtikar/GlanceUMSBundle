@@ -119,6 +119,7 @@ class StaffController extends UserController {
         $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid and true email address",array(), $this->validationTranslationDomain);
         $ErrorMessage['mobileError']= $this->trans("Please enter your number",array(), $this->validationTranslationDomain);
         $ErrorMessage['staffUsernameError']= $this->trans("username should contains characters, numbers or dash only",array(), $this->validationTranslationDomain);
+        $ErrorMessage['notValid']= $this->trans("not valid");
 
         $staff = new Staff();
         $securityContext = $this->get('security.authorization_checker');

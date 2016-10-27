@@ -11,8 +11,8 @@ use Ibtikar\GlanceUMSBundle\Validator\Constraints\FileExtensionValid;
  */
 class ImageExtensionValid extends FileExtensionValid {
 
-    public $message = 'The image must have one of this extensions %extensions%.';
-    protected $extensions = array('jpg', 'jpeg', 'png', 'gif');
+    public $message = 'picture not correct.';
+    protected $extensions = array('jpg', 'jpeg', 'png');
 
     /**
      * @param array $options

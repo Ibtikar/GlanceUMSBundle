@@ -195,7 +195,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * @Assert\NotBlank(groups={"image-required"})
      * @Assert\Image(minWidth=200, minHeight=200, minWidthMessage="Image dimension must be more than 200*200", minHeightMessage="Image dimension must be more than 200*200", mimeTypes={"image/jpeg", "image/pjpeg", "image/png"}, groups={"image", "Default"}, mimeTypesMessage="picture not correct.")
-     * @Assert\File(maxSize="4194304", maxSizeMessage="Image size must be less than 4mb", groups={"image", "Default"})
+     * @Assert\File(maxSize="3145728", maxSizeMessage="File size must be less than 3mb", groups={"image", "Default"})
      * @CustomAssert\ImageValid(groups={"image", "Default"})
      * @CustomAssert\ImageExtensionValid(groups={"image", "Default"}, extensions={"jpg", "jpeg", "png"})
      * @var UploadedFile

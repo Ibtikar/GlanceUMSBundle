@@ -25,7 +25,7 @@ class Staff extends User {
     /**
      * @Assert\Length(min=5, groups={"username", "Default"})
      * if you need to change the regex also change it in forgotPasswordAction
-     * @Assert\Regex(pattern="/^([^_\W]-*)+$/u", message="only characters numbers and dashes allowed", groups={"username", "Default"})
+     * @Assert\Regex(pattern="/^([^_\W]-*)+$/u", message="username should contains characters, numbers or dash only", groups={"username", "Default"})
      * @Assert\NotBlank(groups={"username", "Default"})
      * @MongoDB\String
      * @Assert\Length(
