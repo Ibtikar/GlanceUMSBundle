@@ -28,13 +28,8 @@ class LoadEmailTemplateData implements FixtureInterface
 
         $staffAdd = new EmailTemplate();
         $staffAdd->setName('add backend user');
-        $staffAdd->setSubject(' أهلاً بك مطبخ قودي');
-        $staffAdd->setMessage('لقد إنضممتِ اليوم الى عائلة مطبخ قودي، بنحن بدورنا نهنئك ونتمنى لك مزيداً من التوفيق.
-            <br/>
-
-بيانات الدخول
-:
-');
+        $staffAdd->setSubject('أهلاً بك مطبخ قودي');
+        $staffAdd->setMessage('لقد إنضممتِ اليوم الى عائلة مطبخ قودي، بنحن بدورنا نهنئك ونتمنى لك مزيداً من التوفيق.');
 
         $staffAdd->setTemplate('                <tr>
                                                     <td>
@@ -48,7 +43,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                                             <tbody>
                                                                                 <!-- title -->
                                                                                 <tr>
-                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: <?php echo $color; ?> ; text-align:right; line-height: 24px;">
+                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: %color% ; text-align:right; line-height: 24px;">
 
 
 اسم المستخدم
@@ -96,7 +91,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                                             <tbody>
                                                                                 <!-- title -->
                                                                                 <tr>
-                                                                                    <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color:<?php echo $color; ?>; text-align:right; line-height: 24px;">
+                                                                                    <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color:%color%; text-align:right; line-height: 24px;">
 
 
 الرقم السري
@@ -143,7 +138,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                                             <tbody>
                                                                                 <!-- title -->
                                                                                 <tr>
-                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: <?php echo $color; ?> ; text-align:right; line-height: 24px;">
+                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: %color%; text-align:right; line-height: 24px;">
 
 
 رابط الدخول
@@ -191,7 +186,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                                             <tbody>
                                                                                 <!-- title -->
                                                                                 <tr>
-                                                                                    <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color:<?php echo $color; ?>; text-align:right; line-height: 24px;">
+                                                                                    <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color:%color%; text-align:right; line-height: 24px;">
                                                                                         الوظيفة
                                                                                     </td>
                                                                                 </tr>

@@ -158,6 +158,7 @@ class StaffController extends UserController {
                     '%message%',
                     '%login_url%',
                     '%job%',
+                     '%color%',
                         ), array('',
                     $staff->__toString(),
                     $staff->getUsername(),
@@ -165,6 +166,7 @@ class StaffController extends UserController {
                     $emailTemplate->getMessage(),
                     $this->generateUrl('ibtikar_glance_ums_staff_login', array(), true),
                     $staff->getJob()->getTitle(),
+                    $this->container->getParameter('themeColor')
                         ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
                 );
                 $mailer = $this->get('swiftmailer.mailer.spool_mailer');
