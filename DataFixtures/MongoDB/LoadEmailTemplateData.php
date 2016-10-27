@@ -80,7 +80,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                             <tbody>
                                                                 <tr>
                                                                     <td >
-                                                                        <table width="149" align="center" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
+                                                                        <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: <?php echo $color; ?> ; text-align:right; line-height: 24px;">
