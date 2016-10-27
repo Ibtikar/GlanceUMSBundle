@@ -116,8 +116,9 @@ class StaffController extends UserController {
         $ErrorMessage['imageSize'] = $translator->trans('File size must be less than 3mb', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageExtension'] = $translator->trans('picture not correct.', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageDimensions'] = $translator->trans('Image dimension must be more than 200*200', array(), $this->validationTranslationDomain);
-        $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid email address",array(), $this->translationDomain);
-        $ErrorMessage['mobileError']= $this->trans("Please enter your valid email address",array(), $this->translationDomain);
+        $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid and true email address",array(), $this->validationTranslationDomain);
+        $ErrorMessage['mobileError']= $this->trans("Please enter your number",array(), $this->validationTranslationDomain);
+        $ErrorMessage['staffUsernameError']= $this->trans("username should contains characters, numbers or dash only",array(), $this->validationTranslationDomain);
 
         $staff = new Staff();
         $securityContext = $this->get('security.authorization_checker');
@@ -144,54 +145,36 @@ class StaffController extends UserController {
                 $staff->setUserPassword($randPass);
 
                 $dm->persist($staff);
-//                $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName('add staff');
-//                $userPermission_role = $staff->getRole();
-//                if($userPermission_role){
-//                    $userPermission_role = $userPermission_role->__toString();
-//                }
-//                $userPermission_group = $staff->getGroup();
-//                if($userPermission_group){
-//                    $userPermission_group = $userPermission_group->__toString();
-//                }
-//                $currentTime = new \DateTime();
-//                $body = str_replace(
-//                        array(
-//                    '%fullname%',
-//                    '%username%',
-//                    '%password%',
-//                    '%message%',
-//                    '%login_url%',
-//                    '%job%',
-//                    '%group%',
-//                    '%role%',
-//                    '%day%',
-//                    '%date%',
-//                    '%updated_by%'
-//                        ), array(
-//                    $staff->__toString(),
-//                    $staff->getUsername(),
-//                    $staff->getUserPassword(),
-//                    $emailTemplate->getMessage(),
-//                    $this->generateUrl('staff_login', array(), true),
-//                    $staff->getJob()->getTitle(),
-//                    $userPermission_group,
-//                    $userPermission_role,
-//                    $translator->trans($currentTime->format('l')),
-//                    $currentTime->format('d/m/Y'),
-//                    $this->getUser()->__toString()
-//                        ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
-//                );
-//                $mailer = $this->get('swiftmailer.mailer.spool_mailer');
-//                $message = \Swift_Message::newInstance()
-//                        ->setSubject($emailTemplate->getSubject())
-//                        ->setFrom($this->container->getParameter('mailer_user'))
-//                        ->setTo($staff->getEmail())
-//                        ->setBody($body, 'text/html')
-//                ;
-//                $mailer->send($message);
                 $dm->flush();
-                var_dump($randPass);
-                exit;
+
+                $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('add backend user');
+
+                $body = str_replace(
+                        array(
+                    '%smallMessage%',
+                    '%fullname%',
+                    '%username%',
+                    '%password%',
+                    '%message%',
+                    '%login_url%',
+                    '%job%',
+                        ), array('',
+                    $staff->__toString(),
+                    $staff->getUsername(),
+                    $randPass,
+                    $emailTemplate->getMessage(),
+                    $this->generateUrl('ibtikar_glance_ums_staff_login', array(), true),
+                    $staff->getJob()->getTitle(),
+                        ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
+                );
+                $mailer = $this->get('swiftmailer.mailer.spool_mailer');
+                $message = \Swift_Message::newInstance()
+                        ->setSubject($emailTemplate->getSubject())
+                        ->setFrom($this->container->getParameter('mailer_user'))
+                        ->setTo($staff->getEmail())
+                        ->setBody($body, 'text/html')
+                ;
+                $mailer->send($message);
 //                $imageOperations = $this->get('image_operations');
 //                $imageOperations->autoRotate($staff->getAbsolutePath());
 //                if ($staff->getImageNeedResize()) {

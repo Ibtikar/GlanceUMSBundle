@@ -171,7 +171,7 @@ class Staff extends User {
         return false;
     }
 
-    function generate_password($length = 10) {
+    function generate_password($length = 8) {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
                 '-=~!@';
         $number= '0123456789';
