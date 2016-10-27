@@ -19,7 +19,7 @@ class LoadEmailTemplateData implements FixtureInterface
         $staffForgotPassword->setSubject('استعادة كلمة المرور');
         $staffForgotPassword->setMessage('لإستعادة كلمة المرور نرجو زيارة الرابط <br/>
                                                         <a href="%change_password_url%">%change_password_url%</a><br/>
-                                                       ونفيدك علماً بأنه سوف تنتهي صلاحية هذه الرسالة والرابط بعد 24 ساعة من الأن..<br/>');
+                                                        .. ونفيدك علماً بأنه سوف تنتهي صلاحية هذه الرسالة والرابط بعد 24 ساعة من الأن<br/>');
 //        $staffForgotPassword->setTemplate('
 //        <table style="table-layout:fixed;" width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
 //            <tr>
