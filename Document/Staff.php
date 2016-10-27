@@ -62,11 +62,6 @@ class Staff extends User {
      */
     private $mobile;
 
-    /**
-     * @MongoDB\String
-     */
-    private $fakeMobile;
-
 
     public $countryCode;
 
@@ -160,6 +155,40 @@ class Staff extends User {
         );
     }
 
+      public function isEqualTo(UserInterface $user) {
+        if (parent::isEqualTo($user)) {
+            // Check that the roles are the same, in any order
+            // Check that the roles are the same, in any order
+            $isEqual = count($this->getRoles()) == count($user->getRoles());
+            if ($isEqual) {
+                foreach ($this->getRoles() as $role) {
+                    $isEqual = $isEqual && in_array($role, $user->getRoles());
+                }
+            }
+            return $isEqual;
+
+        }
+        return false;
+    }
+
+    function generate_password($length = 10) {
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
+                '-=~!@';
+        $number= '0123456789';
+
+        $str = '';
+        $max = strlen($chars) - 1;
+        $maxNo = strlen($number) - 1;
+
+        for ($i = 0; $i < $length-2; $i++)
+            $str .= $chars[mt_rand(0, $max)];
+
+        for ($i = 0; $i < 2; $i++)
+            $str .= $number[mt_rand(0, $maxNo)];
+
+        return $str;
+    }
+
     public function getRoles()
     {
         $permissions = parent::getRoles();
@@ -171,8 +200,6 @@ class Staff extends User {
         }
         return array_unique($permissions);
     }
-
-
 
     /**
      * Set job
@@ -251,55 +278,7 @@ class Staff extends User {
         return $this->mobile;
     }
 
-    /**
-     * Set fakeMobile
-     *
-     * @param string $fakeMobile
-     * @return self
-     */
-    public function setFakeMobile($fakeMobile)
-    {
-        $this->fakeMobile = $fakeMobile;
-        return $this;
-    }
 
-    /**
-     * Get fakeMobile
-     *
-     * @return string $fakeMobile
-     */
-    public function getFakeMobile()
-    {
-        return $this->fakeMobile;
-    }
 
-    public function isEqualTo(UserInterface $user) {
-        if (parent::isEqualTo($user)) {
-            // Check that the roles are the same, in any order
-            // Check that the roles are the same, in any order
-            $isEqual = count($this->getRoles()) == count($user->getRoles());
-            if ($isEqual) {
-                foreach ($this->getRoles() as $role) {
-                    $isEqual = $isEqual && in_array($role, $user->getRoles());
-                }
-            }
-            return $isEqual;
-
-        }
-        return false;
-    }
-
-    function generate_password($length = 10) {
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
-                '0123456789`-=~!@#$%^&*()_+,./<>?;:[]{}\|';
-
-        $str = '';
-        $max = strlen($chars) - 1;
-
-        for ($i = 0; $i < $length; $i++)
-            $str .= $chars[mt_rand(0, $max)];
-
-        return $str;
-    }
 
 }

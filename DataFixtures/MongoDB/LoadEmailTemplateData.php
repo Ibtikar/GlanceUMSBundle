@@ -17,7 +17,9 @@ class LoadEmailTemplateData implements FixtureInterface
         $staffForgotPassword = new EmailTemplate();
         $staffForgotPassword->setName('staff forgot password');
         $staffForgotPassword->setSubject('استعادة كلمة المرور');
-        $staffForgotPassword->setMessage('');
+        $staffForgotPassword->setMessage('لإستعادة كلمة المرور نرجو زيارة الرابط <br/>
+                                                        <a href="%change_password_url%">%change_password_url%</a><br/>
+                                                        . ونفيدك علماً بأنه سوف تنتهي صلاحية هذه الرسالة والرابط بعد 24 ساعة من الأن<br/>');
 //        $staffForgotPassword->setTemplate('
 //        <table style="table-layout:fixed;" width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
 //            <tr>
@@ -71,35 +73,7 @@ class LoadEmailTemplateData implements FixtureInterface
 //            </tr>
 //        </table>
 //');
-        $staffForgotPassword->setTemplate('
-      <tr>
-                                                    <td>
-
-                                                        <!-- start of right column -->
-                                                        <table  width="149" align="right" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td >
-                                                                        <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 18px; color: <?php echo $color; ?> ; text-align:right; line-height: 24px;">
-                                                                                               لإستعادة كلمة المرور نرجو زيارة الرابط <br/>
-                                                        <a href="%change_password_url%">%change_password_url%</a><br/>
-                                                        . ونفيدك علماً بأنه سوف تنتهي صلاحية هذه الرسالة والرابط بعد 24 ساعة من الأن<br/>
-                                                                                    </td>
-                                                                                </tr>
-
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-
-                                                    </td>
-                                                </tr>
-');
+        $staffForgotPassword->setTemplate('');
 
 
         $manager->persist($staffForgotPassword);
