@@ -10,22 +10,26 @@
         var url;
         var countriesNames ={{countries|raw}} ;
         var countryData = $.fn.intlTelInput.getCountryData();
+        var onlyCountries ={{ countryCodes|raw }};
         $.each(countryData, function (i, country) {
             country.name = countriesNames[country.iso2];
         });
         $.fn.intlTelInput.setCountryData(countryData);
-        $("#staff_mobile_phone").intlTelInput({
-            allowExtensions: true,
-            autoFormat: true,
-            autoHideDialCode: true,
-            autoPlaceholder: true,
-            defaultCountry: "sa",
-            "initialCountry":'sa',
-            nationalMode: true,
-            numberType: "MOBILE",
-            onlyCountries:{{ countryCodes|raw }},
-            preferredCountries: []});
 
+function intializePhone(){
+                $("#staff_mobile_phone").intlTelInput({
+                        allowExtensions: true,
+                        autoFormat: true,
+                        autoHideDialCode: true,
+                        autoPlaceholder: true,
+                        defaultCountry: "sa",
+                        "initialCountry":'sa',
+                        nationalMode: true,
+                        numberType: "MOBILE",
+                        onlyCountries:onlyCountries,
+                        preferredCountries: []
+            });
+}
 
         function filterCitySelectByCountry() {
            $.ajax({
@@ -44,11 +48,12 @@
                });
                    }
 
-                   jQuery(document).ready(function ($) {
+            jQuery(document).ready(function ($) {
+                       intializePhone();
                        filterCitySelectByCountry();
 
                        $('body').on('ajaxCallback', function () {
-
+                           intializePhone();
                            filterCitySelectByCountry();
 
                        });
