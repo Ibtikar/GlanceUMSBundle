@@ -67,10 +67,12 @@ class StaffController extends UserController {
                         $body = str_replace(
                                 array(
                             '%fullname%',
+                            '%smallMessage%',
                             '%message%',
                             '%change_password_url%'
                                 ), array(
                             $staff->__toString(),
+                            '',
                             $emailTemplate->getMessage(),
                             $this->generateUrl('ibtikar_glance_ums_staff_change_password_from_email', array('token' => $staff->getChangePasswordToken(), 'email' => $staff->getEmail()), UrlGeneratorInterface::ABSOLUTE_URL)
                                 ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle(), false))
