@@ -144,7 +144,6 @@ class StaffController extends UserController {
             if ($form->isValid()) {
                 $randPass= $staff->generate_password();
                 $staff->setUserPassword($randPass);
-
                 $dm->persist($staff);
                 $dm->flush();
 
@@ -389,196 +388,152 @@ class StaffController extends UserController {
      */
 
     public function editAction(Request $request, $id) {
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('List Staff', $this->generateUrl('staff_list'));
-        $breadcrumbs->addItem('Edit Staff', $this->generateUrl('staff_edit'));
+      $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
+      $breadCrumbArray = $this->preparedMenu($menus,'ibtikar_glance_ums_');
 
-        return $this->processEditAndRestoreForm($request, $id,"edit");
+
+        return $this->processEditAndRestoreForm($request, $id,$breadCrumbArray,"edit");
     }
 
-    private function processEditAndRestoreForm(Request $request, $id, $formType="edit", $isUpdateProfileData=false) {
+    private function processEditAndRestoreForm(Request $request, $id,$breadCrumbArray, $formType="edit", $isUpdateProfileData=false) {
         $loggedInUserRoles = $this->getUser()->getRoles();
         $translator = $this->get('translator');
-        $ErrorMessage['password'] = $translator->trans('The password fields must match.', array(), $this->validationTranslationDomain);
-        $ErrorMessage['image'] = $translator->trans('picture not correct.', array(), $this->validationTranslationDomain);
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $allowedJobs = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Job')
-                        ->field('title_en')->in(array_values(Job::$systemEnglishJobSortableTitles))
-                        ->eagerCursor(true)
-                        ->getQuery()->execute();
-        $jobTitlesIds = array();
-        foreach ($allowedJobs as $job) {
-            $jobTitlesIds [] = $job->getId();
-        }
-        $deleteCondition = ($formType == "restore") ? true : false;
-        $staff = $dm->getRepository('IbtikarGlanceUMSBundle:Staff')->findOneBy(array('id' => $id, 'deleted' => $deleteCondition));
-        if(!$staff || ($staff->getAdmin() && !$isUpdateProfileData)) {
-            throw $this->createNotFoundException($this->trans('Wrong id'));
-        }
-        if (!$staff->getMobile()) {
-            $staff->setMobile(new \Ibtikar\BackendBundle\Document\Phone());
-        }
+        $ErrorMessage['imageSize'] = $translator->trans('File size must be less than 3mb', array(), $this->validationTranslationDomain);
+        $ErrorMessage['imageExtension'] = $translator->trans('picture not correct.', array(), $this->validationTranslationDomain);
+        $ErrorMessage['imageDimensions'] = $translator->trans('Image dimension must be more than 200*200', array(), $this->validationTranslationDomain);
+        $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid and true email address",array(), $this->validationTranslationDomain);
+        $ErrorMessage['mobileError']= $this->trans("Please enter your number",array(), $this->validationTranslationDomain);
+        $ErrorMessage['staffUsernameError']= $this->trans("username should contains characters, numbers or dash only",array(), $this->validationTranslationDomain);
+        $ErrorMessage['notValid']= $this->trans("not valid");
+        $ErrorMessage['passwordValidateErrorMessage']= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
+        $ErrorMessage['passwordValidatePasswordMaxErrorMessage']= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
+        $ErrorMessage['passwordMatch']= $this->trans('The password fields must match.', array(), 'validators');
 
-        if(!$staff->getAdmin()) {
-            $oldJobTitle=$staff->getJob()->getTitleEn();
-            $author=array('writters','reporters');
-        }
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $staff = $dm->getRepository('IbtikarGlanceUMSBundle:Staff')->find($id);
 
         $userImage = $staff->getWebPath();
-        $userCoverPhoto = $staff->getCoverPhotoWebPath();
-        $hobbySelected = $this->getHobbiesForDocument($staff);
+        $userImageAlt = $staff->__toString();
         $securityContext = $this->get('security.authorization_checker');
-        if($id === $this->getUser()->getId()){
-            $form = $this->createForm(new StaffType($loggedInUserRoles, $ErrorMessage, true, $userImage, true, $hobbySelected, $userCoverPhoto, $securityContext), $staff, array(
-                'translation_domain' => $this->translationDomain,
-                'validation_groups' => array('Edit','Default')
-            ));
+        $form = $this->createForm(StaffType::class, $staff, array(
+            'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
+            'validation_groups' => array('create', 'Default'),
+            'container' => $this->container,
+            'errorMessage' => $ErrorMessage,
+            'edit' => true,
+            'userImage' => &$userImage
+        ));
+        $countries=$dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted() ->getQuery()->execute();
+        $countryArray=array();
+        foreach ($countries as $country) {
+            $countryArray[strtolower($country->getCountryCode())]=$country->getCountryName();
+
         }
-        else{
-            $form = $this->createForm(new StaffType($loggedInUserRoles, $ErrorMessage, true, $userImage, false, $hobbySelected, $userCoverPhoto, $securityContext), $staff, array(
-                'translation_domain' => $this->translationDomain,
-                'validation_groups' => array('Edit','Default')
-            ));
-        }
-        if ($request->getMethod() === 'POST') {
+
+              if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $dm = $this->get('doctrine_mongodb')->getManager();
-                $formData = $request->get('staff_type');
-                $hobbies = $formData['hobbies'];
-                $staff->setHobbies();
-                if ($hobbies) {
-                    $hobbyArray = explode(',', $hobbies);
-                    $hobbyArray = array_unique($hobbyArray);
-                    foreach ($hobbyArray as $hobby) {
-                        $hobby = trim($hobby);
-                        if (mb_strlen($hobby,'UTF-8')<= 330 && mb_strlen($hobby,'UTF-8')>= 3) {
-                            $newHobby = new Hobby();
-                            $newHobby->setHobby($hobby);
-                            $dm->persist($newHobby);
-//                            $dm->flush($NewTag);
-                            $staff->addHobby($newHobby);
-                        }
-                    }
-                }
-                if (!$securityContext->isGranted('ROLE_STAFF_BOARD') && !$securityContext->isGranted('ROLE_ADMIN')) {
-                    $staff->setShowEditorBoard(FALSE);
-                }
-                else if(!in_array($staff->getJob()->getTitleEn(), array_values(Job::$systemEnglishJobSortableTitles))){
-                    if(in_array($staff->getJob()->getTitleEn(), array(Job::$systemEnglishJobTitles['editor'], Job::$systemEnglishJobTitles['deputy editor']))){
-                        $staff->setShowEditorBoard(TRUE);
-                    }
-                    else{
-                        $staff->setShowEditorBoard(FALSE);
-                    }
-                }
+                $formData = $request->get('staff');
+
                 $staff->setValidPassword();
                 if($formType == "restore") {
                     $staff->setDeleted(false);
                 }
                 $dm->persist($staff);
-                if(!$staff->getAdmin() && $formType =='edit' && in_array($oldJobTitle, $author) && $oldJobTitle!=  $staff->getJob()->getTitleEn()){
-                    $staff->removeAuthorFromMaterial($dm);
-                }
-                if($id !== $this->getUser()->getId()){
-                    $uow = $dm->getUnitOfWork();
-                    $uow->computeChangeSets();
-                    $changeset = $uow->getDocumentChangeSet($staff);
-                    $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName($formType . ' staff');
-                    $record = $emailTemplate->getEmailDataRecord();
-                    $content = '';
-                    if ($formType == "edit") {
-                        $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname', 'enabled', 'job', 'department', 'personTitle'
-                            , 'employeeId', 'username', 'gender', 'mobile', 'group');
 
-                        foreach ($changeset as $key => $change) {
-                            $staff->updateStaffCountOnEdit($key, $change);
-                            $renderer = $this->get("string_utilities");
-                            $keyLabel = $renderer->humanize($key);
-                            if ($key == 'gender') {
-                                $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
-
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                            } elseif ($key == 'enabled') {
-
-                                if (($change[0] && $change[1] != 1) || (!$change[0] && $change[1] != 0)) {
-                                    if ($change[1]) {
-                                        $change[1] = $translator->trans('enabled', array());
-                                    } else {
-                                        $change[1] = $translator->trans('disabled', array());
-                                    }
-                                    $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                                }
-                            } elseif ($key != 'enabled' && $key != 'image' && $key != 'coverPhotoImage' && $key != 'city' && $key != 'fullname' && in_array($key, $updateField)) {
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                            } elseif ($key != 'fullname' && $key != 'image' && $key != 'coverPhotoImage' && in_array($key, $updateField)) {
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $change[1]), $record);
-                            }
-                        }
-                    } else if ($formType == "restore") {
-                        $staff->updateReferencesCounts(1);
-                        if ($staff->getUserPassword())
-                            $content = str_replace(array('%updatedfield%', '%value%'), array($translator->trans('Password', array(), $this->translationDomain), $staff->getUserPassword()), $record);
-                    }
-                    $currentTime = new \DateTime();
-
-                    if (strlen($content) > 0  || $formType == "restore") {
-                        $currentTime = new \DateTime();
-                        $body = str_replace(
-                                array(
-                            '%fullname%',
-                            '%username%',
-                            '%message%',
-                            '%changed_values%',
-                            '%day%',
-                            '%date%',
-                            '%updated_by%'
-                                ), array(
-                            $staff->__toString(),
-                            $staff->getUsername(),
-                            $emailTemplate->getMessage(),
-                            $content,
-                            $translator->trans($currentTime->format('l')),
-                            $currentTime->format('d/m/Y'),
-                            $this->getUser()->__toString()
-                                ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
-                        );
-
-                        $mailer = $this->get('swiftmailer.mailer.spool_mailer');
-                        $message = \Swift_Message::newInstance()
-                                ->setSubject($emailTemplate->getSubject())
-                                ->setFrom($this->container->getParameter('mailer_user'))
-                                ->setTo($staff->getEmail())
-                                ->setBody($body, 'text/html')
-                        ;
-                        $mailer->send($message);
-                    }
-                }
+//                if($id !== $this->getUser()->getId()){
+//                    $uow = $dm->getUnitOfWork();
+//                    $uow->computeChangeSets();
+//                    $changeset = $uow->getDocumentChangeSet($staff);
+//                    $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName($formType . ' staff');
+//                    $record = $emailTemplate->getEmailDataRecord();
+//                    $content = '';
+//                    if ($formType == "edit") {
+//                        $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname', 'enabled', 'job', 'department', 'personTitle'
+//                            , 'employeeId', 'username', 'gender', 'mobile', 'group');
+//
+//                        foreach ($changeset as $key => $change) {
+//                            $staff->updateStaffCountOnEdit($key, $change);
+//                            $renderer = $this->get("string_utilities");
+//                            $keyLabel = $renderer->humanize($key);
+//                            if ($key == 'gender') {
+//                                $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
+//
+//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+//                            } elseif ($key == 'enabled') {
+//
+//                                if (($change[0] && $change[1] != 1) || (!$change[0] && $change[1] != 0)) {
+//                                    if ($change[1]) {
+//                                        $change[1] = $translator->trans('enabled', array());
+//                                    } else {
+//                                        $change[1] = $translator->trans('disabled', array());
+//                                    }
+//                                    $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+//                                }
+//                            } elseif ($key != 'enabled' && $key != 'image' && $key != 'coverPhotoImage' && $key != 'city' && $key != 'fullname' && in_array($key, $updateField)) {
+//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+//                            } elseif ($key != 'fullname' && $key != 'image' && $key != 'coverPhotoImage' && in_array($key, $updateField)) {
+//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $change[1]), $record);
+//                            }
+//                        }
+//                    } else if ($formType == "restore") {
+//                        $staff->updateReferencesCounts(1);
+//                        if ($staff->getUserPassword())
+//                            $content = str_replace(array('%updatedfield%', '%value%'), array($translator->trans('Password', array(), $this->translationDomain), $staff->getUserPassword()), $record);
+//                    }
+//                    $currentTime = new \DateTime();
+//
+//                    if (strlen($content) > 0  || $formType == "restore") {
+//                        $currentTime = new \DateTime();
+//                        $body = str_replace(
+//                                array(
+//                            '%fullname%',
+//                            '%username%',
+//                            '%message%',
+//                            '%changed_values%',
+//                            '%day%',
+//                            '%date%',
+//                            '%updated_by%'
+//                                ), array(
+//                            $staff->__toString(),
+//                            $staff->getUsername(),
+//                            $emailTemplate->getMessage(),
+//                            $content,
+//                            $translator->trans($currentTime->format('l')),
+//                            $currentTime->format('d/m/Y'),
+//                            $this->getUser()->__toString()
+//                                ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
+//                        );
+//
+//                        $mailer = $this->get('swiftmailer.mailer.spool_mailer');
+//                        $message = \Swift_Message::newInstance()
+//                                ->setSubject($emailTemplate->getSubject())
+//                                ->setFrom($this->container->getParameter('mailer_user'))
+//                                ->setTo($staff->getEmail())
+//                                ->setBody($body, 'text/html')
+//                        ;
+//                        $mailer->send($message);
+//                    }
+//                }
                 $dm->flush();
 
-                $imageOperations = $this->get('image_operations');
-                $imageOperations->autoRotate($staff->getAbsolutePath());
-                if ($staff->getImageNeedResize()) {
-                    $imageOperations->SquareImageResize($staff->getAbsolutePath());
-                }
-                $imageOperations->autoRotate($staff->getCoverPhotoAbsolutePath());
+//                $imageOperations = $this->get('image_operations');
+//                $imageOperations->autoRotate($staff->getAbsolutePath());
+//                if ($staff->getImageNeedResize()) {
+//                    $imageOperations->SquareImageResize($staff->getAbsolutePath());
+//                }
+//                $imageOperations->autoRotate($staff->getCoverPhotoAbsolutePath());
 
                 $userImage = $staff->getWebPath();
-                $userCoverPhoto = $staff->getCoverPhotoWebPath();
-                $hobbySelected = $this->getHobbiesForDocument($staff);
-                if($id === $this->getUser()->getId()){
-                    $form = $this->createForm(new StaffType($loggedInUserRoles, $ErrorMessage, true, $userImage, true, $hobbySelected, $userCoverPhoto, $securityContext), $staff, array(
-                        'translation_domain' => $this->translationDomain,
-                        'validation_groups' => array('Edit','Default')
-                    ));
-                }
-                else{
-                    $form = $this->createForm(new StaffType($loggedInUserRoles, $ErrorMessage, true, $userImage, false, $hobbySelected, $userCoverPhoto, $securityContext), $staff, array(
-                        'translation_domain' => $this->translationDomain,
-                        'validation_groups' => array('Edit','Default')
-                    ));
-                }
+                   $form = $this->createForm(StaffType::class, $staff, array(
+            'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
+            'validation_groups' => array('create', 'Default'),
+            'container' => $this->container,
+            'errorMessage' => $ErrorMessage,
+            'edit' => true,
+            'userImage' => $userImage
+        ));
                 $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 if($formType == "restore")
                     return new JsonResponse(array('status' => 'success'));
@@ -587,10 +542,13 @@ class StaffController extends UserController {
                 $dm = $this->get('doctrine_mongodb')->getManager()->refresh($this->getUser());
             }
         }
-        return $this->render('IbtikarGlanceUMSBundle:Staff:'.$formType.'.html.twig', array(
-                    'form' => $form->createView(),
-                    'jobTitlesIds' => json_encode($jobTitlesIds),
-                    'translationDomain' => $this->translationDomain
+   return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
+                'form' => $form->createView(),
+                'title' => $this->trans('add staff',array(),  $this->translationDomain),
+                'breadcrumb'=>$breadCrumbArray,
+                'countries' => json_encode($countryArray),
+                'countryCodes' => json_encode(array_keys($countryArray)),
+                'translationDomain' => $this->translationDomain
         ));
     }
 

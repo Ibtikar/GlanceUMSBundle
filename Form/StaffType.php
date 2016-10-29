@@ -37,7 +37,13 @@ class StaffType extends AbstractType
         //
 
         $builder
-            ->add('file', formType\FileType::class, array('required' => false, 'attr' => array('accept' => 'image/jpg,image/jpeg,image/png', 'data-msg-accept' => $options['errorMessage']['imageExtension'], 'data-error-after-selector' => '.uploadCoverImg', 'data-rule-filesize' => '3', 'data-msg-filesize' => $options['errorMessage']['imageSize'], 'data-rule-dimensions' => '200', 'data-msg-dimensions' => $options['errorMessage']['imageDimensions'], 'image-name' => $options['userImage'], 'data-remove-label' => true, 'data-image-type' => 'profile')))
+            ->add('file', formType\FileType::class, array('required' => false,
+                'attr' => array('accept' => 'image/jpg,image/jpeg,image/png', 'data-msg-accept' => $options['errorMessage']['imageExtension'],
+                    'data-error-after-selector' => '.uploadCoverImg', 'data-rule-filesize' => 3,
+                    'data-msg-filesize' => $options['errorMessage']['imageSize'],
+                    'data-rule-dimensions' => '200', 'data-msg-dimensions' => $options['errorMessage']['imageDimensions'],
+                    'data-image-url' => $options['userImage'], 'data-remove-label' => true,
+                    'data-image-type' => 'profile')))
             ->add('firstName', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
             ->add('lastName', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
             ->add('username', formType\TextType::class, array('attr' => array('data-validate-element'=>true,
@@ -60,7 +66,20 @@ class StaffType extends AbstractType
                 }, 'choice_label' => 'countryName', 'required' => true, 'attr' => array('data-country' => true, 'class' => 'dev-country select')))
             ->add('city', null, array('required' => true, 'placeholder' => $options['container']->get('translator')->trans('Choose City',array(),'staff'), 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container'
         )));
-
+      if ($options['edit'] ) {
+            $builder ->add('userPassword', formType\RepeatedType::class, array(
+                    'type' => formType\PasswordType::class,
+                    'invalid_message' => 'The password fields must match.',
+                    'required' => false,
+                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,
+                        'data-msg-password'=>$options['errorMessage']['passwordValidateErrorMessage'],
+                        'data-msg-passwordMax'=>$options['errorMessage']['passwordValidatePasswordMaxErrorMessage'])),
+                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]',
+                        'data-msg-equalTo' => $options['errorMessage']['passwordMatch'],
+                        'data-rule-passwordMax' => '','data-msg-passwordMax'=>$options['errorMessage']['passwordValidatePasswordMaxErrorMessage'],
+                        'data-rule-password'=>true,'data-msg-password'=>$options['errorMessage']['passwordValidateErrorMessage'])),
+                ));
+        }
         $builder->add('gender', formType\ChoiceType::class, array('required' => FALSE,
             'choices' => Staff::getValidGenders(),
             'expanded' => true, 'placeholder' => false, 'empty_data' => null,'choice_translation_domain'=>'staff'
@@ -70,12 +89,18 @@ class StaffType extends AbstractType
         $builder
             ->add('save', formType\SubmitType::class);
            $builder->get('mobile')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($phone) {
+                   ->addModelTransformer(new CallbackTransformer(
+                        function ($phone) {
+                    $phoneArray = array('phone' => '', 'countryCode' => '');
+
+                    if ($phone && $phone->getPhone()) {
+                        $phoneArray = array('phone' => $phone->getPhone(), 'countryCode' => $phone->getCountryCode());
+                        return $phoneArray;
+                    }
+
                     // transform the array to a string
-                    return $phone;
-                },
-                function ($phone) {
+                    return $phoneArray;
+                }, function ($phone) {
                     if(isset($phone['phone'])&& $phone['phone'] ){
                         $phoneObject= new \Ibtikar\GlanceDashboardBundle\Document\Phone();
                         $phoneObject->setPhone($phone['phone']);

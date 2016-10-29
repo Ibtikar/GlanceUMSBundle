@@ -383,16 +383,8 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      */
     public function getWebPath($getDefault = false)
     {
-        if (($getDefault || get_called_class() === "Ibtikar\VisitorBundle\Document\Visitor") && ($this->getImage() === null || $this->getImage() === '')) {
-            if ($this->getGender() === "male" || $this->getGender() === "female") {
-                $image = $this->defaultImages[$this->getGender()];
-            } else {
-                $image = $this->defaultImages['unspecified'];
-            }
-        } else {
-            $image = $this->image;
-        }
-        return NULL === $image ? NULL : $this->getUploadDir() . '/' . $image;
+        return NULL === $this->image ? NULL : $this->getUploadDir() . '/' . $this->image;
+
     }
 
     /**

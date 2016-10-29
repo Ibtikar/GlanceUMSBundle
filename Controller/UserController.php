@@ -265,8 +265,8 @@ class UserController extends BackendController {
 //        $breadcrumbs = $this->get('white_october_breadcrumbs');
 //        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
 //        $breadcrumbs->addItem('Change Password', $this->generateUrl('ibtikar_glance_ums_staff_changePassword'));
-        $emailValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
-        $emailValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
+        $passwordValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
+        $passwordValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
 
         $user = $this->getUser();
         $formBuilder = $this->createFormBuilder($user, array(
@@ -280,8 +280,8 @@ class UserController extends BackendController {
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
-                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage,'data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage)),
-                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage)),
+                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$passwordValidateErrorMessage,'data-msg-passwordMax'=>$passwordValidatePasswordMaxErrorMessage)),
+                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$passwordValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$passwordValidateErrorMessage)),
                 ))
                 ->add('Change', SubmitType::class);
         $form = $formBuilder->getForm();
