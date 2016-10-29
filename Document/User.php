@@ -968,21 +968,21 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
         }
     }
 
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function updateReferencesCounts($value) {
-//        parent::updateReferencesCounts($value);
-//        $city = $this->getCity();
-//        if ($city) {
-//            $city->setUsersCount($city->getUsersCount() + $value);
-//        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateReferencesCounts($value) {
+        parent::updateReferencesCounts($value);
+        $city = $this->getCity();
+        if ($city) {
+            $city->setStaffMembersCount($city->getStaffMembersCount() + $value);
+        }
 //        $country = $this->getCountry();
 //        if ($country) {
 //            $country->setCountryUsageCount($country->getCountryUsageCount() + $value);
 //        }
-//    }
+    }
 //    /**
 //     *
 //     * @param type $fieldName

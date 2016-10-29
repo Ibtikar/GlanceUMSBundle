@@ -132,7 +132,7 @@ class Staff extends User {
     {
         return $this->mustChangePassword;
     }
-   
+
     public function getPersonTitle()
     {
         if ($this->gender === 'male') {

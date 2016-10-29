@@ -145,6 +145,7 @@ class StaffController extends UserController {
                 $randPass= $staff->generate_password();
                 $staff->setUserPassword($randPass);
                 $dm->persist($staff);
+                $staff->updateReferencesCounts(1);
                 $dm->flush();
 
                 $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('add backend user');
