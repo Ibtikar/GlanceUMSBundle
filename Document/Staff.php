@@ -133,6 +133,19 @@ class Staff extends User {
         return $this->mustChangePassword;
     }
 
+
+    public function updateReferencesCounts($value) {
+        parent::updateReferencesCounts($value);
+        $roles = $this->getRole();
+        foreach ($roles as $role) {
+            $role->setStaffMembersCount($role->getStaffMembersCount() + $value);
+        }
+        $job = $this->getJob();
+        if ($job) {
+            $job->setStaffMembersCount($job->getStaffMembersCount() + $value);
+        }
+    }
+
     public function getPersonTitle()
     {
         if ($this->gender === 'male') {
