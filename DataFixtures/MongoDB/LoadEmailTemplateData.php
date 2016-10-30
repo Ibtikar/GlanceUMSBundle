@@ -161,7 +161,7 @@ class LoadEmailTemplateData implements FixtureInterface
                                                                 <!-- content -->
                                                                 <tr>
                                                                     <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;">
-%login_url%
+<a href="%login_url%" >%login_url%</a>
 </td>
                                                                 </tr>
                                                                 <!-- end of content -->
