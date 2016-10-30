@@ -16,20 +16,23 @@
         });
         $.fn.intlTelInput.setCountryData(countryData);
 
-function intializePhone(){
+        function intializePhone(){
                 $("#staff_mobile_phone").intlTelInput({
                         allowExtensions: true,
                         autoFormat: true,
                         autoHideDialCode: true,
                         autoPlaceholder: true,
                         defaultCountry: "sa",
-                        "initialCountry":'sa',
-                        nationalMode: true,
+                        "initialCountry": 'sa',
+                        nationalMode: false,
                         numberType: "MOBILE",
-                        onlyCountries:onlyCountries,
+                        onlyCountries: onlyCountries,
+                        customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+                            return  selectedCountryPlaceholder;
+                        },
                         preferredCountries: []
-            });
-}
+                    });
+        }
 
         function filterCitySelectByCountry() {
            $.ajax({
@@ -64,7 +67,7 @@ function intializePhone(){
                                    $('#staff_mobile_phone').val('');
                                });
                                $('#staff_mobile_phone').on('blur', function () {
-                                   $('#staff_mobile_phone').val($("#staff_mobile_phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL));
+                                   $('#staff_mobile_phone').val($("#staff_mobile_phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL));
                                });
 
                        $('body').on('click', '[data-dismiss="fileupload"]', function () {
