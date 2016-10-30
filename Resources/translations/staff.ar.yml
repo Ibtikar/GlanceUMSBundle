@@ -20,5 +20,8 @@
 'male': ذكر
 'female' : انثى
 'add staff':  إدخال عضو جديد
+'Password': 'كلمة المرور'
+'Change Password': 'تغيير كلمة المرور'
+'Repeat Password': 'تأكيد كلمة المرور'
 
 

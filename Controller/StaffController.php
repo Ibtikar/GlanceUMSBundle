@@ -145,7 +145,6 @@ class StaffController extends UserController {
                 $randPass= $staff->generate_password();
                 $staff->setUserPassword($randPass);
                 $dm->persist($staff);
-//                $staff->updateReferencesCounts(1);
                 $dm->flush();
 
                 $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('add backend user');
@@ -178,12 +177,6 @@ class StaffController extends UserController {
                         ->setBody($body, 'text/html')
                 ;
                 $mailer->send($message);
-//                $imageOperations = $this->get('image_operations');
-//                $imageOperations->autoRotate($staff->getAbsolutePath());
-//                if ($staff->getImageNeedResize()) {
-//                    $imageOperations->SquareImageResize($staff->getAbsolutePath());
-//                }
-//                $imageOperations->autoRotate($staff->getCoverPhotoAbsolutePath());
                 $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 return $this->redirect($request->getUri());
             }
@@ -256,7 +249,7 @@ class StaffController extends UserController {
  * @return type
  */
 
-        public function exportAction(Request $request) {
+    public function exportAction(Request $request) {
             $this->configureListColumns();
         $securityContext = $this->container->get('security.authorization_checker');
 
@@ -391,12 +384,6 @@ class StaffController extends UserController {
     public function editAction(Request $request, $id) {
       $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
       $breadCrumbArray = $this->preparedMenu($menus,'ibtikar_glance_ums_');
-
-
-        return $this->processEditAndRestoreForm($request, $id,$breadCrumbArray,"edit");
-    }
-
-    private function processEditAndRestoreForm(Request $request, $id,$breadCrumbArray, $formType="edit", $isUpdateProfileData=false) {
         $loggedInUserRoles = $this->getUser()->getRoles();
         $translator = $this->get('translator');
         $ErrorMessage['imageSize'] = $translator->trans('File size must be less than 3mb', array(), $this->validationTranslationDomain);
@@ -406,9 +393,9 @@ class StaffController extends UserController {
         $ErrorMessage['mobileError']= $this->trans("Please enter your number",array(), $this->validationTranslationDomain);
         $ErrorMessage['staffUsernameError']= $this->trans("username should contains characters, numbers or dash only",array(), $this->validationTranslationDomain);
         $ErrorMessage['notValid']= $this->trans("not valid");
-        $ErrorMessage['passwordValidateErrorMessage']= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
-        $ErrorMessage['passwordValidatePasswordMaxErrorMessage']= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
-        $ErrorMessage['passwordMatch']= $this->trans('The password fields must match.', array(), 'validators');
+        $ErrorMessage['passwordValidateErrorMessage']= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), $this->validationTranslationDomain);
+        $ErrorMessage['passwordValidatePasswordMaxErrorMessage']= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), $this->validationTranslationDomain);
+        $ErrorMessage['passwordMatch']= $this->trans('The password fields must match.', array(), $this->validationTranslationDomain);
 
         $dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -431,92 +418,77 @@ class StaffController extends UserController {
             $countryArray[strtolower($country->getCountryCode())]=$country->getCountryName();
 
         }
-
               if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formData = $request->get('staff');
 
                 $staff->setValidPassword();
-                if($formType == "restore") {
-                    $staff->setDeleted(false);
-                }
-                $dm->persist($staff);
 
-//                if($id !== $this->getUser()->getId()){
-//                    $uow = $dm->getUnitOfWork();
-//                    $uow->computeChangeSets();
-//                    $changeset = $uow->getDocumentChangeSet($staff);
-//                    $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName($formType . ' staff');
-//                    $record = $emailTemplate->getEmailDataRecord();
-//                    $content = '';
-//                    if ($formType == "edit") {
-//                        $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname', 'enabled', 'job', 'department', 'personTitle'
-//                            , 'employeeId', 'username', 'gender', 'mobile', 'group');
-//
-//                        foreach ($changeset as $key => $change) {
+
+                if($id !== $this->getUser()->getId()){
+                    $uow = $dm->getUnitOfWork();
+                    $uow->computeChangeSets();
+                    $changeset = $uow->getDocumentChangeSet($staff);
+//                     \Doctrine\Common\Util\Debug::dump($changeset);
+//                     exit;
+//                    $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName('edit staff');
+                    $record = '%updatedfield% %value%';//$emailTemplate->getEmailDataRecord();
+                    $content = '';
+                        $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname',  'job'
+                            , 'username', 'gender', 'mobile', 'role');
+
+                        foreach ($changeset as $key => $change) {
 //                            $staff->updateStaffCountOnEdit($key, $change);
 //                            $renderer = $this->get("string_utilities");
-//                            $keyLabel = $renderer->humanize($key);
-//                            if ($key == 'gender') {
-//                                $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
-//
-//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-//                            } elseif ($key == 'enabled') {
-//
-//                                if (($change[0] && $change[1] != 1) || (!$change[0] && $change[1] != 0)) {
-//                                    if ($change[1]) {
-//                                        $change[1] = $translator->trans('enabled', array());
-//                                    } else {
-//                                        $change[1] = $translator->trans('disabled', array());
-//                                    }
-//                                    $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-//                                }
-//                            } elseif ($key != 'enabled' && $key != 'image' && $key != 'coverPhotoImage' && $key != 'city' && $key != 'fullname' && in_array($key, $updateField)) {
-//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-//                            } elseif ($key != 'fullname' && $key != 'image' && $key != 'coverPhotoImage' && in_array($key, $updateField)) {
-//                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $change[1]), $record);
-//                            }
-//                        }
-//                    } else if ($formType == "restore") {
-//                        $staff->updateReferencesCounts(1);
-//                        if ($staff->getUserPassword())
-//                            $content = str_replace(array('%updatedfield%', '%value%'), array($translator->trans('Password', array(), $this->translationDomain), $staff->getUserPassword()), $record);
-//                    }
-//                    $currentTime = new \DateTime();
-//
-//                    if (strlen($content) > 0  || $formType == "restore") {
-//                        $currentTime = new \DateTime();
-//                        $body = str_replace(
-//                                array(
-//                            '%fullname%',
-//                            '%username%',
-//                            '%message%',
-//                            '%changed_values%',
-//                            '%day%',
-//                            '%date%',
-//                            '%updated_by%'
-//                                ), array(
-//                            $staff->__toString(),
-//                            $staff->getUsername(),
-//                            $emailTemplate->getMessage(),
-//                            $content,
-//                            $translator->trans($currentTime->format('l')),
-//                            $currentTime->format('d/m/Y'),
-//                            $this->getUser()->__toString()
-//                                ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
-//                        );
-//
-//                        $mailer = $this->get('swiftmailer.mailer.spool_mailer');
-//                        $message = \Swift_Message::newInstance()
-//                                ->setSubject($emailTemplate->getSubject())
-//                                ->setFrom($this->container->getParameter('mailer_user'))
-//                                ->setTo($staff->getEmail())
-//                                ->setBody($body, 'text/html')
-//                        ;
-//                        $mailer->send($message);
-//                    }
-//                }
+                            $keyLabel = $key;
+                            if ($key == 'gender') {
+                                $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
+
+                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+                            } elseif ($key != 'enabled' && $key != 'image'  && $key != 'city' && $key != 'fullname' && in_array($key, $updateField)) {
+                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+                            } elseif ($key != 'fullname' && $key != 'image'  && in_array($key, $updateField)) {
+                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $change[1]), $record);
+                            }
+                        }
+                    \Doctrine\Common\Util\Debug::dump($content);
+                    exit;
+
+                    $currentTime = new \DateTime();
+
+                    if (strlen($content) > 0) {
+                        $currentTime = new \DateTime();
+                        $body = str_replace(
+                                array(
+                            '%fullname%',
+                            '%username%',
+                            '%message%',
+                            '%changed_values%',
+                            '%day%',
+                            '%date%',
+                            '%updated_by%'
+                                ), array(
+                            $staff->__toString(),
+                            $staff->getUsername(),
+                            $emailTemplate->getMessage(),
+                            $content,
+                            $translator->trans($currentTime->format('l')),
+                            $currentTime->format('d/m/Y'),
+                            $this->getUser()->__toString()
+                                ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
+                        );
+
+                        $mailer = $this->get('swiftmailer.mailer.spool_mailer');
+                        $message = \Swift_Message::newInstance()
+                                ->setSubject($emailTemplate->getSubject())
+                                ->setFrom($this->container->getParameter('mailer_user'))
+                                ->setTo($staff->getEmail())
+                                ->setBody($body, 'text/html')
+                        ;
+                        $mailer->send($message);
+                    }
+                }
                 $dm->flush();
 
 //                $imageOperations = $this->get('image_operations');
@@ -527,25 +499,24 @@ class StaffController extends UserController {
 //                $imageOperations->autoRotate($staff->getCoverPhotoAbsolutePath());
 
                 $userImage = $staff->getWebPath();
-                   $form = $this->createForm(StaffType::class, $staff, array(
-            'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
-            'validation_groups' => array('create', 'Default'),
-            'container' => $this->container,
-            'errorMessage' => $ErrorMessage,
-            'edit' => true,
-            'userImage' => $userImage
-        ));
+                $form = $this->createForm(StaffType::class, $staff, array(
+                    'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
+                    'validation_groups' => array('create', 'Default'),
+                    'container' => $this->container,
+                    'errorMessage' => $ErrorMessage,
+                    'edit' => true,
+                    'userImage' => $userImage
+                ));
                 $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
-                if($formType == "restore")
-                    return new JsonResponse(array('status' => 'success'));
+       
             }
             else {
                 $dm = $this->get('doctrine_mongodb')->getManager()->refresh($this->getUser());
             }
         }
-   return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
+        return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
                 'form' => $form->createView(),
-                'title' => $this->trans('add staff',array(),  $this->translationDomain),
+                'title' => $this->trans('edit staff',array(),  $this->translationDomain),
                 'breadcrumb'=>$breadCrumbArray,
                 'countries' => json_encode($countryArray),
                 'countryCodes' => json_encode(array_keys($countryArray)),
@@ -553,140 +524,11 @@ class StaffController extends UserController {
         ));
     }
 
-    public function restoreAction(Request $request, $id) {
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('List Staff', $this->generateUrl('staff_list'));
-        $breadcrumbs->addItem('View deleted items', $this->generateUrl('staff_trash'));
-        $breadcrumbs->addItem('Restore Staff Member', $this->generateUrl('staff_restore'));
 
 
-        return $this->processEditAndRestoreForm($request, $id,"restore");
-    }
-
-    /**
-     * @author Moemen Hussein <momen.shaaban@ibtikar.net.sa>
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function staffAlmostFinishedMaterialAction(Request $request){
-        $id = $this->getUser()->getId();
-        $dm = $this->get('doctrine_mongodb')->getManager();
-//        die(var_dump(new \DateTime()));
-//        $material = $dm->getRepository('IbtikarAppBundle:Material')->findOneById('54a510ac7f8b9af3168b5c12');
-//        $material->startTimer(1, 2);
-//        $dm->flush();
-
-        // check if material is forceAssigned to another user within staf editing material
-        $pageRoute = $request->get('pageRoute', false);
-        $result = array();
-        if($pageRoute && strpos($pageRoute,'-room') !== false && strpos($pageRoute,'/edit/') !== false) {
-            $materialId = explode('/', $pageRoute);
-            $material = $dm->getRepository('IbtikarAppBundle:Material')->findOneBy(array('id' => $materialId[count($materialId)-1]));
-            if($material &&   $material->getRoom() != 'published' && $material->getStatus() != 'autopublish' && $material->getAssignedTo()->getId() != $id)
-                $result['forceAssign'] = true;
-        }
-
-        $query = $dm->createQueryBuilder('IbtikarAppBundle:Material')
-                        ->field('assignedTo')->equals($id)
-                        ->field('timerEndTime')->lte(new \DateTime('+35 SECONDS'))
-                        ->field('timerEndTime')->gt(new \DateTime('+2 SECONDS'))
-                        ->field('timerRunning')->equals(true)
-                        ->field('alertSeen')->equals(false)
-                        ->getQuery()->execute();
-        $roomsTimerSettings = $this->container->get('system_settings')->getSettingsByCategoryAsArray('timer');
-        $materials = array();
-        $currentTime = new \DateTime();
-        foreach ($query as $row) {
-            if(count($row->getPath()) > 0 && isset($roomsTimerSettings['room-timer-' . $row->getRoom() . '-enabled']) && $roomsTimerSettings['room-timer-' . $row->getRoom() . '-enabled']) {
-                $lastReturn = count($row->getPath()) === 1 ? true : false;
-                $materials[] = array('id' => $row->getId(), 'mainTitle' => htmlentities($row->getMainTitle(),ENT_QUOTES | ENT_HTML5, 'UTF-8'), 'timerRemainingExtendTimes' => $row->getTimerRemainingExtendTimes(), 'timerEndTime' => $row->getTimerEndTime()->getTimestamp() - $currentTime->getTimestamp(), 'lastReturn' => $lastReturn);
-            }
-        }
-        $result['status'] = 'success';
-        $result['materials'] = $materials;
-
-        return new JsonResponse($result);
-    }
-
-    /**
- * used to execute the query on the users based on the action sent to the function
- *
- * @author Gehad Mohamed <gehad.mohamed@ibtikar.net.sa>
- *
- * @param string $action name of the action to be berformed of the users
- * @param array $ids array of user ids
- * @param string $groupId group id
- */
-    private function staffGroupUpdate($action,$ids,$groupId){
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $query=$dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                ->update()
-                ->field('id')->in($ids)
-                ->field('deleted')->equals(false)
-                ->field('updatedBy')->set(new \MongoId($this->getUser()->getId()))
-                ->field('updatedAt')->set(new \DateTime());
-
-        switch ($action) {
-            case 'add':
-                $query=$query->field('group')->set(new \MongoId($groupId));
-            break;
-            case 'remove':
-                $query=$query->field('group')->unsetField()->exists(true);
-            break;
-            case 'deactivate':
-                $query=$query->field('group')->unsetField()->exists(true)
-                             ->field('enabled')->set(false);
-            break;
-        }
-
-        $query->multiple(true)
-        ->getQuery()
-        ->execute();
 
 
-    }
 
-    /**
-     * @author Ola <ola.ali@ibtikar.net.sa>
-     */
-
-    public function usersStatisticsAction() {
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
-        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('statistics', $this->generateUrl('user_statistics'));
-        $em = $this->get('doctrine_mongodb')->getManager();
-        $activeStaffMemeber = $em->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('admin')->equals(FALSE)
-                        ->field('deleted')->equals(FALSE)
-                        ->field('enabled')->equals(TRUE)
-                        ->getQuery()->execute()->count();
-        $inActiveStaffMemeber = $em->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('admin')->equals(FALSE)
-                        ->field('enabled')->equals(FALSE)
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-        $totalStaffMember = $activeStaffMemeber + $inActiveStaffMemeber;
-
-        $ActiveVisitor = $em->createQueryBuilder('IbtikarVisitorBundle:Visitor')
-                        ->field('deleted')->equals(FALSE)
-                        ->field('enabled')->equals(TRUE)
-                        ->getQuery()->execute()->count();
-        $inActiveVisitor = $em->createQueryBuilder('IbtikarVisitorBundle:Visitor')
-                        ->field('enabled')->equals(FALSE)
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-        $totalVisitor = $ActiveVisitor + $inActiveVisitor;
-
-        return $this->render('IbtikarGlanceUMSBundle:Staff:usersStatistics.html.twig', array(
-                    'inActiveStaffMemeber' => $inActiveStaffMemeber,
-                    'activeStaffMemeber' => $activeStaffMemeber,
-                    'totalStaffMember' => $totalStaffMember,
-                    'activeVisitor' => $ActiveVisitor,
-                    'inActiveVisitor' => $inActiveVisitor,
-                    'totalVisitor' => $totalVisitor,
-                    'translationDomain' => $this->translationDomain
-        ));
-    }
 
     /**
      *
@@ -763,83 +605,7 @@ class StaffController extends UserController {
         return new JsonResponse($names);
     }
 
-    public function MigrateUserCountsAction(Request $request) {
 
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $jobs = $dm->getRepository('IbtikarGlanceUMSBundle:Job')->findAll();
-        foreach ($jobs as $job) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('job')->equals($job->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $job->setStaffMembersCount($staffCount);
-        }
-
-        $departments = $dm->getRepository('IbtikarGlanceUMSBundle:Department')->findAll();
-        foreach ($departments as $department) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('department')->equals($department->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $department->setStaffMembersCount($staffCount);
-        }
-
-        $cities = $dm->getRepository('IbtikarGlanceUMSBundle:City')->findAll();
-        foreach ($cities as $city) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('city')->equals($city->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $city->setStaffMembersCount($staffCount);
-        }
-
-        $cities = $dm->getRepository('IbtikarGlanceUMSBundle:City')->findAll();
-        foreach ($cities as $city) {
-            $staffCount = $dm->createQueryBuilder('IbtikarVisitorBundle:Visitor')
-                        ->field('city')->equals($city->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $city->setVisitorsCount($staffCount);
-        }
-
-        $cities = $dm->getRepository('IbtikarGlanceUMSBundle:City')->findAll();
-        foreach ($cities as $city) {
-            $staffCount = $dm->createQueryBuilder('IbtikarUserBundle:User')
-                        ->field('city')->equals($city->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $city->setUsersCount($staffCount);
-        }
-
-        $titles = $dm->getRepository('IbtikarGlanceUMSBundle:PersonTitle')->findAll();
-        foreach ($titles as $title) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('personTitle')->equals($title->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $title->setStaffMembersCount($staffCount);
-        }
-
-        $groups = $dm->getRepository('IbtikarGlanceUMSBundle:Group')->findAll();
-        foreach ($groups as $group) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('group')->equals($group->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-        }
-
-        $roles = $dm->getRepository('IbtikarGlanceUMSBundle:Role')->findAll();
-        foreach ($roles as $role) {
-            $staffCount = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                        ->field('role')->equals($role->getId())
-                        ->field('deleted')->equals(FALSE)
-                        ->getQuery()->execute()->count();
-            $role->setStaffMembersCount($staffCount);
-        }
-
-        $dm->flush();
-        exit();
-    }
 
     protected function validateDelete(Document $document) {
         if ($document->getAdmin()) {
