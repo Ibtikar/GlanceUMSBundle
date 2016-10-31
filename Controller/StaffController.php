@@ -187,6 +187,7 @@ class StaffController extends UserController {
         return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
                 'form' => $form->createView(),
                 'title' => $this->trans('add staff',array(),  $this->translationDomain),
+                'formType'=>'create',
                 'breadcrumb'=>$breadCrumbArray,
                 'countries' => json_encode($countryArray),
                 'countryCodes' => json_encode(array_keys($countryArray)),
@@ -510,6 +511,7 @@ class StaffController extends UserController {
                 'title' => $this->trans('edit staff', array(), $this->translationDomain),
                 'breadcrumb' => $breadCrumbArray,
                 'countries' => json_encode($countryArray),
+                'formType'=>'edit',
                 'countryCodes' => json_encode(array_keys($countryArray)),
                 'translationDomain' => $this->translationDomain
         ));
