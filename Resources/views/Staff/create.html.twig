@@ -86,7 +86,7 @@
 
 
                        }
-
+                       {% if formType =='edit' %}
                         $('body').on('click','.dev-btn-fileupload-remove',function () {
                                $.ajax({
                             url: "{{ path('ibtikar_glance_ums_staff_delete_image',{'id':app.request.get('id')})}}",
@@ -98,6 +98,7 @@
                                      });
 
                         });
+                        {% endif %}
 
 
                        $('body').on('preAjaxCallback', function () {
