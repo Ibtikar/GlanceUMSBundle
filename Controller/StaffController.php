@@ -67,11 +67,13 @@ class StaffController extends UserController {
                         $body = str_replace(
                                 array(
                             '%fullname%',
+                            '%extraInfo%',
                             '%smallMessage%',
                             '%message%',
                             '%change_password_url%'
                                 ), array(
                             $staff->__toString(),
+                            '',
                             '',
                             $emailTemplate->getMessage(),
                             $this->generateUrl('ibtikar_glance_ums_staff_change_password_from_email', array('token' => $staff->getChangePasswordToken(), 'email' => $staff->getEmail()), UrlGeneratorInterface::ABSOLUTE_URL)
@@ -152,6 +154,7 @@ class StaffController extends UserController {
                 $body = str_replace(
                         array(
                     '%smallMessage%',
+                    '%extraInfo%',
                     '%fullname%',
                     '%username%',
                     '%password%',
@@ -159,7 +162,7 @@ class StaffController extends UserController {
                     '%login_url%',
                     '%job%',
                      '%color%',
-                        ), array('',
+                        ), array($emailTemplate->getSmallMessage(),$emailTemplate->getExtraInfo(),
                     $staff->__toString(),
                     $staff->getUsername(),
                     $randPass,
@@ -351,51 +354,29 @@ class StaffController extends UserController {
         }
     }
 
-    /**
-     * @author Moemen Hussein <momen.shaaban@ibtikar.net.sa>
-     */
-    public function updateProfileAction(Request $request, $id) {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
-        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
-        $breadcrumbs->addItem('Profile', $this->generateUrl('staff_updateProfile'));
-        $securityContext = $this->get('security.authorization_checker');
-        $loggedInUser = $this->getUser();
-        if (!$loggedInUser) {
-            if($request->isXmlHttpRequest()) {
-            return new JsonResponse(array('status' => 'login'));
-            }
-            return $this->redirect($this->generateUrl('staff_login'));
-        }
-        if($id !== $loggedInUser->getId()){
-            $this->createAccessDeniedException();
-        }
-        return $this->processEditAndRestoreForm($request, $id,"edit", true);
-    }
 
-    /**
-     * @author Gehad <gehad.mohamed@ibtikar.net.sa>
-     * @author Ola <ola.ali@ibtikar.net.sa>
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $id
-     * @return type
-     * @throws type
-     */
 
+  /**
+   * @author Ola <ola.ali@ibtikar.net.sa>
+   * @param Request $request
+   * @param type $id
+   * @return type
+   */
     public function editAction(Request $request, $id) {
-      $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
-      $breadCrumbArray = $this->preparedMenu($menus,'ibtikar_glance_ums_');
+        $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
+        $breadCrumbArray = $this->preparedMenu($menus, 'ibtikar_glance_ums_');
         $loggedInUserRoles = $this->getUser()->getRoles();
         $translator = $this->get('translator');
         $ErrorMessage['imageSize'] = $translator->trans('File size must be less than 3mb', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageExtension'] = $translator->trans('picture not correct.', array(), $this->validationTranslationDomain);
         $ErrorMessage['imageDimensions'] = $translator->trans('Image dimension must be more than 200*200', array(), $this->validationTranslationDomain);
-        $ErrorMessage['emailvalidateErrorMessage']= $this->trans("Please enter your valid and true email address",array(), $this->validationTranslationDomain);
-        $ErrorMessage['mobileError']= $this->trans("Please enter your number",array(), $this->validationTranslationDomain);
-        $ErrorMessage['staffUsernameError']= $this->trans("username should contains characters, numbers or dash only",array(), $this->validationTranslationDomain);
-        $ErrorMessage['notValid']= $this->trans("not valid");
-        $ErrorMessage['passwordValidateErrorMessage']= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), $this->validationTranslationDomain);
-        $ErrorMessage['passwordValidatePasswordMaxErrorMessage']= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), $this->validationTranslationDomain);
-        $ErrorMessage['passwordMatch']= $this->trans('The password fields must match.', array(), $this->validationTranslationDomain);
+        $ErrorMessage['emailvalidateErrorMessage'] = $this->trans("Please enter your valid and true email address", array(), $this->validationTranslationDomain);
+        $ErrorMessage['mobileError'] = $this->trans("Please enter your number", array(), $this->validationTranslationDomain);
+        $ErrorMessage['staffUsernameError'] = $this->trans("username should contains characters, numbers or dash only", array(), $this->validationTranslationDomain);
+        $ErrorMessage['notValid'] = $this->trans("not valid");
+        $ErrorMessage['passwordValidateErrorMessage'] = $this->trans("The Password must be at least {{ limit }} characters and numbers length", array(), $this->validationTranslationDomain);
+        $ErrorMessage['passwordValidatePasswordMaxErrorMessage'] = $this->trans("The Password must be {{ limit }} maximum characters and numbers length", array(), $this->validationTranslationDomain);
+        $ErrorMessage['passwordMatch'] = $this->trans('The password fields must match.', array(), $this->validationTranslationDomain);
 
         $dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -412,13 +393,16 @@ class StaffController extends UserController {
             'edit' => true,
             'userImage' => &$userImage
         ));
-        $countries=$dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted() ->getQuery()->execute();
-        $countryArray=array();
+        $countries = $dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted()->getQuery()->execute();
+        $countryArray = array();
         foreach ($countries as $country) {
-            $countryArray[strtolower($country->getCountryCode())]=$country->getCountryName();
-
+            $countryArray[strtolower($country->getCountryCode())] = $country->getCountryName();
         }
-              if ($request->getMethod() === 'POST') {
+        $oldMobile='';
+        if($staff->getMobile()->getPhone()){
+         $oldMobile=$staff->getMobile()->getPhone();
+        }
+        if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formData = $request->get('staff');
@@ -426,65 +410,74 @@ class StaffController extends UserController {
                 $staff->setValidPassword();
 
 
-                if($id !== $this->getUser()->getId()){
+                if ($id !== $this->getUser()->getId()) {
                     $uow = $dm->getUnitOfWork();
                     $uow->computeChangeSets();
                     $changeset = $uow->getDocumentChangeSet($staff);
 //                     \Doctrine\Common\Util\Debug::dump($changeset);
 //                     exit;
-//                    $emailTemplate = $dm->getRepository('IbtikarGlanceUMSBundle:EmailTemplate')->findOneByName('edit staff');
-                    $record = '%updatedfield% %value%';//$emailTemplate->getEmailDataRecord();
-                    $content = '';
-                        $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname',  'job'
-                            , 'username', 'gender', 'mobile', 'role');
+                    $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('edit staff');
 
-                        foreach ($changeset as $key => $change) {
+                    $record = $emailTemplate->getEmailDataRecord();
+
+                    $content = '';
+                    $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname', 'job'
+                        , 'username', 'gender','role');
+                    $i = 1;
+                    foreach ($changeset as $key => $change) {
 //                            $staff->updateStaffCountOnEdit($key, $change);
 //                            $renderer = $this->get("string_utilities");
-                            $keyLabel = $key;
-                            if ($key == 'gender') {
-                                $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
-
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                            } elseif ($key != 'enabled' && $key != 'image'  && $key != 'city' && $key != 'fullname' && in_array($key, $updateField)) {
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                            } elseif ($key != 'fullname' && $key != 'image'  && in_array($key, $updateField)) {
-                                $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($keyLabel, array(), $this->translationDomain), $change[1]), $record);
-                            }
+                        if ($i % 2 == 0) {
+                            $tdColor = '#f8f8f8';
+                        } else {
+                            $tdColor = '';
                         }
-                    \Doctrine\Common\Util\Debug::dump($content);
-                    exit;
+                        if ($key == 'gender') {
+                            $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
 
-                    $currentTime = new \DateTime();
+                            $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($key, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
+                        } elseif ($key == 'role') {
+                            $roleArray = array();
+                            foreach ($change[1] as $role) {
+                                $roleArray[] = $role->__toString();
+                            }
+                            $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($key, array(), $this->translationDomain), implode(',', $roleArray) . PHP_EOL), $record);
+                        } elseif ($key == 'mobile') {
+                            if ($change[1] != $oldMobile) {
+                                $content.= str_replace(array('%updatedfield%', '%value%', '%tdColor%'), array($translator->trans($key, array(), $this->translationDomain), $change[1], $tdColor), $record);
+                            }
+                        } elseif ($key != 'fullname' && $key != 'image' && in_array($key, $updateField)) {
+                            $content.= str_replace(array('%updatedfield%', '%value%', '%tdColor%'), array($translator->trans($key, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword(), $tdColor), $record);
+                        }
+                    }
+//                    \Doctrine\Common\Util\Debug::dump($content);
+//                    exit;
+
 
                     if (strlen($content) > 0) {
-                        $currentTime = new \DateTime();
                         $body = str_replace(
-                                array(
+                            array(
+                            '%smallMessage%',
+                            '%extraInfo%',
+                            '%color%',
                             '%fullname%',
                             '%username%',
                             '%message%',
-                            '%changed_values%',
-                            '%day%',
-                            '%date%',
-                            '%updated_by%'
-                                ), array(
+                            ), array($emailTemplate->getSmallMessage(),
+                            $emailTemplate->getExtraInfo(),
+                            $this->container->getParameter('themeColor'),
                             $staff->__toString(),
                             $staff->getUsername(),
                             $emailTemplate->getMessage(),
-                            $content,
-                            $translator->trans($currentTime->format('l')),
-                            $currentTime->format('d/m/Y'),
-                            $this->getUser()->__toString()
-                                ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
+                            ), str_replace('%extra_content%', $content, $this->get('base_email')->getBaseRender($staff->getPersonTitle()))
                         );
 
                         $mailer = $this->get('swiftmailer.mailer.spool_mailer');
                         $message = \Swift_Message::newInstance()
-                                ->setSubject($emailTemplate->getSubject())
-                                ->setFrom($this->container->getParameter('mailer_user'))
-                                ->setTo($staff->getEmail())
-                                ->setBody($body, 'text/html')
+                            ->setSubject($emailTemplate->getSubject())
+                            ->setFrom($this->container->getParameter('mailer_user'))
+                            ->setTo($staff->getEmail())
+                            ->setBody($body, 'text/html')
                         ;
                         $mailer->send($message);
                     }
@@ -508,27 +501,19 @@ class StaffController extends UserController {
                     'userImage' => $userImage
                 ));
                 $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
-       
-            }
-            else {
+            } else {
                 $dm = $this->get('doctrine_mongodb')->getManager()->refresh($this->getUser());
             }
         }
         return $this->render('IbtikarGlanceUMSBundle:Staff:create.html.twig', array(
                 'form' => $form->createView(),
-                'title' => $this->trans('edit staff',array(),  $this->translationDomain),
-                'breadcrumb'=>$breadCrumbArray,
+                'title' => $this->trans('edit staff', array(), $this->translationDomain),
+                'breadcrumb' => $breadCrumbArray,
                 'countries' => json_encode($countryArray),
                 'countryCodes' => json_encode(array_keys($countryArray)),
                 'translationDomain' => $this->translationDomain
         ));
     }
-
-
-
-
-
-
 
     /**
      *
@@ -605,6 +590,16 @@ class StaffController extends UserController {
         return new JsonResponse($names);
     }
 
+
+    public function deleteImageAction(Request $request, $id) {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $staff = $dm->getRepository('IbtikarGlanceUMSBundle:Staff')
+                ->findOneById($id);
+        $staff->removeImage();
+        $dm->flush();
+        return new JsonResponse(array('status' => 'success', 'message' => $this->trans('valid')));
+    }
 
 
     protected function validateDelete(Document $document) {

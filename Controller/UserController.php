@@ -394,20 +394,6 @@ class UserController extends BackendController {
         }
     }
 
-    public function deleteImageAction(Request $request, $id, $coverPhoto) {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-
-        $user = $dm->getRepository('IbtikarGlanceUMSBundle:User')
-                ->findOneById($id);
-        if ($coverPhoto == 'true') {
-            $user->removeCoverPhotoImage();
-        } else {
-            $user->removeImage();
-        }
-        $dm->flush();
-        return new JsonResponse(array('status' => 'success', 'message' => $this->trans('valid')));
-    }
-
     public function getUserIdAction(Request $request) {
         return new Response($this->getUser()->getId());
     }

@@ -30,6 +30,11 @@ class LoadEmailTemplateData implements FixtureInterface
         $staffAdd->setName('add backend user');
         $staffAdd->setSubject('أهلاً بك مطبخ قودي');
         $staffAdd->setMessage('لقد إنضممتِ اليوم الى عائلة مطبخ قودي، بنحن بدورنا نهنئك ونتمنى لك مزيداً من التوفيق');
+        $staffAdd->setExtraInfo('<tr>
+                                                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;font-weight: bold;">
+بيانات الدخول:
+                                                                    </td>
+                                                                </tr>');
 
         $staffAdd->setTemplate('                <tr>
                                                     <td>
@@ -222,6 +227,68 @@ class LoadEmailTemplateData implements FixtureInterface
 
 
         $manager->persist($staffAdd);
+
+
+        $editStaff = new EmailTemplate();
+        $editStaff->setName('edit staff');
+        $editStaff->setSubject('تعديل بياناتك');
+        $editStaff->setMessage('');
+        $editStaff->setTemplate('');
+        $editStaff->setExtraInfo('<tr><td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;font-weight: bold;direction:ltr;">
+                                                                    : نفيدك علماً بأنه تم تحديث بياناتك كالتالي
+
+                                                                    </td>
+                                                                </tr>');
+        $editStaff->setEmailDataRecord('<tr> <td %tdColor% >
+
+                                                        <!-- start of right column -->
+                                                        <table  width="149" align="right" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td >
+                                                                        <table width="149" align="center" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
+                                                                            <tbody>
+                                                                                <!-- title -->
+                                                                                <tr>
+                                                                                    <td style="padding:10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 16px; color: %color% ; text-align:right; line-height: 24px;">
+
+
+   %updatedfield%
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <!-- end of title -->
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- end of right column -->
+
+                                                        <!-- Start of left column -->
+                                                        <table width="449" align="left" border="0" cellpadding="0" cellspacing="0" class="devicewidth">
+                                                            <tbody>
+                                                                <!-- content -->
+                                                                <tr>
+                                                                    <td style="padding: 10px 20px;font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;direction:ltr;">
+   %value%
+</td>
+                                                                </tr>
+                                                                <!-- end of content -->
+
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- end of left column -->
+
+
+                                                    </td>
+                                                </tr>');
+
+        $manager->persist($editStaff);
+
+
         $manager->flush();
     }
 }

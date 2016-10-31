@@ -21,7 +21,7 @@ ibtikar_glance_ums_staff_change_password_from_email:
 ibtikar_glance_ums_staff_create:
     path: /staff/create
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:create }
-    
+
 ibtikar_glance_ums_staff_edit:
     path: /staff/edit/{id}
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:edit ,id: id}
@@ -33,3 +33,7 @@ ibtikar_glance_ums_staff_check_field_unique:
 ibtikar_glance_ums_staff_change_list_columns:
     path:  /staff/change-list-columns
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changeListColumns }
+
+ibtikar_glance_ums_staff_delete_image:
+    path:  /staff/remove/image/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:deleteImage }

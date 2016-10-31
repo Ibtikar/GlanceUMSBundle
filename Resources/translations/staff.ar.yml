@@ -6,22 +6,33 @@
 'email': 'البريد الإلكتروني'
 'your account was deactivated by the admin, contact your admin for more information.': ' لقد تم ايقاب حسابك من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
 'First name': 'الاسم الاول'
+'firstName': 'الاسم الاول'
 'Last name': ' الاسم الاخير'
+'lastName': ' الاسم الاخير'
 'Email': 'البريد الالكتروني '
+'email': 'البريد الالكتروني '
 'Username': 'اسم المستخدم '
+'username': 'اسم المستخدم '
 'Mobile': 'الهاتف'
+'mobile': 'الهاتف'
 'Job': 'الوظيفة'
+'job': 'الوظيفة'
 'Role': 'الدور'
 'Country': 'البلد'
+'country': 'البلد'
 'City': 'المدينة'
+'city': 'المدينة'
 'Gender': 'النوع'
+'gender': 'النوع'
 'Choose Job': 'اختر الوظيفة'
 'Choose City': 'اختر المدينه'
 'male': ذكر
 'female' : انثى
 'add staff':  إدخال عضو جديد
 'Password': 'كلمة المرور'
+'password': 'كلمة المرور'
 'Change Password': 'تغيير كلمة المرور'
 'Repeat Password': 'تأكيد كلمة المرور'
+'edit staff': 'تعديل موظف'
 
 

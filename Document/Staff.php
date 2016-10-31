@@ -168,9 +168,14 @@ class Staff extends User {
         );
     }
 
-      public function isEqualTo(UserInterface $user) {
+    public function isEqualTo(UserInterface $user) {
         if (parent::isEqualTo($user)) {
-            // Check that the roles are the same, in any order
+            if ($this->getEmail() !== $user->getEmail()) {
+                return false;
+            }
+            if ($this->getPassword() !== $user->getPassword()) {
+                return false;
+            }
             // Check that the roles are the same, in any order
             $isEqual = count($this->getRoles()) == count($user->getRoles());
             if ($isEqual) {
@@ -179,7 +184,6 @@ class Staff extends User {
                 }
             }
             return $isEqual;
-
         }
         return false;
     }

@@ -9,6 +9,7 @@
         var countryCitiesOptionsUrl = '{{ path('ibtikar_glance_dashboard_backend_country_cities_options') }}';
         var url;
         var countriesNames ={{countries|raw}} ;
+        var avatarImageUrl = '{{ asset('bundles/ibtikarshareeconomydashboarddesign/images/profile.jpg') }}';
         var countryData = $.fn.intlTelInput.getCountryData();
         var onlyCountries ={{ countryCodes|raw }};
         $.each(countryData, function (i, country) {
@@ -85,6 +86,18 @@
 
 
                        }
+
+                        $('body').on('click','.dev-btn-fileupload-remove',function () {
+                               $.ajax({
+                            url: "{{ path('ibtikar_glance_ums_staff_delete_image',{'id':app.request.get('id')})}}",
+                            method: 'post',
+                            success: function (data) {
+                                 $('.fileupload').find('.dev-btn-fileupload-remove').removeAttr('style');
+                                $('.fileupload').find('.fileupload-new img:eq(0)').attr('src', avatarImageUrl);
+                                }
+                                     });
+
+                        });
 
 
                        $('body').on('preAjaxCallback', function () {
