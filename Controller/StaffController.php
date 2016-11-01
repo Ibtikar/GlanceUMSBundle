@@ -382,6 +382,9 @@ class StaffController extends UserController {
         $dm = $this->get('doctrine_mongodb')->getManager();
 
         $staff = $dm->getRepository('IbtikarGlanceUMSBundle:Staff')->find($id);
+        if (!$staff) {
+            throw $this->createNotFoundException($this->trans('Wrong id'));
+        }
 
         $userImage = $staff->getWebPath();
         $userImageAlt = $staff->__toString();
@@ -402,6 +405,10 @@ class StaffController extends UserController {
         $oldMobile='';
         if($staff->getMobile()->getPhone()){
          $oldMobile=$staff->getMobile()->getPhone();
+        }
+        $oldRoles = array();
+        foreach ($staff->getRole() as $role) {
+            $oldRoles[] = $role->getId();
         }
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -424,13 +431,14 @@ class StaffController extends UserController {
 
                     $content = '';
                     $updateField = array('country', 'city', 'email', 'password', 'firstName', 'lastName', 'fullname', 'job'
-                        , 'username', 'gender','role');
+                        , 'username', 'gender');
                     $i = 1;
                     foreach ($changeset as $key => $change) {
-//                            $staff->updateStaffCountOnEdit($key, $change);
+
+                        $staff->updateStaffCountOnEdit($key, $change);
 //                            $renderer = $this->get("string_utilities");
-                        if(in_array($key, array('email','password'))){
-                            $forceLogout=true;
+                        if (in_array($key, array('email', 'password'))) {
+                            $forceLogout = true;
                         }
                         if ($i % 2 == 0) {
                             $tdColor = '#f8f8f8';
@@ -441,12 +449,6 @@ class StaffController extends UserController {
                             $change[1] = $translator->trans(trim($change[1] . PHP_EOL), array(), $this->translationDomain);
 
                             $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($key, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword()), $record);
-                        } elseif ($key == 'role') {
-                            $roleArray = array();
-                            foreach ($change[1] as $role) {
-                                $roleArray[] = $role->__toString();
-                            }
-                            $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($key, array(), $this->translationDomain), implode(',', $roleArray) . PHP_EOL), $record);
                         } elseif ($key == 'mobile') {
                             if ($change[1]->getPhone() != $oldMobile) {
                                 $content.= str_replace(array('%updatedfield%', '%value%', '%tdColor%'), array($translator->trans($key, array(), $this->translationDomain), $change[1], $tdColor), $record);
@@ -454,9 +456,21 @@ class StaffController extends UserController {
                         } elseif ($key != 'fullname' && $key != 'image' && in_array($key, $updateField)) {
                             $content.= str_replace(array('%updatedfield%', '%value%', '%tdColor%'), array($translator->trans($key, array(), $this->translationDomain), $key !== "password" ? $change[1] . PHP_EOL : $staff->getUserPassword(), $tdColor), $record);
                         }
+                        $i++;
                     }
-//                    \Doctrine\Common\Util\Debug::dump($content);
-//                    exit;
+
+                    $staff->setForceLogout($forceLogout);
+                    $dm->flush();
+                    $newRoles=array();
+                    $newRolesNames=array();
+                    foreach ($staff->getRole() as $role) {
+                        $newRoles[] = $role->getId();
+                        $newRolesNames[] = $role->__toString();
+                    }
+                    if (count(array_diff($oldRoles, $newRoles)) > 0) {
+
+                        $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans('role', array(), $this->translationDomain), implode(',', $newRolesNames) . PHP_EOL), $record);
+                    }
 
 
                     if (strlen($content) > 0) {
@@ -487,8 +501,6 @@ class StaffController extends UserController {
                         $mailer->send($message);
                     }
                 }
-                $staff->setForceLogout($forceLogout);
-                $dm->flush();
 
 //                $imageOperations = $this->get('image_operations');
 //                $imageOperations->autoRotate($staff->getAbsolutePath());

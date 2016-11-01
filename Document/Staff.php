@@ -61,7 +61,7 @@ class Staff extends User {
      * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Phone")
      */
     private $mobile;
-    
+
     public $countryCode;
 
     /**
@@ -138,10 +138,6 @@ class Staff extends User {
 
     public function updateReferencesCounts($value) {
         parent::updateReferencesCounts($value);
-        $roles = $this->getRole();
-        foreach ($roles as $role) {
-            $role->setStaffMembersCount($role->getStaffMembersCount() + $value);
-        }
         $job = $this->getJob();
         if ($job) {
             $job->setStaffMembersCount($job->getStaffMembersCount() + $value);
@@ -170,14 +166,22 @@ class Staff extends User {
         );
     }
 
+    public function updateStaffCountOnEdit($fieldName,$changeset) {
+        parent::updateUserCountOnEdit($fieldName,$changeset);
+        if(in_array($fieldName, array("job"))) {
+            $oldObject = $changeset[0];
+            if($oldObject) {
+                $oldObject->setStaffMembersCount($oldObject->getStaffMembersCount() - 1);
+            }
+            $newObject = $changeset[1];
+            if($newObject) {
+                $newObject->setStaffMembersCount($newObject->getStaffMembersCount() + 1);
+            }
+        }
+    }
+
     public function isEqualTo(UserInterface $user) {
         if (parent::isEqualTo($user)) {
-//            if ($this->getEmail() !== $user->getEmail()) {
-//                return false;
-//            }
-//            if ($this->getPassword() !== $user->getPassword()) {
-//                return false;
-//            }
             // Check that the roles are the same, in any order
             $isEqual = count($this->getRoles()) == count($user->getRoles());
             if ($isEqual) {

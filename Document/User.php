@@ -221,6 +221,29 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
         return true;
     }
 
+    public function updateUserCountOnEdit($fieldName, $changeset) {
+        if (in_array($fieldName, array("country"))) {
+            $oldObject = $changeset[0];
+            if ($oldObject) {
+                $oldObject->setCountryUsageCount($oldObject->getCountryUsageCount() - 1);
+            }
+            $newObject = $changeset[1];
+            if ($newObject) {
+                $newObject->setCountryUsageCount($newObject->getCountryUsageCount() + 1);
+            }
+        }
+        if (in_array($fieldName, array("city"))) {
+            $oldObject = $changeset[0];
+            if ($oldObject) {
+                $oldObject->setUsersCount($oldObject->getUsersCount() - 1);
+            }
+            $newObject = $changeset[1];
+            if ($newObject) {
+                $newObject->setUsersCount($newObject->getUsersCount() + 1);
+            }
+        }
+    }
+
     /**
      * Set image
      *

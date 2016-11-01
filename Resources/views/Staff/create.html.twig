@@ -12,6 +12,8 @@
         var avatarImageUrl = '{{ asset('bundles/ibtikarshareeconomydashboarddesign/images/profile.jpg') }}';
         var countryData = $.fn.intlTelInput.getCountryData();
         var onlyCountries ={{ countryCodes|raw }};
+        var oldCity=$('#staff_city').val();
+        var reset=false;
         $.each(countryData, function (i, country) {
             country.name = countriesNames[country.iso2];
         });
@@ -42,7 +44,14 @@
                    success: function(data) {
                        var selectedValue = $('#staff_city').val();
                        $('#staff_city').html(data).val('');
+                       if(reset){
+                       var $oldSelectedOption = $('#staff_city option[value="' + oldCity + '"]');
+
+                       }else{
                        var $oldSelectedOption = $('#staff_city option[value="' + selectedValue + '"]');
+
+                       }
+                       reset=false;
                        if($oldSelectedOption.length > 0) {
                            $oldSelectedOption.prop('selected', true);
                        }
@@ -92,14 +101,21 @@
                             url: "{{ path('ibtikar_glance_ums_staff_delete_image',{'id':app.request.get('id')})}}",
                             method: 'post',
                             success: function (data) {
-                                 $('.fileupload').find('.dev-btn-fileupload-remove').removeAttr('style');
+                                $('.fileupload').find('.dev-btn-fileupload-remove').removeAttr('style');
                                 $('.fileupload').find('.fileupload-new img:eq(0)').attr('src', avatarImageUrl);
+                                $('#staff_file').attr('data-exist-img',false);
                                 }
                                      });
 
                         });
-                        {% endif %}
 
+
+                        $('.dev-form-reset-button').on('click', function () {
+                            reset=true;
+                            $('#staff_mobile_phone').val($("#staff_mobile_phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL));
+
+                        })
+                       {% endif %}
 
                        $('body').on('preAjaxCallback', function () {
                           $('#staff_mobile_countryCode').val($("#staff_mobile_phone").intlTelInput("getSelectedCountryData").iso2);
