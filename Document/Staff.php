@@ -70,6 +70,11 @@ class Staff extends User {
     protected $forceLogout = false;
 
     /**
+     * @MongoDB\Date
+     */
+    protected $editDate;
+
+    /**
      * Set username
      *
      * @param string $username
@@ -325,5 +330,27 @@ class Staff extends User {
     public function getForceLogout()
     {
         return $this->forceLogout;
+    }
+
+    /**
+     * Set editDate
+     *
+     * @param date $editDate
+     * @return self
+     */
+    public function setEditDate($editDate)
+    {
+        $this->editDate = $editDate;
+        return $this;
+    }
+
+    /**
+     * Get editDate
+     *
+     * @return date $editDate
+     */
+    public function getEditDate()
+    {
+        return $this->editDate;
     }
 }

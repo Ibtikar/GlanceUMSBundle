@@ -460,6 +460,7 @@ class StaffController extends UserController {
                     }
 
                     $staff->setForceLogout($forceLogout);
+                    $staff->setEditDate(new \DateTime());
                     $dm->flush();
                     $newRoles=array();
                     $newRolesNames=array();
