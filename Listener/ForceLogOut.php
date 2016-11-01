@@ -30,7 +30,7 @@ class ForceLogOut {
                 $dm->flush();
                 $container->get('security.token_storage')->setToken(null);
                 $container->get('session')->invalidate();
-                $event->setResponse(new JsonResponse(array('status' => 'reload-page'), 403));
+                $event->setResponse(new \Symfony\Component\HttpFoundation\JsonResponse(array('status' => 'reload-page'), 403));
             }
         }
     }
