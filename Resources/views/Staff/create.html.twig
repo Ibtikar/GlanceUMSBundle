@@ -1,0 +1,111 @@
+{% extends 'IbtikarGlanceDashboardBundle::formLayout.html.twig' %}
+
+
+
+{% block javascripts %}
+    {{parent()}}
+
+    <script>
+        var countryCitiesOptionsUrl = '{{ path('ibtikar_glance_dashboard_backend_country_cities_options') }}';
+        var url;
+        var countriesNames ={{countries|raw}} ;
+        var avatarImageUrl = '{{ asset('bundles/ibtikarshareeconomydashboarddesign/images/profile.jpg') }}';
+        var countryData = $.fn.intlTelInput.getCountryData();
+        var onlyCountries ={{ countryCodes|raw }};
+        $.each(countryData, function (i, country) {
+            country.name = countriesNames[country.iso2];
+        });
+        $.fn.intlTelInput.setCountryData(countryData);
+
+        function intializePhone(){
+                $("#staff_mobile_phone").intlTelInput({
+                        allowExtensions: true,
+                        autoFormat: true,
+                        autoHideDialCode: true,
+                        autoPlaceholder: true,
+                        defaultCountry: "sa",
+                        "initialCountry": 'sa',
+                        nationalMode: false,
+                        numberType: "MOBILE",
+                        onlyCountries: onlyCountries,
+                        customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+                            return  selectedCountryPlaceholder;
+                        },
+                        preferredCountries: []
+                    });
+        }
+
+        function filterCitySelectByCountry() {
+           $.ajax({
+                   url: countryCitiesOptionsUrl + '?countryCode=' + $('#staff_country').val(),
+
+                   success: function(data) {
+                       var selectedValue = $('#staff_city').val();
+                       $('#staff_city').html(data).val('');
+                       var $oldSelectedOption = $('#staff_city option[value="' + selectedValue + '"]');
+                       if($oldSelectedOption.length > 0) {
+                           $oldSelectedOption.prop('selected', true);
+                       }
+                        $('#staff_city').trigger('change');
+                        unhighlightElement($('#staff_city'))
+                   }
+               });
+                   }
+
+            jQuery(document).ready(function ($) {
+                       intializePhone();
+{#                       filterCitySelectByCountry();#}
+
+                       $('body').on('ajaxCallback', function () {
+                           intializePhone();
+                           filterCitySelectByCountry();
+
+                       });
+                       $(document).on('change', '#staff_country', filterCitySelectByCountry);
+                               filterCitySelectByCountry();
+
+                               $('#staff_mobile_phone').on("countrychange", function (e, countryData) {
+                                   $('#staff_mobile_phone').val('');
+                               });
+                               $('#staff_mobile_phone').on('blur', function () {
+                                   $('#staff_mobile_phone').val($("#staff_mobile_phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL));
+                               });
+
+                       $('body').on('click', '[data-dismiss="fileupload"]', function () {
+                           unhighlightElement($(this).closest('.fileupload').find('input:file').get(0));
+                       });
+
+                       //solve double click issue for upload plugin on ie
+                       if (navigator.userAgent.indexOf("MSIE") > 0) {
+
+                           $(document).livequery('#staff_file', function () {
+                               $(this).bind('mousedown', function () {
+                                   $(this).trigger('click');
+                               });
+                           });
+
+
+                       }
+                       {% if formType =='edit' %}
+                        $('body').on('click','.dev-btn-fileupload-remove',function () {
+                               $.ajax({
+                            url: "{{ path('ibtikar_glance_ums_staff_delete_image',{'id':app.request.get('id')})}}",
+                            method: 'post',
+                            success: function (data) {
+                                 $('.fileupload').find('.dev-btn-fileupload-remove').removeAttr('style');
+                                $('.fileupload').find('.fileupload-new img:eq(0)').attr('src', avatarImageUrl);
+                                }
+                                     });
+
+                        });
+                        {% endif %}
+
+
+                       $('body').on('preAjaxCallback', function () {
+                          $('#staff_mobile_countryCode').val($("#staff_mobile_phone").intlTelInput("getSelectedCountryData").iso2);
+                           $('.alert-danger').remove()
+
+                       });
+                   });
+    </script>
+{% endblock %}

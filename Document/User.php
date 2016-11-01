@@ -99,7 +99,6 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      * @Assert\Length(min=8, max=4096, maxMessage="The Password must be {{ limit }} maximum characters and numbers length", minMessage="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
      * @Assert\Regex(pattern="/[\D+]+/u", message="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
      * @Assert\Regex(pattern="/\d+/u", message="The Password must be at least {{ limit }} characters and numbers length", groups={"Default", "change-password", "visitorSignup", "api-edit"})
-     * @Assert\NotBlank(groups={"create", "change-password", "visitorSignup"})
      */
     protected $userPassword;
 
@@ -196,7 +195,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * @Assert\NotBlank(groups={"image-required"})
      * @Assert\Image(minWidth=200, minHeight=200, minWidthMessage="Image dimension must be more than 200*200", minHeightMessage="Image dimension must be more than 200*200", mimeTypes={"image/jpeg", "image/pjpeg", "image/png"}, groups={"image", "Default"}, mimeTypesMessage="picture not correct.")
-     * @Assert\File(maxSize="4194304", maxSizeMessage="Image size must be less than 4mb", groups={"image", "Default"})
+     * @Assert\File(maxSize="3145728", maxSizeMessage="File size must be less than 3mb", groups={"image", "Default"})
      * @CustomAssert\ImageValid(groups={"image", "Default"})
      * @CustomAssert\ImageExtensionValid(groups={"image", "Default"}, extensions={"jpg", "jpeg", "png"})
      * @var UploadedFile
@@ -384,16 +383,8 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      */
     public function getWebPath($getDefault = false)
     {
-        if (($getDefault || get_called_class() === "Ibtikar\VisitorBundle\Document\Visitor") && ($this->getImage() === null || $this->getImage() === '')) {
-            if ($this->getGender() === "male" || $this->getGender() === "female") {
-                $image = $this->defaultImages[$this->getGender()];
-            } else {
-                $image = $this->defaultImages['unspecified'];
-            }
-        } else {
-            $image = $this->image;
-        }
-        return NULL === $image ? NULL : $this->getUploadDir() . '/' . $image;
+        return NULL === $this->image ? NULL : $this->getUploadDir() . '/' . $this->image;
+
     }
 
     /**
@@ -977,21 +968,21 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
         }
     }
 
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function updateReferencesCounts($value) {
-//        parent::updateReferencesCounts($value);
-//        $city = $this->getCity();
-//        if ($city) {
-//            $city->setUsersCount($city->getUsersCount() + $value);
-//        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateReferencesCounts($value) {
+        parent::updateReferencesCounts($value);
+        $city = $this->getCity();
+        if ($city) {
+            $city->setStaffMembersCount($city->getStaffMembersCount() + $value);
+        }
 //        $country = $this->getCountry();
 //        if ($country) {
 //            $country->setCountryUsageCount($country->getCountryUsageCount() + $value);
 //        }
-//    }
+    }
 //    /**
 //     *
 //     * @param type $fieldName

@@ -6,6 +6,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
+use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
 
 /**
@@ -21,18 +23,21 @@ class EmailExistValidator extends ConstraintValidator {
             return;
         }
 
-        if (!is_scalar($value) && !(is_object($value) && method_exists($value, 'getPath'))) {
+
+        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $value = (string) $value;
 
         $validator = new EmailValidator();
-        $valid = $validator->isValid($value, new RFCValidation());
+        $multipleValidations = new MultipleValidationWithAnd([
+            new RFCValidation(),
+            new DNSCheckValidation()
+        ]);
+        $valid = $validator->isValid($value, $multipleValidations);
 
         if ($valid !== true) {
-
-
             $this->context->addViolation($constraint->message, array(
                 '{{ value }}' => $this->formatValue($value),
             ));

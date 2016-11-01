@@ -4,10 +4,6 @@ ibtikar_glance_ums_staff_login:
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:login }
     schemes:  [%httpProtocol%]
 
-ibtikar_glance_ums_staff_contact:
-    path:  /contact
-    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:contact }
-
 ibtikar_glance_ums_staff_forgot_password:
     path:  /forgot-password
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:forgotPassword }
@@ -21,3 +17,23 @@ ibtikar_glance_ums_staff_change_password_from_email:
     path:  /change-password-email/{email}/{token}
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changePasswordFromEmail }
     schemes:  [%httpProtocol%]
+
+ibtikar_glance_ums_staff_create:
+    path: /staff/create
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:create }
+
+ibtikar_glance_ums_staff_edit:
+    path: /staff/edit/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:edit ,id: id}
+
+ibtikar_glance_ums_staff_check_field_unique:
+    path: /staff/checkfieldUnique
+    defaults: { _controller: IbtikarGlanceUMSBundle:User:checkFieldUnique }
+
+ibtikar_glance_ums_staff_change_list_columns:
+    path:  /staff/change-list-columns
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changeListColumns }
+
+ibtikar_glance_ums_staff_delete_image:
+    path:  /staff/remove/image/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:deleteImage }

@@ -10,6 +10,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class EmailExist extends Constraint {
 
-    public $message = 'The email {{ value }} does not exist.';
+    public $message = 'Please enter your valid and true email address';
 
 }

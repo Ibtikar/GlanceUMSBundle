@@ -21,3 +21,7 @@ post_login:
 
 logout:
     path:  /logout
+
+access_denied:
+    path:  /access-denied
+    defaults: { _controller: IbtikarGlanceUMSBundle:User:accessDenied }

@@ -265,8 +265,8 @@ class UserController extends BackendController {
 //        $breadcrumbs = $this->get('white_october_breadcrumbs');
 //        $breadcrumbs->addItem('backend-home', $this->generateUrl('backend_home'));
 //        $breadcrumbs->addItem('Change Password', $this->generateUrl('ibtikar_glance_ums_staff_changePassword'));
-        $emailValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
-        $emailValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
+        $passwordValidateErrorMessage= $this->trans("The Password must be at least {{ limit }} characters and numbers length",array(), 'validators');
+        $passwordValidatePasswordMaxErrorMessage= $this->trans("The Password must be {{ limit }} maximum characters and numbers length",array(), 'validators');
 
         $user = $this->getUser();
         $formBuilder = $this->createFormBuilder($user, array(
@@ -280,8 +280,8 @@ class UserController extends BackendController {
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
-                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage,'data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage)),
-                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$emailValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$emailValidateErrorMessage)),
+                    'first_options' => array('label' => 'Password', 'attr' => array('autocomplete' => 'off', 'data-confirm-password' => '', 'data-rule-passwordMax' => '','data-rule-password'=>true,'data-msg-password'=>$passwordValidateErrorMessage,'data-msg-passwordMax'=>$passwordValidatePasswordMaxErrorMessage)),
+                    'second_options' => array('label' => 'Repeat Password', 'attr' => array('autocomplete' => 'off', 'data-rule-equalTo' => 'input[data-confirm-password]', 'data-msg-equalTo' => $this->get('translator')->trans('The password fields must match.', array(), 'validators'), 'data-rule-passwordMax' => '','data-msg-passwordMax'=>$passwordValidatePasswordMaxErrorMessage,'data-rule-password'=>true,'data-msg-password'=>$passwordValidateErrorMessage)),
                 ))
                 ->add('Change', SubmitType::class);
         $form = $formBuilder->getForm();
@@ -292,10 +292,12 @@ class UserController extends BackendController {
                 $user->setValidPassword();
                 $user->setMustChangePassword(false);
                 $dm->flush();
-                $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
-                if ($this->get('session')->getFlashBag()->get('firstLogin')) {
-                    $redirectUrl = $this->generateUrl('backend_home');
+
+                if ($this->get('session')->get('firstLogin')) {
+                    $redirectUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
+                    $this->get('session')->set('firstLogin', FALSE);
                 } else {
+                    $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                     if ($this->get('security.authorization_checker')->isGranted('ROLE_VISITOR')) {
                         $redirectUrl = $this->generateUrl('visitor_view_profile');
                     } else {
@@ -308,7 +310,7 @@ class UserController extends BackendController {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STAFF') && $user->getMustChangePassword()) {
             $this->changePasswordView = $this->mustChangePassword;
-//            $this->get('session')->getFlashBag()->set('firstLogin', true);
+            $this->get('session')->set('firstLogin', true);
         }
 
         return $this->render($this->changePasswordView, array(
@@ -392,20 +394,6 @@ class UserController extends BackendController {
         } else {
             return new JsonResponse(array('status' => 'success', 'unique' => TRUE, 'message' => $this->trans('valid')));
         }
-    }
-
-    public function deleteImageAction(Request $request, $id, $coverPhoto) {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-
-        $user = $dm->getRepository('IbtikarGlanceUMSBundle:User')
-                ->findOneById($id);
-        if ($coverPhoto == 'true') {
-            $user->removeCoverPhotoImage();
-        } else {
-            $user->removeImage();
-        }
-        $dm->flush();
-        return new JsonResponse(array('status' => 'success', 'message' => $this->trans('valid')));
     }
 
     public function getUserIdAction(Request $request) {
