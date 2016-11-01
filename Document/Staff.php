@@ -61,11 +61,13 @@ class Staff extends User {
      * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Phone")
      */
     private $mobile;
-
-
+    
     public $countryCode;
 
-
+    /**
+     * @MongoDB\Boolean
+     */
+    protected $forceLogout = false;
 
     /**
      * Set username
@@ -170,12 +172,12 @@ class Staff extends User {
 
     public function isEqualTo(UserInterface $user) {
         if (parent::isEqualTo($user)) {
-            if ($this->getEmail() !== $user->getEmail()) {
-                return false;
-            }
-            if ($this->getPassword() !== $user->getPassword()) {
-                return false;
-            }
+//            if ($this->getEmail() !== $user->getEmail()) {
+//                return false;
+//            }
+//            if ($this->getPassword() !== $user->getPassword()) {
+//                return false;
+//            }
             // Check that the roles are the same, in any order
             $isEqual = count($this->getRoles()) == count($user->getRoles());
             if ($isEqual) {
@@ -298,4 +300,26 @@ class Staff extends User {
 
 
 
+
+    /**
+     * Set forceLogout
+     *
+     * @param boolean $forceLogout
+     * @return self
+     */
+    public function setForceLogout($forceLogout)
+    {
+        $this->forceLogout = $forceLogout;
+        return $this;
+    }
+
+    /**
+     * Get forceLogout
+     *
+     * @return boolean $forceLogout
+     */
+    public function getForceLogout()
+    {
+        return $this->forceLogout;
+    }
 }

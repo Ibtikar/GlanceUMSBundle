@@ -409,6 +409,7 @@ class StaffController extends UserController {
                 $formData = $request->get('staff');
 
                 $staff->setValidPassword();
+                $forceLogout=FALSE;
 
 
                 if ($id !== $this->getUser()->getId()) {
@@ -428,6 +429,9 @@ class StaffController extends UserController {
                     foreach ($changeset as $key => $change) {
 //                            $staff->updateStaffCountOnEdit($key, $change);
 //                            $renderer = $this->get("string_utilities");
+                        if(in_array($key, array('email','password'))){
+                            $forceLogout=true;
+                        }
                         if ($i % 2 == 0) {
                             $tdColor = '#f8f8f8';
                         } else {
@@ -444,7 +448,7 @@ class StaffController extends UserController {
                             }
                             $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans($key, array(), $this->translationDomain), implode(',', $roleArray) . PHP_EOL), $record);
                         } elseif ($key == 'mobile') {
-                            if ($change[1] != $oldMobile) {
+                            if ($change[1]->getPhone() != $oldMobile) {
                                 $content.= str_replace(array('%updatedfield%', '%value%', '%tdColor%'), array($translator->trans($key, array(), $this->translationDomain), $change[1], $tdColor), $record);
                             }
                         } elseif ($key != 'fullname' && $key != 'image' && in_array($key, $updateField)) {
@@ -483,6 +487,7 @@ class StaffController extends UserController {
                         $mailer->send($message);
                     }
                 }
+                $staff->setForceLogout($forceLogout);
                 $dm->flush();
 
 //                $imageOperations = $this->get('image_operations');

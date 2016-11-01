@@ -292,10 +292,12 @@ class UserController extends BackendController {
                 $user->setValidPassword();
                 $user->setMustChangePassword(false);
                 $dm->flush();
-                $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
-                if ($this->get('session')->getFlashBag()->get('firstLogin')) {
-                    $redirectUrl = $this->generateUrl('backend_home');
+
+                if ($this->get('session')->get('firstLogin')) {
+                    $redirectUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
+                    $this->get('session')->set('firstLogin', FALSE);
                 } else {
+                    $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                     if ($this->get('security.authorization_checker')->isGranted('ROLE_VISITOR')) {
                         $redirectUrl = $this->generateUrl('visitor_view_profile');
                     } else {
@@ -308,7 +310,7 @@ class UserController extends BackendController {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STAFF') && $user->getMustChangePassword()) {
             $this->changePasswordView = $this->mustChangePassword;
-//            $this->get('session')->getFlashBag()->set('firstLogin', true);
+            $this->get('session')->set('firstLogin', true);
         }
 
         return $this->render($this->changePasswordView, array(
