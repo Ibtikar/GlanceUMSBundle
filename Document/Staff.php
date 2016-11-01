@@ -46,7 +46,6 @@ class Staff extends User {
     protected $mustChangePassword = true;
 
     /**
-     * @Assert\NotBlank
      * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Job", simple=true)
      */
     protected $job;

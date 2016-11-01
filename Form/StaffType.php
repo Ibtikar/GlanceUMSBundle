@@ -52,7 +52,7 @@ class StaffType extends AbstractType
                 'data-rule-unique' => 'ibtikar_glance_ums_staff_check_field_unique', 'data-url' => $options['container']->get('router')->generate('ibtikar_glance_ums_staff_check_field_unique'), 'data-rule-unique' => 'ibtikar_glance_ums_staff_check_field_unique', 'data-name' => 'username', 'data-rule-staffUsername' => 'true', 'data-rule-maxlength' => 150,'data-msg-staffUsername'=>$options['errorMessage']['staffUsernameError'])))
             ->add('email', formType\EmailType::class, array('attr' => array('data-msg-unique' => $options['errorMessage']['notValid'],'data-msg-email'=>$options['errorMessage']['emailvalidateErrorMessage'],'data-validate-element'=>true,'data-rule-unique' => 'ibtikar_glance_ums_staff_check_field_unique', 'data-url' => $options['container']->get('router')->generate('ibtikar_glance_ums_staff_check_field_unique'), 'data-name' => 'email', 'data-rule-maxlength' => 330)))
             ->add('mobile', \Ibtikar\GlanceDashboardBundle\Form\Type\PhoneType::class,array('required' => false,'attr'=>array('parent-class'=>'phoneNumber','data-error-message'=>$options['errorMessage']['mobileError'])))
-            ->add('job', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('required' => TRUE,
+            ->add('job', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('required' => FALSE,
                 'class' => 'IbtikarGlanceDashboardBundle:Job', 'placeholder' => $options['container']->get('translator')->trans('Choose Job',array(),'staff'),
                 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container')
         ));
