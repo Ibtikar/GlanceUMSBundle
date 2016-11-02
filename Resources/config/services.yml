@@ -38,11 +38,11 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onResponse, priority: -255 }
         arguments: ["@service_container"]
 
-    force_user_logout:
-        class: Ibtikar\GlanceUMSBundle\Listener\ForceLogOut
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-        arguments: [ "@router", "@service_container" ]
+#    force_user_logout:
+#        class: Ibtikar\GlanceUMSBundle\Listener\ForceLogOut
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+#        arguments: [ "@router", "@service_container" ]
 #
 #    request.listener.update_user_last_seen:
 #        class: Ibtikar\GlanceUMSBundle\Listener\UpdateUserLastSeenListener

@@ -150,7 +150,7 @@ class StaffController extends UserController {
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function createAction(Request $request) {
-        $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
+        $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'), array('type' => 'list', 'active' => FALSE, 'linkType' => 'list', 'title' => 'list staff'));
         $breadCrumbArray = $this->preparedMenu($menus,'ibtikar_glance_ums_');
 
         $loggedInUserRoles = $this->getUser()->getRoles();
@@ -404,7 +404,7 @@ class StaffController extends UserController {
    * @return type
    */
     public function editAction(Request $request, $id) {
-        $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'));
+        $menus = array(array('type' => 'create', 'active' => true, 'linkType' => 'add', 'title' => 'add staff'), array('type' => 'list', 'active' => FALSE, 'linkType' => 'list', 'title' => 'list staff'));
         $breadCrumbArray = $this->preparedMenu($menus, 'ibtikar_glance_ums_');
         $loggedInUserRoles = $this->getUser()->getRoles();
         $translator = $this->get('translator');
