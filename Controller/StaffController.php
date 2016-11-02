@@ -32,7 +32,7 @@ class StaffController extends UserController {
             "email" => array("searchFieldType"=>"input","type"=>'email'),
             "username" => array("searchFieldType"=>"input"),
             "job" => array("isSortable"=>false,"searchFieldType"=>"select"),
-            "role" => array("isSortable"=>false,"searchFieldType"=>"select"),
+            "role" => array("isSortable"=>false,"type"=>"many"),
             "country" => array("isSortable"=>false,"searchFieldType"=>"country"),
             "city" => array("isSortable"=>false,"searchFieldType"=>"city"),
             "editDate" => array("type"=>"date","searchFieldType"=>"date"),
@@ -41,8 +41,10 @@ class StaffController extends UserController {
         $this->defaultListColumns = array(
             "username",
             "createdAt",
-//            "role",
+            "role",
         );
+    $this->listViewOptions->setBundlePrefix("ibtikar_glance_ums_");
+
     }
 
     protected function configureListParameters(Request $request) {
@@ -57,8 +59,6 @@ class StaffController extends UserController {
 
         $this->listViewOptions->setDefaultSortBy("createdAt");
         $this->listViewOptions->setDefaultSortOrder("desc");
-        $this->listViewOptions->setBundlePrefix("ibtikar_glance_ums_");
-
         $this->listViewOptions->setActions(array ("Edit"));
         $this->listViewOptions->setBulkActions(array());
         $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:Staff:list.html.twig");
