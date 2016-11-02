@@ -18,6 +18,7 @@
 'Job': 'الوظيفة'
 'job': 'الوظيفة'
 'Role': 'الدور'
+'role': 'الدور'
 'Country': 'البلد'
 'country': 'البلد'
 'City': 'المدينة'
@@ -34,7 +35,8 @@
 'Change Password': 'تغيير كلمة المرور'
 'Repeat Password': 'تأكيد كلمة المرور'
 'edit staff': 'تعديل موظف'
+'Edit Staff': 'تعديل موظف'
 'STAFF': 'موظف'
 'List Staff' :  قائمه الموظفين
-
-
+'editDate' :   تاريخ التعديل
+'createdAt': تاريخ الإنشاء
