@@ -25,6 +25,46 @@ class StaffController extends UserController {
     private $validationTranslationDomain = 'validators';
     public $oneItem = 'Staff member';
 
+    protected function configureListColumns() {
+        $this->allListColumns = array(
+            "firstName" => array("searchFieldType"=>"input"),
+            "lastName" => array("searchFieldType"=>"input"),
+            "email" => array("searchFieldType"=>"input","type"=>'email'),
+            "username" => array("searchFieldType"=>"input"),
+            "job" => array("isSortable"=>false,"searchFieldType"=>"select"),
+            "role" => array("isSortable"=>false,"searchFieldType"=>"select"),
+            "country" => array("isSortable"=>false,"searchFieldType"=>"country"),
+            "city" => array("isSortable"=>false,"searchFieldType"=>"city"),
+            "editDate" => array("type"=>"date","searchFieldType"=>"date"),
+            "createdAt" => array("type"=>"date","searchFieldType"=>"date")
+        );
+        $this->defaultListColumns = array(
+            "username",
+            "createdAt",
+//            "role",
+        );
+    }
+
+    protected function configureListParameters(Request $request) {
+        $queryBuilder = $this->createQueryBuilder('IbtikarGlanceUMSBundle')
+                        ->field('admin')->equals(false)
+                        ->field('deleted')->equals(false)
+                        ->field('id')->notEqual($this->getUser()->getId());
+
+        $this->configureListColumns();
+
+        $this->listViewOptions->setListQueryBuilder($queryBuilder);
+
+        $this->listViewOptions->setDefaultSortBy("createdAt");
+        $this->listViewOptions->setDefaultSortOrder("desc");
+        $this->listViewOptions->setBundlePrefix("ibtikar_glance_ums_");
+
+        $this->listViewOptions->setActions(array ("Edit"));
+        $this->listViewOptions->setBulkActions(array());
+        $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:Staff:list.html.twig");
+    }
+
+
 
     /**
      * @author Ola <ola.ali@ibtikar.net.sa>
@@ -391,7 +431,7 @@ class StaffController extends UserController {
         $securityContext = $this->get('security.authorization_checker');
         $form = $this->createForm(StaffType::class, $staff, array(
             'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
-            'validation_groups' => array('create', 'Default'),
+            'validation_groups' => array('edit', 'Default'),
             'container' => $this->container,
             'errorMessage' => $ErrorMessage,
             'edit' => true,

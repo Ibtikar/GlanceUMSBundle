@@ -34,6 +34,10 @@ ibtikar_glance_ums_staff_change_list_columns:
     path:  /staff/change-list-columns
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:changeListColumns }
 
+ibtikar_glance_ums_staff_list:
+    path:  /staff/list
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:list }
+
 ibtikar_glance_ums_staff_delete_image:
     path:  /staff/remove/image/{id}
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:deleteImage }

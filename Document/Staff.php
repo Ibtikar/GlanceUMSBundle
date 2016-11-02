@@ -16,6 +16,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 
 /**
  * @MongoDB\Document(repositoryClass="Ibtikar\GlanceUMSBundle\Document\UserRepository")
+ * @MongoDBUnique(fields={"username"}, repositoryMethod="findUserByUsername", groups={"username", "Default"})
  * @CustomAssert\InternationalPhone
  */
 class Staff extends User {
