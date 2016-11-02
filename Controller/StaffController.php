@@ -499,7 +499,7 @@ class StaffController extends UserController {
                         $i++;
                     }
 
-                    $staff->setForceLogout($forceLogout);
+//                    $staff->setForceLogout($forceLogout);
                     $staff->setEditDate(new \DateTime());
                     $dm->flush();
                     $newRoles=array();
