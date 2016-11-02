@@ -41,3 +41,7 @@ ibtikar_glance_ums_staff_list:
 ibtikar_glance_ums_staff_delete_image:
     path:  /staff/remove/image/{id}
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:deleteImage }
+
+ibtikar_glance_ums_staff_bulk_actions:
+    path: /staff/bulk
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:bulk}

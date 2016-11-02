@@ -311,7 +311,7 @@ class StaffController extends UserController {
         $dm = $this->get('doctrine_mongodb')->getManager();
 
         $queryBuilder = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
-                ->field('admin')->equals(false)
+                ->field('id')->notEqual($this->getUser()->getId())
                 ->field('deleted')->equals(false);
 
 //        if ($request->get('group')) {
@@ -510,7 +510,7 @@ class StaffController extends UserController {
                     }
                     if (count(array_diff($oldRoles, $newRoles)) > 0) {
 
-                        $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans('role', array(), $this->translationDomain), implode(',', $newRolesNames) . PHP_EOL), $record);
+                        $content.= str_replace(array('%updatedfield%', '%value%'), array($translator->trans('Role', array(), $this->translationDomain), implode(',', $newRolesNames) . PHP_EOL), $record);
                     }
 
 

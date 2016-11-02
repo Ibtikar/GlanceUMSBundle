@@ -28,11 +28,13 @@
 'Choose City': 'اختر المدينه'
 'male': ذكر
 'female' : انثى
-'add staff':  إدخال عضو جديد
+'add staff':  إدخال موظف جديد
 'Password': 'كلمة المرور'
 'password': 'كلمة المرور'
 'Change Password': 'تغيير كلمة المرور'
 'Repeat Password': 'تأكيد كلمة المرور'
 'edit staff': 'تعديل موظف'
+'STAFF': 'موظف'
+'List Staff' :  قائمه الموظفين
 
 
