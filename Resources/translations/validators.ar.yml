@@ -2,7 +2,7 @@
 'The Password must be {{ limit }} maximum characters and numbers length': 'يجب ان تكون كلمة المرور مكونه من {{ limit }} خانه على الأكثر وتحتوي على ارقام وحروف'
 'The password fields must match.': 'القيم المدخلة غير متطابقة'
 'Current password is not valid': 'لقد قمت بادخال كلمة مرور مطابقه لكلمة المرور القديمه... من فضلك ادخل كلمة مرور جديده'
-'This value should not be blank.': 'يجب إدخال القيمة'
+'This value should not be blank.': 'الرجاء إدخال قيمة‎'
 'This value is already used.': 'غير متاح'
 'Your name must be at least {{ limit }} characters long': 'يجب أن تكون عدد الحروف {{ limit }} أو أكثر'
 'Your name cannot be longer than {{ limit }} characters long': 'عذراَ! الحد الأقصى هو {{ limit }} حرف'

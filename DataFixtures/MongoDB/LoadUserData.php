@@ -18,7 +18,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
         $adminUser->setUserPassword('ibtikaradmin123');
         $adminUser->setEmail('ola.ali@ibtikar.net.sa');
         $adminUser->setFirstName('مشرف');
-        $adminUser->setLastName('جودى');
+        $adminUser->setLastName('قودى');
         $adminUser->setUsername('goodyAdmin');
         $adminUser->setAdmin(true);
         $adminUser->setEmailVerified(TRUE);
