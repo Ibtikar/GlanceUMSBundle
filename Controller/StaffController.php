@@ -59,8 +59,8 @@ class StaffController extends UserController {
 
         $this->listViewOptions->setDefaultSortBy("createdAt");
         $this->listViewOptions->setDefaultSortOrder("desc");
-        $this->listViewOptions->setActions(array ("Edit"));
-        $this->listViewOptions->setBulkActions(array('Delete'));
+        $this->listViewOptions->setActions(array ("Edit","Delete"));
+        $this->listViewOptions->setBulkActions(array());
         $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:Staff:list.html.twig");
     }
 

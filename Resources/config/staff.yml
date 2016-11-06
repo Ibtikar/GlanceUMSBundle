@@ -26,6 +26,10 @@ ibtikar_glance_ums_staff_edit:
     path: /staff/edit/{id}
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:edit ,id: id}
 
+ibtikar_glance_ums_staff_delete:
+    path: /staff/delete/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Staff:delete ,id: id}
+
 ibtikar_glance_ums_staff_check_field_unique:
     path: /staff/checkfieldUnique
     defaults: { _controller: IbtikarGlanceUMSBundle:User:checkFieldUnique }
