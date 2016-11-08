@@ -47,7 +47,7 @@ class Staff extends User {
     protected $mustChangePassword = true;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Job", simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Job", simple=true)
      */
     protected $job;
 
@@ -232,10 +232,10 @@ class Staff extends User {
     /**
      * Set job
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\Job $job
+     * @param Ibtikar\GlanceUMSBundle\Document\Job $job
      * @return self
      */
-    public function setJob(\Ibtikar\GlanceDashboardBundle\Document\Job $job)
+    public function setJob(\Ibtikar\GlanceUMSBundle\Document\Job $job)
     {
         $this->job = $job;
         return $this;
@@ -244,7 +244,7 @@ class Staff extends User {
     /**
      * Get job
      *
-     * @return Ibtikar\GlanceDashboardBundle\Document\Job $job
+     * @return Ibtikar\GlanceUMSBundle\Document\Job $job
      */
     public function getJob()
     {

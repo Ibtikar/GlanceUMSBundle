@@ -35,7 +35,7 @@ class LoadCountryData extends AbstractFixture implements FixtureInterface , Orde
             if ($countryCode === 'SA') {
                 $saudiCities = array("Mecca" => "مكة المكرمة", "Jeddah" => "جدة", "Madinah"=> "المدينة المنورة", "Riyadh" => "الرياض", "Abha" => "أبها");
                 foreach ($saudiCities as $cityEnglishName => $cityName) {
-                    $city = new \Ibtikar\GlanceDashboardBundle\Document\City();
+                    $city = new \Ibtikar\GlanceUMSBundle\Document\City();
                     $city->setCountry($country);
                     $city->setName($cityName);
                     $city->setNameEn($cityEnglishName);

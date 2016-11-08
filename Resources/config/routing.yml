@@ -6,6 +6,15 @@ ibtikar_glance_ums_visitor:
     resource: "@IbtikarGlanceUMSBundle/Resources/config/visitor.yml"
     prefix:   /
 
+ibtikar_glance_ums_city:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/city.yml"
+    prefix:   /backend/city
+
+ibtikar_glance_ums_job:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/job.yml"
+    prefix:   /backend/job
+
+
 login:
     path:  /login
     defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:login }

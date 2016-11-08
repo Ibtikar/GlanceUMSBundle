@@ -1,0 +1,11 @@
+{% extends  'IbtikarGlanceDashboardBundle:List:baseList.html.twig' %}
+
+{% block statistic %}
+    <span class="label bg-number heading-text">{{total}} {% trans from translationDomain %}city{% endtrans %}</span>
+{% endblock %}
+
+{% block breadCrumb %}
+                    <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_city_create')}}"><i class="icon-add"></i><span>إدخال مدينه</span></a>
+                    <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span>قائمه المدن</span></a>
+
+{% endblock %}

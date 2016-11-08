@@ -1,0 +1,33 @@
+# #############Labels############
+'Title': 'الوظيفة بالعربية'
+'Title en': 'الوظيفة بالإنجليزية'
+'title': 'الوظيفة بالعربية'
+'titleEn': 'الوظيفة بالإنجليزية'
+'createdAt': تاريخ الإنشاء
+'Created at': تاريخ الإنشاء
+'createdBy': قام بالإنشاء
+'updatedAt': تاريخ التحديث
+'Updated at': تاريخ التحديث
+'updatedBy': قام بالتحديث
+staffMembersCount: عدد الموظفين
+Staff members count: عدد الموظفين
+job: وظيفه
+
+# ############Messages############
+Delete One Title: 'حذف الوظيفة'
+Delete One Confirmation Message: 'انت على وشك حذف الوظيفة %s .. هل ترغب بحذفها؟'
+Delete Many Title: 'حذف الوظائف'
+Delete Many confirmation Message: ' انت على وشك حذف عدد %s   وظيفة .. هل ترغب بحذفهم؟'
+'Cant deleted,it contain staff members': 'لا يمكن حذف هذه الوظيفة لأنها تحتوي على موظفين !'
+'Already deleted': 'لقد تم حذف الوظيفة من قبل'
+
+# ############Titles############
+'List Job': 'قائمة الوظائف'
+'list job': 'قائمة الوظائف'
+'Add new job': 'إدخال وظيفة جديدة'
+
+# ############Buttons############
+'Delete Job': 'حذف الوظيفة'
+'Edit Job': 'تعديل الوظيفة'
+
+# #############General############

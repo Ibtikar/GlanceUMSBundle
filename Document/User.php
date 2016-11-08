@@ -62,7 +62,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
 
     /**
      * @Assert\NotBlank(groups={"city", "Default", "api-edit"})
-     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\City",  simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\City",  simple=true)
      */
     protected $city;
 
@@ -1121,10 +1121,10 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * Set city
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\City $city
+     * @param Ibtikar\GlanceUMSBundle\Document\City $city
      * @return self
      */
-    public function setCity(\Ibtikar\GlanceDashboardBundle\Document\City $city)
+    public function setCity(\Ibtikar\GlanceUMSBundle\Document\City $city)
     {
         $this->city = $city;
         return $this;
@@ -1133,7 +1133,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * Get city
      *
-     * @return Ibtikar\GlanceDashboardBundle\Document\City $city
+     * @return Ibtikar\GlanceUMSBundle\Document\City $city
      */
     public function getCity()
     {

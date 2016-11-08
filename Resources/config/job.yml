@@ -1,0 +1,31 @@
+ibtikar_glance_ums_job_create:
+    path:  /create
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:create }
+
+ibtikar_glance_ums_job_edit:
+    path:  /edit/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:edit}
+
+ibtikar_glance_ums_job_delete:
+    path:  /delete/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:delete }
+
+ibtikar_glance_ums_job_list:
+    path: /list
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:list }
+
+ibtikar_glance_ums_job_delete:
+    path: /delete
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:delete}
+
+ibtikar_glance_ums_job_bulk_actions:
+    path: /bulk
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:bulk}
+
+ibtikar_glance_ums_job_check_field_unique:
+    path: /checkfieldUnique
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:checkFieldUnique }
+
+ibtikar_glance_ums_job_change_list_columns:
+    path:  /change-list-columns
+    defaults: { _controller: IbtikarGlanceUMSBundle:Job:changeListColumns }

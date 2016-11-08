@@ -1,0 +1,48 @@
+# #############Labels############
+'Name': 'الاسم بالعربية'
+'NameEn': 'الاسم بالإنجليزية'
+'name': 'الاسم بالعربية'
+'nameEn': 'الاسم بالإنجليزية'
+'Name en': 'الاسم بالإنجليزية'
+'Country': 'البلد'
+'country': 'البلد'
+'staffMembersCount': 'عدد الموظفين و  الأعضاء'
+'Staff members count': 'عدد الموظفين و  الأعضاء'
+'createdAt': تاريخ الإنشاء
+'Created at': تاريخ الإنشاء
+'createdBy': قام بالإنشاء
+'updatedAt': تاريخ التحديث
+'Updated at': تاريخ التحديث
+'city': مدينه
+'Choose City': 'اختر المدينه'
+
+# ############Messages############
+'Delete One Confirmation Message': 'انت على وشك حذف المدينه %s.. هل ترغب بحذفها؟'
+'Delete Many Title': 'حذف المدن'
+'Can not delete the city as it contains staff members or visitors.': 'ﻻ يمكن حذف المدينه  ﻷنها تحتوى على موظفين او  أعضاء !'
+'Can not delete the city as it contains news': 'ﻻ يمكن حذف المدينه  ﻷنها تحتوى على ماده خبريه !'
+'Can not delete the city as it contains comics': 'ﻻ يمكن حذف المدينه  ﻷنها تحتوى على ماده خبريه !'
+
+# ############Titles############
+'List City': 'قائمة المدن'
+'list city': 'قائمة المدن'
+'Add new city': 'إدخال مدينه جديدة'
+edit city: تعديل مدينه
+
+# ############Buttons############
+'View One City': 'عرض المدينة'
+'Edit City': 'تعديل المدينة'
+'Delete City': 'حذف المدينة'
+'View Places': 'مشاهدة الأماكن'
+'add Places': 'إضافة مكان'
+'manage places': 'إدارة الأماكن'
+
+# #############General############
+'Member Count': 'عدد الموظفين و الأعضاء'
+'Description': 'نبذه عن المدينة او المحافظة'
+'Time zone': 'التوقيت'
+'Area code': 'مفتاح المنطقة'
+'defaultCoverPhoto': 'صوره الغلاف'
+'defaultProfilePhoto': 'صوره البروفايل'
+'Save': 'حفظ'
+'Save and add': 'حفظ و اضافة مناطق'
