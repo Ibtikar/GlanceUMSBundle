@@ -1,0 +1,115 @@
+{% extends 'IbtikarGlanceDashboardBundle::baseModal.html.twig' %}
+
+{% block modalHeader %}
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h6 class="modal-title"> {{'Permision'|trans({},translationDomain) }}
+                    <span class="badge bg-dark position-right">{{roleCount}}</span>
+                </h6>
+{% endblock %}
+
+{% block modalBody %}
+
+    <div class="modal-body">
+
+    <div class="tab-content">
+
+
+                                                    <div class="tabbable">
+                                                        <ul class="nav nav-tabs nav-tabs-highlight">
+                                                            {% for key,tab in tabs %}
+                                                                <li class="{% if loop.first %}active{%endif %}"><a href="#badges-tab-{{key}}" data-toggle="tab"><span class="badge badge-primary position-left">{{tab.count}}</span> {{ tab.title|trans({},translationDomain) }}</a></li>
+                                                                {% endfor %}
+                                                        </ul>
+
+                                                        <div class="tab-content">
+                                                            {% for key,tab in tabs %}
+                                                                <div class="tab-pane {% if loop.first %}active{%endif %}" id="badges-tab-{{key}}">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table text-nowrap" style="border:1px solid #ddd">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="width: 200px;">الاسم</th>
+                                                                                        {% for permission in tab.permission %}
+                                                                                        <th style="width:50px" class="text-center">{{ permission|trans({},translationDomain) }}</th>
+                                                                                        {% endfor %}
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+
+                                                                                <tr class="active border-double">
+
+                                                                                    <td colspan="{{ tab.permission|length +1 }}">
+
+                                                                                        <span class="pull-left"> module {{loop.index}}</span>
+
+                                                                                        <span class="badge bg-primary pull-right dev-count"></span>
+                                                                                    </td>
+
+                                                                                </tr>
+
+                                                                                {% for tabkey,value in tab %}
+                                                                                    {% if tabkey=='modules' %}
+
+                                                                                        {% for name,module in value %}
+                                                                                            <tr>
+
+
+                                                                                                <td>
+
+                                                                                                    <div class="media-body">
+                                                                                                        <a href="javascript:void(0)" class="display-inline-block text-default letter-icon-title"> {{ name|trans({},translationDomain)}} </a>
+
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                {% for permission in tab.permission %}
+
+
+                                                                                                    <td class="text-center">
+                                                                                                        {% if 'ROLE_'~name~'_'~permission in module %}
+ {% if 'ROLE_'~name~'_'~permission in permissionSelected or admin%}
+     <i class="icon-checkmark4 "></i>
+     {% endif %}
+
+
+                                                                                                        {% endif %}
+                                                                                                    </td>
+
+                                                                                                {% endfor%}
+
+
+
+                                                                                            </tr>
+                                                                                        {% endfor %}
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+
+
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div><!-- table-responeive -->
+
+                                                                </div><!-- tab 1 -->
+
+                                                            {% endfor%}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+   
+{% endblock %}
+
+{% block modalFooter %}
+    <button type="button" class="btn btn-link" data-dismiss="modal">الغاء</button>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        var toggleButtonColor = '#D6494C';
+        $('.tab-pane').each(function() {
+          $(this).find('.dev-count').html($(this).find('.icon-checkmark4').length)
+        })
+
+    </script>
+{% endblock %}

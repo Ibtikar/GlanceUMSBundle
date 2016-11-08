@@ -50,7 +50,7 @@ class City extends Document {
     private $nameEn;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Country", simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Country", simple=true)
      */
     protected $country;
 
@@ -121,10 +121,10 @@ class City extends Document {
     /**
      * Set country
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\Country $country
+     * @param Ibtikar\GlanceUMSBundle\Document\Country $country
      * @return self
      */
-    public function setCountry(\Ibtikar\GlanceDashboardBundle\Document\Country $country)
+    public function setCountry(\Ibtikar\GlanceUMSBundle\Document\Country $country)
     {
         $this->country = $country;
         return $this;
@@ -133,7 +133,7 @@ class City extends Document {
     /**
      * Get country
      *
-     * @return Ibtikar\GlanceDashboardBundle\Document\Country $country
+     * @return Ibtikar\GlanceUMSBundle\Document\Country $country
      */
     public function getCountry()
     {

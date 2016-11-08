@@ -1,0 +1,254 @@
+{% extends 'IbtikarGlanceDashboardBundle::formLayout.html.twig' %}
+
+
+
+{% block form_container %}
+
+
+
+                                    {{ form_start(form)}}
+
+                                    {{ form_row(form.name) }}
+
+                                    {{ form_row(form.description) }}
+
+                                            <div class="panel panel-flat">
+                                                <div class="panel-heading">
+                                                    <h6 class="panel-title"> اضف الصلاحية</h6>
+
+                                                </div>
+
+                                                <div class="panel-body">
+                                                    <div class="tabbable">
+                                                        <ul class="nav nav-tabs nav-tabs-highlight">
+                                                            {% for key,tab in tabs %}
+                                                                <li class="{% if loop.first %}active{%endif %}"><a href="#badges-tab-{{key}}" data-toggle="tab"><span class="badge badge-primary position-left">{{tab.count}}</span> {{ tab.title|trans({},translationDomain) }}</a></li>
+                                                                {% endfor %}
+                                                        </ul>
+
+                                                        <div class="tab-content">
+                                                            {% for key,tab in tabs %}
+                                                                <div class="tab-pane {% if loop.first %}active{%endif %}" id="badges-tab-{{key}}">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table text-nowrap" style="border:1px solid #ddd">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center" style="width: 20px;"><i class="icon-arrow-down12"></i></th>
+                                                                                    <th style="width: 200px;">الاسم</th>
+                                                                                        {% for permission in tab.permission %}
+                                                                                        <th style="width:50px" class="text-center">{{ permission|trans({},translationDomain) }}</th>
+                                                                                        {% endfor %}
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+
+                                                                                <tr class="active border-double">
+                                                                                    <td class="text-center">
+                                                                                        <div class="form-group">
+                                                                                            <label class="checkbox-inline">
+                                                                                                <input type="checkbox" class="styled dev-check-all dev-check-all-{{key }} " onclick="checkAllModuleBox($(this))">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </td>
+
+                                                                                    <td colspan="{{ tab.permission|length +1 }}">
+
+                                                                                        <span class="pull-left"> module {{loop.index}}</span>
+
+                                                                                        <span class="badge bg-primary pull-right dev-count"></span>
+                                                                                    </td>
+
+                                                                                </tr>
+
+                                                                                {% for tabkey,value in tab %}
+                                                                                    {% if tabkey=='modules' %}
+
+                                                                                        {% for name,module in value %}
+                                                                                            <tr>
+
+                                                                                                <td class="text-center">
+
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="checkbox-inline">
+                                                                                                            <input type="checkbox" class="styled selectAllRow" onclick="checkAllRow($(this))">
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+
+
+                                                                                                    <div class="media-body">
+                                                                                                        <a href="javascript:void(0)" class="display-inline-block text-default letter-icon-title"> {{ name|trans({},translationDomain)}} </a>
+
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                {% for permission in tab.permission %}
+
+
+                                                                                                    <td class="text-center">
+                                                                                                        {% if 'ROLE_'~name~'_'~permission in module %}
+
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="checkbox-inline">
+                                                                                                                    <input type="checkbox" class="styled dev-checkbox"  value="{{ 'ROLE_'~name~'_'~permission }}" name="form[permissions][]" data-rule-mincheck="1"   {% if 'ROLE_'~name~'_'~permission in permissionSelected %} checked="checked"{% endif %} data-error-after-selector=".panel-flat .tabbable" data-parent-element=".panel-body" data-msg-mincheck="{% trans from 'role' %}You must have at least 1 Permission{% endtrans %}" />
+
+                                                                                                                </label>
+                                                                                                            </div>
+                                                                                                        {% endif %}
+                                                                                                    </td>
+
+                                                                                                {% endfor%}
+
+
+
+                                                                                            </tr>
+                                                                                        {% endfor %}
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+
+
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div><!-- table-responeive -->
+
+                                                                </div><!-- tab 1 -->
+
+                                                            {% endfor%}
+                                        {{ form_widget(form.permissions) }}
+
+                                        {{ form_errors(form.permissions) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                    {{ form_end(form) }}
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/ibtikarshareeconomydashboarddesign/js/plugins/forms/styling/switchery.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ibtikarshareeconomydashboarddesign/js/plugins/forms/styling/switch.min.js')}}"></script>
+
+
+    <script type="text/javascript" src="{{ asset('bundles/ibtikarshareeconomydashboarddesign/js/pages/form_checkboxes_radios.js')}}"></script>
+
+    <script>
+        $('#form_permissions').replaceWith('');
+
+        function refreshCount(element){
+              $(element).closest('.tab-pane').find('.dev-count').html($(element).closest('.tab-pane').find('input:checked.dev-checkbox').length);
+
+        }
+        function refreshCheckBoxes(){
+                 $('tr').each(function() {
+                  if($(this).find('input.dev-checkbox').length==$(this).find('input:checked.dev-checkbox').length){
+                       $(this).find('.selectAllRow').prop('checked',true).uniform('refresh');
+                    if($(this).closest('.tab-pane').find('.selectAllRow').length== $(this).closest('.tab-pane').find('.selectAllRow:checked').length){
+                     $(this).closest('.tab-pane').find('.dev-check-all').prop('checked',true).uniform('refresh');
+                    }
+                    }
+
+                });
+        }
+        function checkAllModuleBox(element){
+           if(element.is(":checked")){
+                $(element).closest('.tab-pane').find('.styled').prop('checked',true).uniform('refresh');
+        {#                $(element.closest('.tab-pane')).find('.dev-count').html($(element.closest('.tab-pane')).find('.dev-checkbox').length)#}
+            }else{
+                $(element).closest('.tab-pane').find('.styled').prop('checked',false).uniform('refresh');
+        {#                $(element.closest('.tab-pane')).find('.dev-count').html(0)#}
+
+            }
+            refreshCount(element)
+
+        }
+        function checkAllRow(element){
+
+            if (($(element).is(":checked"))) {
+                $(element).closest('tr').find('input[type=checkbox]').prop('checked',true).uniform('refresh');
+                if($(element).closest('.tab-pane').find('.selectAllRow').length== $(element).closest('.tab-pane').find('.selectAllRow:checked').length){
+                    $(element).closest('.tab-pane').find('.dev-check-all').prop('checked',true).uniform('refresh');
+                }
+            }
+            else {
+                $(element).closest('tr').find("input[type=checkbox]").prop('checked',false).uniform('refresh');
+                $(element).closest('.tab-pane').find('.dev-check-all').prop('checked',false).uniform('refresh');
+
+
+            }
+            refreshCount(element)
+
+
+        }
+
+        $(document).ready(function () {
+           $('.dev-check-all').each(function() {
+              refreshCount($(this))
+
+            });
+            refreshCheckBoxes();
+
+            $('.selectAllRow,.dev-check-all').change(function(){
+                validateElement($('.dev-checkbox:first'))
+            })
+
+        $(document).on('click','.dev-checkbox',function(){
+               if($(this).is(':checked')){
+                    if($(this).parents('tr').find('input.dev-checkbox').length==$(this).parents('tr').find('input:checked.dev-checkbox').length){
+                       $(this).parents('tr').find('.selectAllRow').prop('checked',true).uniform('refresh');
+                    if($(this).closest('.tab-pane').find('.selectAllRow').length== $(this).closest('.tab-pane').find('.selectAllRow:checked').length){
+                     $(this).closest('.tab-pane').find('.dev-check-all').prop('checked',true).uniform('refresh');
+                    }
+                    }
+                }else{
+                    if($(this).parents('tr').find('input.dev-checkbox').length!=$(this).parents('tr').find('input:checked.dev-checkbox').length){
+                       $(this).parents('tr').find('.selectAllRow').prop('checked',false).uniform('refresh');
+                       $(this).closest('.tab-pane').find('.dev-check-all').prop('checked',false).uniform('refresh');
+
+                    }
+
+
+                }
+                refreshCount($(this))
+
+            })
+
+            $('body').on('ajaxCallback',function(){
+             $('#form_permissions').replaceWith('');
+             $('.styled').uniform();
+                $('.dev-check-all').each(function() {
+                 refreshCount($(this))
+
+                });
+                refreshCheckBoxes();
+           
+                $('.selectAllRow,.dev-check-all').change(function(){
+                validateElement($('.dev-checkbox'))
+                })
+             });
+
+        $('.dev-form-reset-button').on('click', function () {
+
+        $('input,textarea').each(function () {
+            unhighlightElement($(this))
+            $('.dev-check-all').each(function() {
+              refreshCount($(this))
+
+            });
+        })
+            refreshCheckBoxes();
+
+        })
+        })
+
+
+    </script>
+{% endblock %}

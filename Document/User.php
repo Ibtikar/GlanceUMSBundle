@@ -56,7 +56,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     protected $id;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Country", simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Country", simple=true)
      */
     protected $country;
 
@@ -232,16 +232,16 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
                 $newObject->setCountryUsageCount($newObject->getCountryUsageCount() + 1);
             }
         }
-        if (in_array($fieldName, array("city"))) {
-            $oldObject = $changeset[0];
-            if ($oldObject) {
-                $oldObject->setUsersCount($oldObject->getUsersCount() - 1);
-            }
-            $newObject = $changeset[1];
-            if ($newObject) {
-                $newObject->setUsersCount($newObject->getUsersCount() + 1);
-            }
-        }
+//        if (in_array($fieldName, array("city"))) {
+//            $oldObject = $changeset[0];
+//            if ($oldObject) {
+//                $oldObject->setUsersCount($oldObject->getUsersCount() - 1);
+//            }
+//            $newObject = $changeset[1];
+//            if ($newObject) {
+//                $newObject->setUsersCount($newObject->getUsersCount() + 1);
+//            }
+//        }
     }
 
     /**
@@ -1099,10 +1099,10 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * Set country
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\Country $country
+     * @param Ibtikar\GlanceUMSBundle\Document\Country $country
      * @return self
      */
-    public function setCountry(\Ibtikar\GlanceDashboardBundle\Document\Country $country)
+    public function setCountry(\Ibtikar\GlanceUMSBundle\Document\Country $country)
     {
         $this->country = $country;
         return $this;
@@ -1111,7 +1111,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * Get country
      *
-     * @return Ibtikar\GlanceDashboardBundle\Document\Country $country
+     * @return Ibtikar\GlanceUMSBundle\Document\Country $country
      */
     public function getCountry()
     {

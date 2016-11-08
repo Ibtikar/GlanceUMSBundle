@@ -1,0 +1,39 @@
+ibtikar_glance_ums_role_create:
+    path:  /create
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:create }
+
+ibtikar_glance_ums_role_edit:
+    path:  /edit/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:edit }
+
+ibtikar_glance_ums_role_delete:
+    path:  /delete/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:delete }
+
+module_role_create:
+    path:  /module-role-create
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:edit }
+
+ibtikar_glance_ums_role_list:
+    path: /list
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:list }
+
+ibtikar_glance_ums_role_delete:
+    path: /delete
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:delete }
+
+ibtikar_glance_ums_role_bulk_actions:
+    path: /bulk
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:bulk}
+
+ibtikar_glance_ums_role_check_field_unique:
+    path: /checkfieldUnique
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:checkFieldUnique }
+
+ibtikar_glance_ums_role_change_list_columns:
+    path:  /change-list-columns
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:changeListColumns }
+
+ibtikar_glance_ums_role_permissions_show:
+    path:  /role-permissions-show
+    defaults: { _controller: IbtikarGlanceUMSBundle:Role:showRolePermission }

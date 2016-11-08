@@ -174,7 +174,7 @@ class StaffController extends UserController {
             'userImage' => ''
         ));
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $countries=$dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted() ->getQuery()->execute();
+        $countries=$dm->getRepository('IbtikarGlanceUMSBundle:Country')->findCountrySorted() ->getQuery()->execute();
         $countryArray=array();
         foreach ($countries as $country) {
             $countryArray[strtolower($country->getCountryCode())]=$country->getCountryName();
@@ -437,7 +437,7 @@ class StaffController extends UserController {
             'edit' => true,
             'userImage' => &$userImage
         ));
-        $countries = $dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted()->getQuery()->execute();
+        $countries = $dm->getRepository('IbtikarGlanceUMSBundle:Country')->findCountrySorted()->getQuery()->execute();
         $countryArray = array();
         foreach ($countries as $country) {
             $countryArray[strtolower($country->getCountryCode())] = $country->getCountryName();

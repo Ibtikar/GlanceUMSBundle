@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ibtikar\GlanceDashboardBundle\Document\Country;
+use Ibtikar\GlanceUMSBundle\Document\Country;
 use Symfony\Component\Intl\Intl;
 
 

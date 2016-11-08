@@ -62,7 +62,7 @@ class CityController extends BackendController {
     protected function doList(Request $request) {
         $renderingParams = parent::doList($request);
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $countries = $dm->getRepository('IbtikarGlanceDashboardBundle:Country')->findCountrySorted()->getQuery()->execute();
+        $countries = $dm->getRepository('IbtikarGlanceUMSBundle:Country')->findCountrySorted()->getQuery()->execute();
 
         $renderingParams['countries'] = $countries;
         $renderingParams['country_selected'] = $request->get('countryCode');
@@ -134,7 +134,7 @@ class CityController extends BackendController {
         $countryAttr = array('data-country' => true, 'class' => 'dev-country select');
         $selectedCountryId = $request->get('selectedCountryId');
         if ($selectedCountryId) {
-            $country = $dm->getRepository('IbtikarGlanceDashboardBundle:Country')->find($selectedCountryId);
+            $country = $dm->getRepository('IbtikarGlanceUMSBundle:Country')->find($selectedCountryId);
             if ($country) {
                 $city->setCountry($country);
                 $countryAttr['readonly'] = true;
@@ -143,7 +143,7 @@ class CityController extends BackendController {
         $form = $this->createFormBuilder($city, array('translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal')))
             ->add('name', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-unique' => 'ibtikar_glance_ums_city_check_field_unique', 'data-name' => 'name', 'data-rule-minlength' => 3, 'data-msg-unique' => $this->trans('not valid'), 'data-rule-maxlength' => 150, 'data-url' => $this->generateUrl('ibtikar_glance_ums_city_check_field_unique'))))
             ->add('nameEn', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-unique' => 'ibtikar_glance_ums_city_check_field_unique', 'data-name' => 'nameEn', 'data-rule-minlength' => 3, 'data-msg-unique' => $this->trans('not valid'), 'data-rule-maxlength' => 150, 'data-url' => $this->generateUrl('ibtikar_glance_ums_city_check_field_unique'))))
-            ->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceDashboardBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
+            ->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
 
                     return $repo->findCountrySorted();
                 }, 'choice_label' => 'countryName', 'required' => true, 'attr' => $countryAttr))
@@ -188,7 +188,7 @@ class CityController extends BackendController {
         $form = $this->createFormBuilder($city, array('translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal')))
             ->add('name', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-unique' => 'ibtikar_glance_ums_city_check_field_unique', 'data-name' => 'name', 'data-rule-minlength' => 3, 'data-msg-unique' => $this->trans('not valid'), 'data-rule-maxlength' => 150, 'data-url' => $this->generateUrl('ibtikar_glance_ums_city_check_field_unique'))))
             ->add('nameEn', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-unique' => 'ibtikar_glance_ums_city_check_field_unique', 'data-name' => 'nameEn', 'data-rule-minlength' => 3, 'data-msg-unique' => $this->trans('not valid'), 'data-rule-maxlength' => 150, 'data-url' => $this->generateUrl('ibtikar_glance_ums_city_check_field_unique'))))
-            ->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceDashboardBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
+            ->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
 
                     return $repo->findCountrySorted();
                 }, 'choice_label' => 'countryName', 'required' => true, 'attr' => $countryAttr))

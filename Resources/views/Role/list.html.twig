@@ -1,0 +1,18 @@
+{% extends  'IbtikarGlanceDashboardBundle:List:baseList.html.twig' %}
+
+
+{% block statistic %}
+    <span class="label bg-number heading-text">{{total}} {% trans from translationDomain %}role{% endtrans %}</span>
+{% endblock %}
+
+{% block breadCrumb %}
+                    <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_role_create')}}"><i class="icon-add"></i><span>إدخال دور</span></a>
+                    <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span>قائمه الادوار </span></a>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var showPermisionUrl= "{{path('ibtikar_glance_ums_role_permissions_show')}}";
+    </script>
+    {{ parent() }}
+{% endblock %}

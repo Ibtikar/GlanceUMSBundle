@@ -53,7 +53,7 @@ class Staff extends User {
 
     /**
      * @Assert\NotBlank
-     * @MongoDB\ReferenceMany(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Role", simple=true)
+     * @MongoDB\ReferenceMany(targetDocument="Ibtikar\GlanceUMSBundle\Document\Role", simple=true)
      */
     protected $role;
 
@@ -254,9 +254,9 @@ class Staff extends User {
     /**
      * Add role
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\Role $role
+     * @param Ibtikar\GlanceUMSBundle\Document\Role $role
      */
-    public function addRole(\Ibtikar\GlanceDashboardBundle\Document\Role $role)
+    public function addRole(\Ibtikar\GlanceUMSBundle\Document\Role $role)
     {
         $this->role[] = $role;
     }
@@ -264,9 +264,9 @@ class Staff extends User {
     /**
      * Remove role
      *
-     * @param Ibtikar\GlanceDashboardBundle\Document\Role $role
+     * @param Ibtikar\GlanceUMSBundle\Document\Role $role
      */
-    public function removeRole(\Ibtikar\GlanceDashboardBundle\Document\Role $role)
+    public function removeRole(\Ibtikar\GlanceUMSBundle\Document\Role $role)
     {
         $this->role->removeElement($role);
     }

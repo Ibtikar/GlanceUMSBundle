@@ -58,9 +58,9 @@ class StaffType extends AbstractType
         ));
 
         $builder
-            ->add('role', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceDashboardBundle:Role',
+            ->add('role', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Role',
                 'multiple' => TRUE, 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container')));
-        $builder->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceDashboardBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
+        $builder->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
 
                     return $repo->findCountrySorted();
                 }, 'choice_label' => 'countryName', 'required' => true, 'attr' => array('data-country' => true, 'class' => 'dev-country select')))

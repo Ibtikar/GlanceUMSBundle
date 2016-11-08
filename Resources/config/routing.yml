@@ -14,6 +14,10 @@ ibtikar_glance_ums_job:
     resource: "@IbtikarGlanceUMSBundle/Resources/config/job.yml"
     prefix:   /backend/job
 
+ibtikar_glance_ums_role:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/role.yml"
+    prefix:   /backend/role
+
 
 login:
     path:  /login
