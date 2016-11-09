@@ -14,6 +14,8 @@
 'VISITOR': 'عضو'
 'CITY': 'مدينه'
 'user': 'اداره المستخدمين'
+'content': 'اداره المحتوى'
+'PRODUCT': 'منتج'
 'city': 'المدن'
 'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'ROLE': 'دور'

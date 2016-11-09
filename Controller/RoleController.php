@@ -12,9 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type as formType;
 class RoleController extends BackendController {
 
     protected $translationDomain = 'role';
-    protected  $tabs=array('user'=>array('title'=>'user','count'=>0,'modules'=>array('STAFF'=>array(),'VISITOR'=>array(),'ROLE'=>array(),'JOB'=>array()),'permission'=>array()),
-        'city'=>array('title'=>'city','count'=>0,'modules'=>array('CITY'=>array()),'permission'=>array()));
-    protected $tabsnames=array('user','city');
+    protected  $tabs=array('user'=>array('title'=>'user','count'=>0,'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),'permission'=>array()),
+        'content'=>array('title'=>'content','count'=>0,'modules'=>array('PRODUCT'=>array()),'permission'=>array()));
+    protected $tabsnames=array('user','content');
     private $internalPermissions = array(
         'ROLE_ADMIN', 'ROLE_STAFF',
 
