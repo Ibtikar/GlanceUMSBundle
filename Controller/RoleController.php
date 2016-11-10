@@ -13,7 +13,7 @@ class RoleController extends BackendController {
 
     protected $translationDomain = 'role';
     protected  $tabs=array('user'=>array('title'=>'user','count'=>0,'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),'permission'=>array()),
-        'content'=>array('title'=>'content','count'=>0,'modules'=>array('PRODUCT'=>array()),'permission'=>array()));
+        'content'=>array('title'=>'content','count'=>0,'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array()),'permission'=>array()));
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
         'ROLE_ADMIN', 'ROLE_STAFF',
@@ -168,6 +168,7 @@ class RoleController extends BackendController {
         }
         $translator = $this->get('translator');
         $module=array();
+        $this->tabsnames= array_keys($this->tabs);
         foreach ($array as $key => $value) {
             $permission = explode(" ",str_replace("_", " ", strtolower(substr($key, 5))));
             foreach ($this->tabsnames as $tabsName ) {

@@ -16,6 +16,7 @@
 'user': 'اداره المستخدمين'
 'content': 'اداره المحتوى'
 'PRODUCT': 'منتج'
+'SUBPRODUCT ': 'منتج فرعى'
 'city': 'المدن'
 'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'ROLE': 'دور'
