@@ -288,6 +288,15 @@ class LoadEmailTemplateData implements FixtureInterface
 
         $manager->persist($editStaff);
 
+        $staffDelete = new EmailTemplate();
+        $staffDelete->setName('staff delete');
+        $staffDelete->setSubject('إلغاء حسابك');
+        $staffDelete->setMessage('يؤسفنا إبلاغك بأنه تم حذف حسابك من قبل المشرف المسؤول، لمزيد من المعلومات يمكنك التواصل مع مشرفك المباشر..');
+
+        $staffDelete->setTemplate('');
+
+
+        $manager->persist($staffDelete);
 
         $manager->flush();
     }

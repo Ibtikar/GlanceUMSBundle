@@ -667,4 +667,47 @@ class StaffController extends UserController {
             return $this->trans('failed operation');
         }
     }
+
+    protected function postDelete($ids) {
+
+        if(!is_array($ids)){
+            $ids = array($ids);
+        }
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('staff delete');
+
+        $dm->getFilterCollection()->disable('soft_delete');
+
+        $users = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
+                    ->field('admin')->equals(false)
+                    ->field('deleted')->equals(true)
+                    ->field('id')->in($ids)
+                    ->getQuery()->execute();
+
+        foreach($users as $user){
+            $body = str_replace(
+                    array(
+                '%fullname%',
+                '%extraInfo%',
+                '%smallMessage%',
+                '%message%'
+                    ), array(
+                $user,
+                '',
+                '',
+                $emailTemplate->getMessage()
+                    ), str_replace('%extra_content%', $emailTemplate->getTemplate(), $this->get('base_email')->getBaseRender($user->getPersonTitle(), false))
+            );
+            $mailer = $this->get('swiftmailer.mailer.spool_mailer');
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($emailTemplate->getSubject())
+                    ->setFrom($this->container->getParameter('mailer_user'))
+                    ->setTo($user->getEmail())
+                    ->setBody($body, 'text/html')
+            ;
+            $mailer->send($message);
+        }
+    }
 }
