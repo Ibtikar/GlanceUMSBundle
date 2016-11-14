@@ -228,15 +228,6 @@ class RoleController extends BackendController {
                 ->getForm();
     }
 
-    /**
-     * @param Document $document
-     * @return string
-     */
-    protected function validateDelete($document) {
-
-    }
-
-
     public function showRolePermissionAction(Request $request){
 
         $id= $request->get('id');
