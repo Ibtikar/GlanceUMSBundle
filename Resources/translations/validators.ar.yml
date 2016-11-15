@@ -5,7 +5,7 @@
 'This value should not be blank.': 'الرجاء إدخال قيمة‎'
 'This value is already used.': 'غير متاح'
 'Your name must be at least {{ limit }} characters long': 'يجب أن تكون عدد الحروف {{ limit }} أو أكثر'
-'Your name cannot be longer than {{ limit }} characters long': 'عذراَ! الحد الأقصى هو {{ limit }} حرف'
+'Your name cannot be longer than {{ limit }} characters long': '{{ limit }} الحد الأقصى لعدد الحروف هو'
 This value should be the user's current password. : 'كلمة المرور المدخله غير صحيحة'
 'picture not correct.': 'يجب ان تكون الصورة بصيغة JPG أو JPEG أو PNG'
 'Image dimension must be more than 200*200': 'يجب الا تقل ابعاد الصورة عن 200*200'
