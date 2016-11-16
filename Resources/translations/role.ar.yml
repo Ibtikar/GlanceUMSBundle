@@ -18,9 +18,10 @@
 'PRODUCT': 'منتج'
 'SUBPRODUCT': 'منتج فرعى'
 'city': 'المدن'
-'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'ROLE': 'دور'
 'JOB': 'وظيفه'
+'CATEGORY': 'تصنيف'
+'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'edit role': 'تعديل دور'
 'Description': الوصف
 'permissionscount': عدد الصلاحيات
@@ -40,30 +41,7 @@ role: دور
 'You are about to remove that role': 'أنت على وشك حذف دور هل تريد'
 'Remove that role and the users assgined to it': 'حذف الدور والمستخدمين الذين ينتمون إلى هذا الدور فقط'
 'Remove that role and deactivate the users assgined to it': 'حذف الدور وإيقاف المستخدمين الذين ينتمون إلى هذا الدور فقط'
-
-################permission##########################
 Permision: الصلاحيات
-Staff view: مشاهده موظف
-Staff create: اخال موظف
-Staff edit: تعديل موظف
-Staff activatedeactivate: تفعيل ايقاف موظف
-Staff delete: حذف موظف
-Visitor view: مشاهده عضو
-Visitor edit: تعديل عضو
-Visitor create: ادخال عضو
-Visitor activatedeactivate: تفعيل ايقاف عضو
-Visitor delete: حذف عضو
-Role view: مشاهده دور
-Role create:  اخال دور
-Role edit: تعديل دور
-Role delete:  حذف دور
-Job create: اخال وظيفه
-Job edit: تعديل وظيفه
-Job delete: حذف وظيفه
-City view: مشاهده مدينه
-City viewone: تعديل مدينه
-City create: اخال مدينه
-City edit: تعديل مدينه
-City delete: حذف مدينه
+
 
 
