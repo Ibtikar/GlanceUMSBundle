@@ -5,7 +5,7 @@ namespace Ibtikar\GlanceUMSBundle\DataFixtures\MongoDB;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Ibtikar\GlanceDashboardBundle\Document\Role;
+use Ibtikar\GlanceUMSBundle\Document\Role;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
 
