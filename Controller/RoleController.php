@@ -16,7 +16,7 @@ class RoleController extends BackendController {
         'content'=>array('title'=>'content','count'=>0,'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array()),'permission'=>array()));
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
-        'ROLE_ADMIN', 'ROLE_STAFF',
+        'ROLE_ADMIN', 'ROLE_STAFF','ROLE_SUBPRODUCT_VIEW'
 
         );
 
