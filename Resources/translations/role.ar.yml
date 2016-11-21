@@ -43,5 +43,12 @@ role: دور
 'Remove that role and deactivate the users assgined to it': 'حذف الدور وإيقاف المستخدمين الذين ينتمون إلى هذا الدور فقط'
 Permision: الصلاحيات
 
+##############recipe tab#################################
+AUTOPUBLISH: 'نشر تلقائى'
+PUBLISH: 'نشر'
+ASSIGN: 'اسناد لى'
+RECIPE: 'وصفه'
+RECIPENEW: 'وصفه جديده'
+recipe: 'وصفات'
 
 
