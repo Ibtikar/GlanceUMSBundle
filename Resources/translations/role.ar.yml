@@ -14,14 +14,9 @@
 'VISITOR': 'عضو'
 'CITY': 'مدينه'
 'user': 'اداره المستخدمين'
-'content': 'اداره المحتوى'
-'PRODUCT': 'منتج'
-'SUBPRODUCT': 'منتج فرعى'
 'city': 'المدن'
 'ROLE': 'دور'
 'JOB': 'وظيفه'
-'CATEGORY': 'تصنيف'
-'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'edit role': 'تعديل دور'
 'Description': الوصف
 'permissionscount': عدد الصلاحيات
@@ -34,14 +29,22 @@
 'updatedBy': قام بالتحديث
 'List Role': قائمه الادوار
 'list role': قائمه الادوار
-###################labels############################
 role: دور
 'Edit Role': 'تعديل دور'
 'Delete Role': 'حذف دور'
+Permision: الصلاحيات
+
+#######################messages#######################################
+'You must have at least 1 Permission': 'عذراَ! يجب إختيار صلاحية واحدة على الأقل'
 'You are about to remove that role': 'أنت على وشك حذف دور هل تريد'
 'Remove that role and the users assgined to it': 'حذف الدور والمستخدمين الذين ينتمون إلى هذا الدور فقط'
 'Remove that role and deactivate the users assgined to it': 'حذف الدور وإيقاف المستخدمين الذين ينتمون إلى هذا الدور فقط'
-Permision: الصلاحيات
+
+#####################content tab########################################
+'content': 'اداره المحتوى'
+'PRODUCT': 'منتج'
+'SUBPRODUCT': 'منتج فرعى'
+'CATEGORY': 'تصنيف'
 
 ##############recipe tab#################################
 AUTOPUBLISH: 'نشر تلقائى'
@@ -49,6 +52,9 @@ PUBLISH: 'نشر'
 ASSIGN: 'اسناد لى'
 RECIPE: 'وصفه'
 RECIPENEW: 'وصفه جديده'
+RECIPEDELETED: 'وصفه محذوفه'
 recipe: 'وصفات'
+
+
 
 
