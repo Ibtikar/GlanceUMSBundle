@@ -31,7 +31,7 @@ class LoadEmailTemplateData implements FixtureInterface
         $staffAdd->setSubject('أهلاً بك مطبخ قودي');
         $staffAdd->setMessage('لقد إنضممتِ اليوم الى عائلة مطبخ قودي، بنحن بدورنا نهنئك ونتمنى لك مزيداً من التوفيق');
         $staffAdd->setExtraInfo('<tr>
-                                                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;font-weight: bold;">
+                                                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #889098; text-align:right; line-height: 24px;font-weight: bold;direction:rtl;">
 بيانات الدخول:
                                                                     </td>
                                                                 </tr>');
