@@ -27,8 +27,8 @@
 'updatedAt': تاريخ التحديث
 'Updated at': تاريخ التحديث
 'updatedBy': قام بالتحديث
-'List Role': قائمه الادوار
-'list role': قائمه الادوار
+'List Role':  الادوار
+'list role':  الادوار
 role: دور
 'Edit Role': 'تعديل دور'
 'Delete Role': 'حذف دور'
@@ -51,8 +51,10 @@ AUTOPUBLISH: 'نشر تلقائى'
 PUBLISH: 'نشر'
 ASSIGN: 'اسناد لى'
 RECIPE: 'وصفه'
-RECIPENEW: 'وصفه جديده'
-RECIPEDELETED: 'وصفه محذوفه'
+RECIPENEW: ' جديده'
+RECIPEDELETED: ' محذوفه'
+RECIPEAUTOPUBLISH: 'مجدوله'
+RECIPEPUBLISH: 'منشور'
 recipe: 'وصفات'
 
 

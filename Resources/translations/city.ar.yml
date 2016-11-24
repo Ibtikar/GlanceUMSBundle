@@ -24,8 +24,8 @@
 'Can not delete the city as it contains comics': 'ﻻ يمكن حذف المدينه  ﻷنها تحتوى على ماده خبريه !'
 
 # ############Titles############
-'List City': 'قائمة المدن'
-'list city': 'قائمة المدن'
+'List City': ' المدن'
+'list city': ' المدن'
 'Add new city': 'إدخال مدينه جديدة'
 edit city: تعديل مدينه
 

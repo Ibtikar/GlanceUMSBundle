@@ -22,8 +22,8 @@ Delete Many confirmation Message: ' انت على وشك حذف عدد %s   وظ
 'Already deleted': 'لقد تم حذف الوظيفة من قبل'
 
 # ############Titles############
-'List Job': 'قائمة الوظائف'
-'list job': 'قائمة الوظائف'
+'List Job': ' الوظائف'
+'list job': ' الوظائف'
 'Add new job': 'إدخال وظيفة جديدة'
 
 # ############Buttons############
