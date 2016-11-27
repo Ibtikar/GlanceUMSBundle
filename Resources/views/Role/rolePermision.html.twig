@@ -40,7 +40,7 @@
 
                                                                                     <td colspan="{{ tab.permission|length +1 }}">
 
-                                                                                        <span class="pull-left"> module {{loop.index}}</span>
+                                                                                        <span class="pull-left"> {{ ('module '~loop.index)|trans({},translationDomain)}}</span>
 
                                                                                         <span class="badge bg-primary pull-right dev-count"></span>
                                                                                     </td>
@@ -97,7 +97,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-   
+
 {% endblock %}
 
 {% block modalFooter %}

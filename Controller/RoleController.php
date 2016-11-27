@@ -13,8 +13,8 @@ class RoleController extends BackendController {
 
     protected $translationDomain = 'role';
     protected  $tabs=array('user'=>array('title'=>'user','count'=>0,'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),'permission'=>array()),
-        'content'=>array('title'=>'content','count'=>0,'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array()),'permission'=>array()),
-        'recipe'=>array('title'=>'recipe','count'=>0,'modules'=>array('RECIPE'=>array(),'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array()),'permission'=>array()));
+        'recipeAndCategory'=>array('title'=>'recipeAndCategory','count'=>0,'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array()),'permission'=>array()),
+        'content'=>array('title'=>'content','count'=>0,'modules'=>array('RECIPE'=>array(),'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array()),'permission'=>array()));
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
         'ROLE_ADMIN', 'ROLE_STAFF','ROLE_SUBPRODUCT_VIEW'

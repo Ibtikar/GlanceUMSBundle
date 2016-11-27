@@ -41,7 +41,7 @@ Permision: الصلاحيات
 'Remove that role and deactivate the users assgined to it': 'حذف الدور وإيقاف المستخدمين الذين ينتمون إلى هذا الدور فقط'
 
 #####################content tab########################################
-'content': 'اداره المحتوى'
+'content': 'المحتوى'
 'PRODUCT': 'منتج'
 'SUBPRODUCT': 'منتج فرعى'
 'CATEGORY': 'تصنيف'
@@ -56,6 +56,10 @@ RECIPEDELETED: 'المحذوفه'
 RECIPEAUTOPUBLISH: 'المجدوله'
 RECIPEPUBLISH: 'المنشوره'
 recipe: 'وصفات'
+'module 1': 'المستخدمين'
+'module 2': 'المنتجات والتصنيفات'
+'recipeAndCategory': 'المنتجات والتصنيفات'
+'module 3': 'المحتوى'
 
 
 
