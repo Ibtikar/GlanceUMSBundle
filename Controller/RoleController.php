@@ -220,6 +220,7 @@ class RoleController extends BackendController {
                     'multiple' => true,
                     'expanded' => true,
                     'attr' => array(
+                        'parent-class'=>'hidden',
                         "data-msg-mincheck" => $this->get('translator')->trans('You must have at least 1 Permission', array(), $this->translationDomain),
                         "data-rule-mincheck" => "1",
                         "data-error-after-selector" => ".dev-page-main-form .table-responsive"
