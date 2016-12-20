@@ -14,5 +14,5 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Please enter your number': 'الرجاء إدخال رقم صحيح'
 'Please enter your valid and true email address': ' الرجاء إدخال بريد إلكتروني صحيح وفعال.'
 'username should contains characters, numbers or dash only': 'يجب أن يكون الإسم أكثر من 5 خانات ويحتوي على حروف أو أرقام أو - فقط.'
-'Image dimension must be more than 819*1091': 'يجب الا تقل ابعاد الصورة عن 819*1091'
+'Image dimension must than 819*1091': 'يجب ان تكون ابعاد الصورة 819*1091'
 'please choose magazine photo': 'يجب إختيار صورة المجله'
