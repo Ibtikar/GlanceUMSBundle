@@ -651,6 +651,16 @@ class StaffController extends UserController {
     }
 
 
+        public function getDocumentCount()
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        return $dm->createQueryBuilder($this->getObjectShortName())
+                ->field('deleted')->equals(FALSE)
+                ->field('id')->notEqual($this->getUser()->getId())
+                ->getQuery()
+                ->count();
+    }
+
     public function deleteImageAction(Request $request, $id) {
         $dm = $this->get('doctrine_mongodb')->getManager();
 
