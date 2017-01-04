@@ -22,7 +22,7 @@ class StaffController extends UserController {
     protected $changePasswordFromEmailView = 'IbtikarGlanceUMSBundle:Staff:changePasswordFromEmail.html.twig';
     protected $changePasswordView = 'IbtikarGlanceUMSBundle:Staff:changePassword.html.twig';
     protected $translationDomain = 'staff';
-    private $validationTranslationDomain = 'validators';
+    protected $validationTranslationDomain = 'validators';
     public $oneItem = 'Staff member';
 
     protected function configureListColumns() {

@@ -133,7 +133,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     protected $lastLoginFrom;
 
     /**
-     * @Assert\NotBlank(groups={"firstName", "Default", "visitorSignup", "api-edit"})
+     * @Assert\NotBlank(groups={"firstName", "Default", "api-edit"})
      * @MongoDB\String
      * @Assert\Length(
      *      max = 150,
@@ -143,7 +143,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     private $firstName;
 
     /**
-     * @Assert\NotBlank(groups={"lastName", "Default", "visitorSignup", "api-edit"})
+     * @Assert\NotBlank(groups={"lastName", "Default", "api-edit"})
      * @MongoDB\String
      * @Assert\Length(
      *      max = 150,

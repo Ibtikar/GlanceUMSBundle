@@ -366,10 +366,10 @@ class UserController extends BackendController {
 
         $securityContext = $this->container->get('security.authorization_checker');
 
-        $loggedInUser = $this->getUser();
-        if (!$loggedInUser) {
-            return new JsonResponse(array('status' => 'login'));
-        }
+//        $loggedInUser = $this->getUser();
+//        if (!$loggedInUser) {
+//            return new JsonResponse(array('status' => 'login'));
+//        }
 
 //        if (!$securityContext->isGranted('ROLE_ADMIN')) {
 //            return new JsonResponse(array('status' => 'denied'));
