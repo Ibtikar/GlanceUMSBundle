@@ -23,4 +23,5 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Please enter your valid email address': 'يجب ان يكون الإيميل بهذه الصيغة: "email@domain.com"'
 'Email was not found, please provide correct email.': 'البريد الإلكتروني المدخل غير صحيح'
 'A message will be sent to your email containing a link to allow you to change your password.': 'سوف تصلك رسالة لإستعادة كلمة المرور'
+'The CSRF token is invalid. Please try to resubmit the form.': 'من فضلك اعد ارسال البيانات'
 
