@@ -1,7 +1,7 @@
 'The Password must be at least {{ limit }} characters and numbers length': 'Password must be 8 characters and letters and numbers'
 'Nickname must be at least {{ limit }} characters': 'Nickname must be at least 5 characters'
 'Please enter your email address': 'Enter a valid email'
-'Please enter your valid email address': 'يجب ان يكون الإيميل بهذه الصيغة: "email@domain.com"'
+'Please enter your valid email address': 'Email should be like: "email@domain.com"'
 'Email was not found, please provide correct email.': 'Entered Email is not correct.'
 'A message will be sent to your email containing a link to allow you to change your password.': 'A message will be sent to your email containing a link to allow you to change your password.'
 

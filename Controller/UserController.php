@@ -186,7 +186,7 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
                     } else {
-                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_daily_timeLine_ar');
+                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_homepage');
                     }
                 }
             }
