@@ -14,7 +14,7 @@ use Ibtikar\GlanceUMSBundle\Document\User;
  */
 class Visitor extends User {
 
-    
+
     /**
      * @Assert\NotBlank(groups={"Default", "visitorSignup", "api-edit"})
      * @MongoDB\String
@@ -25,8 +25,8 @@ class Visitor extends User {
      * )
      */
     private $nickName;
-    
-    
+
+
     /**
      * @Assert\Length(min=5, groups={"username", "visitorSignup", "Default"})
      * if you need to change the regex also change it in forgotPasswordAction
@@ -39,7 +39,7 @@ class Visitor extends User {
      * )
      */
     private $username;
-    
+
     /**
      * @Assert\NotBlank(groups={"Default", "visitorSignup", "api-edit"})
      * @MongoDB\String
@@ -56,6 +56,19 @@ class Visitor extends User {
      * @MongoDB\Boolean
      */
     protected $mustChangePassword = false;
+
+
+        public function getPersonTitle()
+    {
+        if ($this->gender === 'male') {
+            return 'mr';
+        } else if ($this->gender === 'female') {
+            return 'mrs';
+        } else {
+            return 'mr/ mrs';
+        }
+    }
+
 
     /**
      * Set nickName
@@ -144,7 +157,7 @@ class Visitor extends User {
     {
         return $this->mustChangePassword;
     }
-    
+
     /**
      * Set username
      *
@@ -167,5 +180,5 @@ class Visitor extends User {
         return $this->username;
     }
 
-  
+
 }

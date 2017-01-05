@@ -19,3 +19,8 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image dimension must be more than 819*1091': 'يجب ان تكون ابعاد الصورة 819*1091'
 'please choose magazine photo': 'يجب إختيار صورة المجله'
 'wrong URL': 'الرابط الذى ادخلته غير صحيح'
+'Please enter your email address': 'الرجاء إدخال البريد الإلكتروني'
+'Please enter your valid email address': 'يجب ان يكون الإيميل بهذه الصيغة: "email@domain.com"'
+'Email was not found, please provide correct email.': 'البريد الإلكتروني المدخل غير صحيح'
+'A message will be sent to your email containing a link to allow you to change your password.': 'سوف تصلك رسالة لإستعادة كلمة المرور'
+

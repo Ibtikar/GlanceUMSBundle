@@ -97,7 +97,7 @@ class UserController extends BackendController {
 
     }
 
-    private function getUserByEmailAndChangePasswordToken($email, $token) {
+    public function getUserByEmailAndChangePasswordToken($email, $token) {
         $user = $this->get('doctrine_mongodb')->getManager()->getRepository($this->repoClass)->findOneBy(array('email' => $email, 'deleted' => false, 'enabled' => true));
         $currentTime = new \DateTime();
         if (!$user || $user->getChangePasswordToken() !== $token || $user->getChangePasswordTokenExpiryDate() < $currentTime) {
@@ -186,7 +186,7 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
                     } else {
-                        $rediretUrl = $this->generateUrl('visitor_view_profile');
+                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_daily_timeLine_ar');
                     }
                 }
             }
