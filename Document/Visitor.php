@@ -58,7 +58,12 @@ class Visitor extends User {
     protected $mustChangePassword = false;
 
 
-        public function getPersonTitle()
+       public function __toString()
+    {
+        return "$this->nickName";
+    }
+
+    public function getPersonTitle()
     {
         if ($this->gender === 'male') {
             return 'mr';
