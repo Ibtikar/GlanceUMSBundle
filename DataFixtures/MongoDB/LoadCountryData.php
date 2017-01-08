@@ -39,9 +39,9 @@ class LoadCountryData extends AbstractFixture implements FixtureInterface , Orde
                     $city->setCountry($country);
                     $city->setName($cityName);
                     $city->setNameEn($cityEnglishName);
-                    $city->setSlug($cityEnglishName);
-                    $city->setLat(null);
-                    $city->setLong(null);
+//                    $city->setSlug($cityEnglishName);
+//                    $city->setLat(null);
+//                    $city->setLong(null);
                     $manager->persist($city);
                     if($cityName == "الرياض") {
                         $this->addReference("الرياض",$city);
