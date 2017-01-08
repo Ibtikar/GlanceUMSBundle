@@ -102,7 +102,7 @@ class UserController extends BackendController {
 
     }
 
-    private function getUserByEmailAndChangePasswordToken($email, $token) {
+    public function getUserByEmailAndChangePasswordToken($email, $token) {
         $user = $this->get('doctrine_mongodb')->getManager()->getRepository($this->repoClass)->findOneBy(array('email' => $email, 'deleted' => false, 'enabled' => true));
         $currentTime = new \DateTime();
         if (!$user || $user->getChangePasswordToken() !== $token || $user->getChangePasswordTokenExpiryDate() < $currentTime) {

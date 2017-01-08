@@ -1,5 +1,11 @@
 'The Password must be at least {{ limit }} characters and numbers length': 'Password must be 8 characters and letters and numbers'
 'Nickname must be at least {{ limit }} characters': 'Nickname must be at least 5 characters'
+'Please enter your email address': 'Enter a valid email'
+'Please enter your valid email address': 'Email should be like: "email@domain.com"'
+'Email was not found, please provide correct email.': 'Entered Email is not correct.'
+'A message will be sent to your email containing a link to allow you to change your password.': 'A message will be sent to your email containing a link to allow you to change your password.'
+
+
 'The Password must be {{ limit }} maximum characters and numbers length': 'يجب ان تكون كلمة المرور مكونه من {{ limit }} خانه على الأكثر وتحتوي على ارقام وحروف'
 'The password fields must match.': 'القيم المدخلة غير متطابقة'
 'Current password is not valid': 'لقد قمت بادخال كلمة مرور مطابقه لكلمة المرور القديمه... من فضلك ادخل كلمة مرور جديده'
@@ -19,3 +25,4 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image dimension must be more than 819*1091': 'يجب ان تكون ابعاد الصورة 819*1091'
 'please choose magazine photo': 'يجب إختيار صورة المجله'
 'wrong URL': 'الرابط الذى ادخلته غير صحيح'
+'The CSRF token is invalid. Please try to resubmit the form.': 'Please try to resubmit the form.'
