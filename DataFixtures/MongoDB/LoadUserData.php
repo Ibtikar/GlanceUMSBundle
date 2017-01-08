@@ -14,7 +14,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     public function load(ObjectManager $manager) {
 
         $adminUser = new Staff();
-        $adminUser->setEmployeeId(1);
+//        $adminUser->setEmployeeId(1);
         $adminUser->setUserPassword('ibtikaradmin123');
         $adminUser->setEmail('ola.ali@ibtikar.net.sa');
         $adminUser->setFirstName('مشرف');
@@ -27,7 +27,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
         $manager->persist($adminUser);
 
         $testUser = new Staff();
-        $testUser->setEmployeeId(2);
+//        $testUser->setEmployeeId(2);
         $testUser->setUserPassword('ibtikaradmin123');
         $testUser->setEmail('rana.khaled@ibtikar.net.sa');
         $testUser->setFirstName('test');
