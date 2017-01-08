@@ -18,6 +18,7 @@ use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 use \Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use \Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use \Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserController extends BackendController {
@@ -28,9 +29,11 @@ class UserController extends BackendController {
     protected $changePasswordFromEmailView = 'IbtikarGlanceUMSBundle:Visitor:changePasswordFromEmail.html.twig';
     protected $changePasswordView = 'IbtikarGlanceUMSBundle:Visitor:changePassword.html.twig';
     protected $mustChangePassword = 'IbtikarGlanceUMSBundle:Staff:changePassword.html.twig';
+    protected $loginFrom = 'backend';
+
 
     public function loginAction(Request $request) {
-
+                
         $session = $request->getSession();
         if ($request->get('redirectUrl')) {
             $session->set('redirectUrl', $request->get('redirectUrl'));
@@ -40,11 +43,11 @@ class UserController extends BackendController {
         if ((strpos($securityTargetPath, 'backend') !== false || strpos($redirectUrl, 'backend') !== false) && strpos($request->getUri(), 'backend') === false && $session->get('firstTimeRedirected', false) === false) {
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
-
+        
         $user = $this->getUser();
 
         if (!is_null($user) && strpos(get_class($user), 'Visitor') !== false) {
-            return $this->redirect($this->generateUrl('visitor_view_profile'));
+            return $this->redirect($this->generateUrl('ibtikar_goody_frontend_homepage'));
         }
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -52,10 +55,12 @@ class UserController extends BackendController {
             '_username' => $authenticationUtils->getLastUsername(),
             '_failure_path' => $request->getUri()
         );
+        
         $formBuilder = $this->createFormBuilder($data)
                 ->setAction($this->generateUrl('login_check'))
-                ->setMethod('POST')
-                ->add('_username')
+                ->setMethod('POST');
+        $formBuilder = $this->loginFrom == 'frontend' ? $formBuilder->add('_username', EmailType::class) : $formBuilder->add('_username');
+        $formBuilder = $formBuilder
                 ->add('_password', PasswordType::class)
                 ->add('_failure_path', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
                 ->add('_remember_me', \Symfony\Component\Form\Extension\Core\Type\CheckboxType::class, array('required' => false));
@@ -73,7 +78,7 @@ class UserController extends BackendController {
             if ($loginTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
                 $session->set('secret', $this->container->getParameter('secret'));
                 $formBuilder->add('recaptcha', EWZRecaptchaType::class, array(
-                    'language' => 'ar', 'attr' => array('errorMessage'=>  $this->trans('This value should not be blank.', array(), 'login'),
+                    'language' => $request->getLocale() ? $request->getLocale() : 'ar', 'attr' => array('errorMessage'=>  $this->trans('This value should not be blank.', array(), 'login'),
                         'options' => array(
                             'theme' => 'light',
                             'type' => 'image',
@@ -143,7 +148,10 @@ class UserController extends BackendController {
             if ($user instanceof Visitor) {
                 return $this->redirect($this->generateUrl('login'));
             }
-            return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
+            
+            $userRoute = $this->loginFrom == 'frontend' ? 'ibtikar_goody_frontend_login' : 'ibtikar_glance_ums_staff_login';
+            
+            return $this->redirect($this->generateUrl($userRoute));
         }
         return $this->postLoginAction();
     }
@@ -186,7 +194,7 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
                     } else {
-                        $rediretUrl = $this->generateUrl('visitor_view_profile');
+                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_homepage');
                     }
                 }
             }
