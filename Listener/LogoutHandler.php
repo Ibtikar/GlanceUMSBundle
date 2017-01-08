@@ -31,7 +31,8 @@ class LogoutHandler implements LogoutHandlerInterface {
      * @param Response $response
      * @param TokenInterface $token
      */
-    public function logout(Request $request, Response $response, TokenInterface $token) {
+    public function logout(Request $request, Response $response, TokenInterface $token)
+    {
         $session = $request->getSession();
         $session->remove('redirectUrl');
         $session->remove('firstTimeRedirected');
@@ -46,6 +47,12 @@ class LogoutHandler implements LogoutHandlerInterface {
             $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_glance_ums_staff_login'));
             return $response;
         }
+        $locale = $session->get('_locale');
+        if ($locale) {
+            $response->headers->set('Location', $this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
+            $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
+            return $response;
+        }
 
         // this must be the last one so it can remove the location header set by previous actions
         $referer_url = $request->headers->get('referer');
@@ -58,5 +65,4 @@ class LogoutHandler implements LogoutHandlerInterface {
             $response->headers->set('Content-Type', 'application/json');
         }
     }
-
 }

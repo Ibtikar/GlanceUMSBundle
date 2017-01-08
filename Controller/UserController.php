@@ -33,7 +33,7 @@ class UserController extends BackendController {
 
 
     public function loginAction(Request $request) {
-                
+
         $session = $request->getSession();
         if ($request->get('redirectUrl')) {
             $session->set('redirectUrl', $request->get('redirectUrl'));
@@ -43,7 +43,7 @@ class UserController extends BackendController {
         if ((strpos($securityTargetPath, 'backend') !== false || strpos($redirectUrl, 'backend') !== false) && strpos($request->getUri(), 'backend') === false && $session->get('firstTimeRedirected', false) === false) {
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
-        
+
         $user = $this->getUser();
 
         if (!is_null($user) && strpos(get_class($user), 'Visitor') !== false) {
@@ -55,7 +55,7 @@ class UserController extends BackendController {
             '_username' => $authenticationUtils->getLastUsername(),
             '_failure_path' => $request->getUri()
         );
-        
+
         $formBuilder = $this->createFormBuilder($data)
                 ->setAction($this->generateUrl('login_check'))
                 ->setMethod('POST');
@@ -148,9 +148,9 @@ class UserController extends BackendController {
             if ($user instanceof Visitor) {
                 return $this->redirect($this->generateUrl('login'));
             }
-            
+
             $userRoute = $this->loginFrom == 'frontend' ? 'ibtikar_goody_frontend_login' : 'ibtikar_glance_ums_staff_login';
-            
+
             return $this->redirect($this->generateUrl($userRoute));
         }
         return $this->postLoginAction();
@@ -188,7 +188,12 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('ibtikar_glance_ums_staff_changePassword');
                     } else {
-                        $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
+                        $session = $request->getSession();
+                        $locale = $request->get('_locale');
+                        if(!$locale){
+                          $locale='ar';
+                        }
+                        $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home',array('_locale'=>$locale));
                     }
                 } else {
                     if ($this->getUser()->getMustChangePassword()) {
