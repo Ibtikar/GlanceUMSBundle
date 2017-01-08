@@ -188,18 +188,17 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('ibtikar_glance_ums_staff_changePassword');
                     } else {
-                        $session = $request->getSession();
-                        $locale = $request->get('_locale');
-                        if(!$locale){
-                          $locale='ar';
-                        }
-                        $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home',array('_locale'=>$locale));
+                        $rediretUrl = $this->generateUrl('ibtikar_glance_dashboard_home');
                     }
                 } else {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
                     } else {
-                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_homepage');
+                        $locale = $request->get('_locale');
+                        if (!$locale) {
+                            $locale = 'ar';
+                        }
+                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_homepage', array('_locale' => $locale));
                     }
                 }
             }

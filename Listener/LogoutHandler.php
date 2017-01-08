@@ -48,6 +48,7 @@ class LogoutHandler implements LogoutHandlerInterface {
             return $response;
         }
         $locale = $session->get('_locale');
+        var_dump($locale);exit;
         if ($locale) {
             $response->headers->set('Location', $this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
             $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
