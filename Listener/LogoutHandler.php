@@ -34,6 +34,15 @@ class LogoutHandler implements LogoutHandlerInterface {
     public function logout(Request $request, Response $response, TokenInterface $token)
     {
         $session = $request->getSession();
+        
+        
+        $cookies = $request->cookies;
+        $locale = '';
+        if ($cookies->has('_locale')) {
+            $locale = $cookies->get('_locale');
+        }
+    
+    
         $session->remove('redirectUrl');
         $session->remove('firstTimeRedirected');
         $response->headers->clearCookie($this->container->getParameter('logged_cookie_name'), '/', $this->container->getParameter('cookies_domain'));
@@ -47,11 +56,11 @@ class LogoutHandler implements LogoutHandlerInterface {
             $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_glance_ums_staff_login'));
             return $response;
         }
-        $locale = $session->get('_locale');
-        var_dump($locale);exit;
+//        $locale = $session->get('_locale');
+//        var_dump($locale);exit;
         if ($locale) {
             $response->headers->set('Location', $this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
-            $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale', $locale)));
+            $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage'));
             return $response;
         }
 

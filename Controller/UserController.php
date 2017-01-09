@@ -194,7 +194,7 @@ class UserController extends BackendController {
                     if ($this->getUser()->getMustChangePassword()) {
                         $rediretUrl = $this->generateUrl('change_password');
                     } else {
-                        $locale = $request->get('_locale');
+                        $locale = $session->get('_locale');
                         if (!$locale) {
                             $locale = 'ar';
                         }
