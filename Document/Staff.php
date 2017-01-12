@@ -75,6 +75,14 @@ class Staff extends User {
     protected $editDate;
 
     /**
+     * @return string the object name
+     */
+    public function __toString()
+    {
+        return "$this->username";
+    }
+
+    /**
      * Set username
      *
      * @param string $username
