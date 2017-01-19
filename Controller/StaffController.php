@@ -443,7 +443,7 @@ class StaffController extends UserController {
             $countryArray[strtolower($country->getCountryCode())] = $country->getCountryName();
         }
         $oldMobile='';
-        if($staff->getMobile()->getPhone()){
+        if(!empty($staff->getMobile())){
          $oldMobile=$staff->getMobile()->getPhone();
         }
         $oldRoles = array();
