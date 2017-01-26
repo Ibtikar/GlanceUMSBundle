@@ -195,9 +195,11 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * @Assert\NotBlank(groups={"image-required"})
      * @Assert\Image(minWidth=200, minHeight=200, minWidthMessage="Image dimension must be more than 200*200", minHeightMessage="Image dimension must be more than 200*200", mimeTypes={"image/jpeg", "image/pjpeg", "image/png"}, groups={"image", "Default"}, mimeTypesMessage="picture not correct.")
+     * @Assert\Image(groups={"image-visitor"}, minWidth=200, minHeight=200, minWidthMessage="Image dimensions is not suitable 200 * 200", minHeightMessage="Image dimensions is not suitable 200 * 200", mimeTypes={"image/jpeg", "image/pjpeg", "image/png"}, mimeTypesMessage="Image type not valid JPG, JPEG, PNG")
      * @Assert\File(maxSize="3145728", maxSizeMessage="File size must be less than 3mb", groups={"image", "Default"})
-     * @CustomAssert\ImageValid(groups={"image", "Default"})
-     * @CustomAssert\ImageExtensionValid(groups={"image", "Default"}, extensions={"jpg", "jpeg", "png"})
+     * @Assert\File(groups={"image-visitor"}, maxSize="4194304", maxSizeMessage="File size very large 4MB")
+     * @CustomAssert\ImageValid(groups={"Default, image, image-visitor"})
+     * @CustomAssert\ImageExtensionValid(groups={"Default, image, image-visitor"}, extensions={"jpg", "jpeg", "png"})
      * @var UploadedFile
      */
     private $file;
@@ -1138,5 +1140,19 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     public function getCity()
     {
         return $this->city;
+    }
+
+    public function __sleep()
+    {
+	$ref   = new \ReflectionClass(__CLASS__);
+	$props = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
+
+	$serialize_fields = array();
+
+	foreach ($props as $prop) {
+		$serialize_fields[] = $prop->name;
+	}
+
+	return $serialize_fields;
     }
 }
