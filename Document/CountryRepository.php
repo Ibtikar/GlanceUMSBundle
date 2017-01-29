@@ -11,7 +11,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 class CountryRepository extends DocumentRepository {
 
 
-    public function findCountrySorted() {
+    public function findCountrySorted($locale) {
 
         return $this->getDocumentManager()->createQueryBuilder('IbtikarGlanceUMSBundle:Country')
                 ->sort('specialCountrySort', 'DESC')

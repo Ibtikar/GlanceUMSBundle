@@ -53,3 +53,8 @@ services:
     logout_handler:
         class: Ibtikar\GlanceUMSBundle\Listener\LogoutHandler
         arguments: ["@service_container"]
+
+    Ibtikar.twig.country_extension:
+        class: Ibtikar\GlanceUMSBundle\Twig\CountryExtension
+        tags:
+            - { name: twig.extension }
