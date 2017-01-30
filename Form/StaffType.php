@@ -46,6 +46,8 @@ class StaffType extends AbstractType
                     'data-image-type' => 'profile')))
             ->add('firstName', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
             ->add('lastName', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
+            ->add('firstNameEn', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
+            ->add('lastNameEn', formType\TextType::class, array('attr' => array('data-validate-element'=>true,'data-rule-maxlength' => 150)))
             ->add('username', formType\TextType::class, array('attr' => array('data-validate-element'=>true,
                 'data-rule-minlength' => 5,'data-msg-unique' => $options['errorMessage']['notValid'],
                 'data-msg-minlength'=>$options['errorMessage']['staffUsernameError'],

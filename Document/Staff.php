@@ -75,11 +75,41 @@ class Staff extends User {
     protected $editDate;
 
     /**
+     * @Assert\NotBlank(groups={"firstName", "Default", "api-edit"})
+     * @MongoDB\String
+     * @Assert\Length(
+     *      max = 150,
+     *      maxMessage = "Your name cannot be longer than {{ limit }} characters long"
+     * )
+     */
+    private $firstNameEn;
+
+    /**
+     * @Assert\NotBlank(groups={"lastName", "Default", "api-edit"})
+     * @MongoDB\String
+     * @Assert\Length(
+     *      max = 150,
+     *      maxMessage = "Your name cannot be longer than {{ limit }} characters long"
+     * )
+     */
+    private $lastNameEn;
+
+    /**
+     * @MongoDB\String
+     */
+    protected $fullnameEn;
+
+    /**
      * @return string the object name
      */
     public function __toString()
     {
         return "$this->username";
+    }
+
+    public function saveFullNameEn()
+    {
+        $this->fullnameEn = $this->getFirstNameEn() . " " . $this->getLastNameEn();
     }
 
     /**
@@ -360,5 +390,75 @@ class Staff extends User {
     public function getEditDate()
     {
         return $this->editDate;
+    }
+
+    /**
+     * Set firstNameEn
+     *
+     * @param string $firstNameEn
+     * @return self
+     */
+    public function setFirstNameEn($firstNameEn)
+    {
+        $this->firstNameEn = $firstNameEn;
+        $this->saveFullNameEn();
+
+        return $this;
+    }
+
+    /**
+     * Get firstNameEn
+     *
+     * @return string $firstNameEn
+     */
+    public function getFirstNameEn()
+    {
+        return $this->firstNameEn;
+    }
+
+    /**
+     * Set lastNameEn
+     *
+     * @param string $lastNameEn
+     * @return self
+     */
+    public function setLastNameEn($lastNameEn)
+    {
+        $this->lastNameEn = $lastNameEn;
+        $this->saveFullNameEn();
+
+        return $this;
+    }
+
+    /**
+     * Get lastNameEn
+     *
+     * @return string $lastNameEn
+     */
+    public function getLastNameEn()
+    {
+        return $this->lastNameEn;
+    }
+
+    /**
+     * Set fullnameEn
+     *
+     * @param string $fullnameEn
+     * @return self
+     */
+    public function setFullnameEn($fullnameEn)
+    {
+        $this->fullnameEn = $fullnameEn;
+        return $this;
+    }
+
+    /**
+     * Get fullnameEn
+     *
+     * @return string $fullnameEn
+     */
+    public function getFullnameEn()
+    {
+        return $this->fullnameEn;
     }
 }
