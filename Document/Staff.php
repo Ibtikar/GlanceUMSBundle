@@ -260,9 +260,10 @@ class Staff extends User {
         $permissions = parent::getRoles();
         $permissions [] = 'ROLE_STAFF';
 
-
-        foreach ($this->role as $rolePermissions) {
-            $permissions = array_merge($permissions, $rolePermissions->getPermissions());
+        if ($this->role) {
+            foreach ($this->role as $rolePermissions) {
+                $permissions = array_merge($permissions, $rolePermissions->getPermissions());
+            }
         }
         return array_unique($permissions);
     }
