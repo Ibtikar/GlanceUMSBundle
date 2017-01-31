@@ -168,6 +168,11 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     private $enabled = true;
 
     /**
+     * @MongoDB\Boolean
+     */
+    private $star = false;
+
+    /**
      * @MongoDB\String
      */
     protected $salt;
@@ -1154,5 +1159,27 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
 	}
 
 	return $serialize_fields;
+    }
+
+    /**
+     * Set star
+     *
+     * @param boolean $star
+     * @return self
+     */
+    public function setStar($star)
+    {
+        $this->star = $star;
+        return $this;
+    }
+
+    /**
+     * Get star
+     *
+     * @return boolean $star
+     */
+    public function getStar()
+    {
+        return $this->star;
     }
 }
