@@ -50,6 +50,25 @@ class Visitor extends User {
      * @MongoDB\String
      */
     private $registeredFrom;
+    
+
+    /**
+     * @Assert\Valid
+     * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Facebook")
+     */
+    private $facebook;
+    
+    
+    /**
+     * @Assert\Valid
+     * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Twitter")
+     */
+    private $twitter;
+
+    /**
+     * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Google")
+     */
+    private $google;
 
 
       /**
@@ -183,6 +202,70 @@ class Visitor extends User {
     public function getUsername()
     {
         return $this->username;
+    }
+    
+    /**
+     * Set twitter
+     *
+     * @param string $twitter
+     * @return self
+     */
+    public function setTwitter($twitter) {
+        $this->twitter = $twitter;
+        return $this;
+    }
+
+    /**
+     * Get twitter
+     *
+     * @return string $twitter
+     */
+    public function getTwitter() {
+        return $this->twitter;
+    }
+    
+    
+    /**
+     * Set google
+     *
+     * @param Ibtikar\GlanceUMSBundle\Document\Social\Google $google
+     * @return self
+     */
+    public function setGoogle(\Ibtikar\GlanceUMSBundle\Document\Social\Google $google)
+    {
+        $this->google = $google;
+        return $this;
+    }
+
+    /**
+     * Get Google
+     *
+     * @return Ibtikar\GlanceUMSBundle\Document\Social\Google $google
+     */
+    public function getGoogle()
+    {
+        return $this->google;
+    }
+    
+    
+    /**
+     * Set facebook
+     *
+     * @param Ibtikar\GlanceUMSBundle\Document\Social\Facebook $facebook
+     * @return self
+     */
+    public function setFacebook(\Ibtikar\GlanceUMSBundle\Document\Social\Facebook $facebook) {
+        $this->facebook = $facebook;
+        return $this;
+    }
+
+    /**
+     * Get facebook
+     *
+     * @return Ibtikar\GlanceUMSBundle\Document\Social\Facebook $facebook
+     */
+    public function getFacebook() {
+        return $this->facebook;
     }
 
 
