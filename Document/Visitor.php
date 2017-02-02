@@ -44,21 +44,21 @@ class Visitor extends User {
      * @Assert\NotBlank(groups={"Default", "visitorSignup", "api-edit"})
      * @MongoDB\String
      */
-    private $gender = 'male';
+    private $gender;
 
     /**
      * @MongoDB\String
      */
     private $registeredFrom;
-    
+
 
     /**
      * @Assert\Valid
      * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Facebook")
      */
     private $facebook;
-    
-    
+
+
     /**
      * @Assert\Valid
      * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Twitter")
@@ -203,7 +203,7 @@ class Visitor extends User {
     {
         return $this->username;
     }
-    
+
     /**
      * Set twitter
      *
@@ -223,8 +223,8 @@ class Visitor extends User {
     public function getTwitter() {
         return $this->twitter;
     }
-    
-    
+
+
     /**
      * Set google
      *
@@ -246,8 +246,8 @@ class Visitor extends User {
     {
         return $this->google;
     }
-    
-    
+
+
     /**
      * Set facebook
      *
