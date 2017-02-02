@@ -455,7 +455,16 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      */
     protected function getUploadDir()
     {
-        return 'uploads/users-profile-images';
+        $uploadDir = 'uploads/users-profile-images';
+        if (!@is_dir($uploadDir)) {
+            $oldumask = umask(0);
+            $success = @mkdir($uploadDir, 0755, TRUE);
+            umask($oldumask);
+            if (!$success) {
+                throw new \Exception("Can not create the directory $directoryPath");
+            }
+        }
+        return $uploadDir;
     }
 
     /**
