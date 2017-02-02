@@ -41,7 +41,7 @@ class Visitor extends User {
     private $username;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "visitorSignup", "api-edit"})
+     * @Assert\NotBlank(groups={"Default", "api-edit"})
      * @MongoDB\String
      */
     private $gender;
