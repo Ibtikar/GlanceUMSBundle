@@ -26,6 +26,6 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'The CSRF token is invalid. Please try to resubmit the form.': 'من فضلك اعد ارسال البيانات'
 'Invalid email address': 'الرجاء ادخال البريد الإلكتروني الصحيح'
 'Image dimensions is not suitable 200 * 200': 'أبعاد الصورة غير مناسبه	'
-'File size very large 2MB': '4MB حجم الصورة كبير جداً'
+'File size very large 2MB': 'حجم الصورة كبير جداً'
 'Image type not valid JPG, JPEG, PNG': 'نوع الصورة غير متاح	'
 'Invalid photo size': 'حجم الصورة كبير جداً'

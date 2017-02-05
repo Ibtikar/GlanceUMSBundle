@@ -28,5 +28,5 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Invalid email address': 'Invalid email address'
 'Image dimensions is not suitable 200 * 200': 'Invalid photo dimension'
 'Image type not valid JPG, JPEG, PNG': 'Invalid photo type'
-'File size very large 4MB': 'File size very large 4MB'
+'File size very large 4MB': 'Invalid photo size'
 'Invalid photo size': 'Invalid photo size'
