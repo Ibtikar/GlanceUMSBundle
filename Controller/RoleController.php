@@ -12,9 +12,32 @@ use Symfony\Component\Form\Extension\Core\Type as formType;
 class RoleController extends BackendController {
 
     protected $translationDomain = 'role';
-    protected  $tabs=array('user'=>array('title'=>'user','count'=>0,'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),'permission'=>array()),
-        'recipeAndCategory'=>array('title'=>'recipeAndCategory','count'=>0,'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array()),'permission'=>array()),
-        'content'=>array('title'=>'content','count'=>0,'modules'=>array('RECIPE'=>array(), 'BLOG'=>array(), 'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array()),'permission'=>array()));
+    protected  $tabs=array(
+                    'user'=>array(
+                        'title'=>'user',
+                        'count'=>0,
+                        'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),
+                        'permission'=>array()
+                        ),
+                    'recipeAndCategory'=>array(
+                        'title'=>'recipeAndCategory',
+                        'count'=>0,
+                        'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array()),
+                        'permission'=>array()
+                        ),
+                    'content'=>array(
+                        'title'=>'content',
+                        'count'=>0,
+                        'modules'=>array('RECIPE'=>array(), 'BLOG'=>array(), 'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array()),
+                        'permission'=>array()
+                        ),
+                    'message'=>array(
+                        'title'=>'Goody messages',
+                        'count'=>0,
+                        'modules'=>array('MESSAGENEW'=>array(),'MESSAGEINPROGRESS'=>array(),'MESSAGECLOSE'=>array()),
+                        'permission'=>array()
+                        )
+                );
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
         'ROLE_ADMIN', 'ROLE_STAFF','ROLE_SUBPRODUCT_VIEW'
