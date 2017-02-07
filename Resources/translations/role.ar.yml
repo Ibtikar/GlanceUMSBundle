@@ -70,5 +70,6 @@ recipe: 'وصفات'
 'MESSAGENEW': 'الجديده'
 'MESSAGEINPROGRESS': 'تحت التشغيل'
 'MESSAGECLOSE': 'المؤرشفة'
+'CHANGESTATUS': 'تغير الحاله'
 
 
