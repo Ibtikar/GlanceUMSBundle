@@ -1119,7 +1119,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      * @param Ibtikar\GlanceUMSBundle\Document\Country $country
      * @return self
      */
-    public function setCountry(\Ibtikar\GlanceUMSBundle\Document\Country $country)
+    public function setCountry(\Ibtikar\GlanceUMSBundle\Document\Country $country=NULL)
     {
         $this->country = $country;
         return $this;
