@@ -167,7 +167,7 @@ class StaffController extends UserController {
         $securityContext = $this->get('security.authorization_checker');
         $form = $this->createForm(StaffType::class, $staff, array(
             'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
-            'validation_groups' => array('create', 'Default'),
+            'validation_groups' => array('create', 'Default','city'),
             'container' => $this->container,
             'errorMessage' => $ErrorMessage,
             'edit' => FALSE,
@@ -431,7 +431,7 @@ class StaffController extends UserController {
         $securityContext = $this->get('security.authorization_checker');
         $form = $this->createForm(StaffType::class, $staff, array(
             'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
-            'validation_groups' => array('edit', 'Default'),
+            'validation_groups' => array('edit', 'Default','city'),
             'container' => $this->container,
             'errorMessage' => $ErrorMessage,
             'edit' => true,

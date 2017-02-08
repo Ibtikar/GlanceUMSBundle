@@ -61,7 +61,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     protected $country;
 
     /**
-     * @Assert\NotBlank(groups={"city", "Default", "api-edit"})
+     * @Assert\NotBlank(groups={"city","api-edit"})
      * @MongoDB\ReferenceOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\City",  simple=true)
      */
     protected $city;
