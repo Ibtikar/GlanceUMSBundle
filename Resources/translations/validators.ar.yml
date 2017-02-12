@@ -31,3 +31,4 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image type not valid JPG, JPEG, PNG': 'نوع الصورة غير متاح	'
 'Invalid photo size': 'حجم الصورة كبير جداً'
 'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.': 'حجم الصورة كبير جداً'
+"please enter value": 'الرجاء تعبئة البيانات'
