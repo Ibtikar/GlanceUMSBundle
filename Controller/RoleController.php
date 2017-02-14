@@ -36,7 +36,8 @@ class RoleController extends BackendController {
                         'count'=>0,
                         'modules'=>array('MESSAGENEW'=>array(),'MESSAGEINPROGRESS'=>array(),'MESSAGECLOSE'=>array()),
                         'permission'=>array()
-                        )
+                        ),
+                   'stars'=>array('title'=>'stars','count'=>0,'modules'=>array('STARS'=>array(), 'STARSNEW'=>array(),'STARSREJECTED'=>array(),'STARSAPPROVED'=>array()),'permission'=>array())
                 );
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
