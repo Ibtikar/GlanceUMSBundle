@@ -27,6 +27,11 @@ class Country extends Document {
      * @MongoDB\String
      */
     private $countryName;
+    /**
+     * @Assert\NotBlank
+     * @MongoDB\String
+     */
+    private $countryNameEn;
 
     /**
      * @Assert\NotBlank
@@ -143,5 +148,27 @@ class Country extends Document {
      */
     public function getSpecialCountrySort() {
         return $this->specialCountrySort;
+    }
+
+    /**
+     * Set countryNameEn
+     *
+     * @param string $countryNameEn
+     * @return self
+     */
+    public function setCountryNameEn($countryNameEn)
+    {
+        $this->countryNameEn = $countryNameEn;
+        return $this;
+    }
+
+    /**
+     * Get countryNameEn
+     *
+     * @return string $countryNameEn
+     */
+    public function getCountryNameEn()
+    {
+        return $this->countryNameEn;
     }
 }
