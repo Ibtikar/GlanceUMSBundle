@@ -10,6 +10,7 @@
 This value should be the user's current password. : 'كلمة المرور المدخله غير صحيحة'
 'picture not correct.': 'يجب ان تكون الصورة بصيغة JPG أو JPEG أو PNG'
 'Image dimension must be more than 200*200': 'يجب الا تقل ابعاد الصورة عن 200*200'
+'Image dimension must be more than 1000*700': 'يجب الا تقل ابعاد الصورة عن 1000*700'
 'File size must be less than 3mb': 'يجب الا يزيد حجم الصوره عن 3 ميجا'
 'File size must be less than 4mb': 'يجب الا يزيد حجم الصوره عن 4 ميجا'
 'Please enter your number': 'الرجاء إدخال رقم صحيح'
@@ -30,3 +31,4 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image type not valid JPG, JPEG, PNG': 'نوع الصورة غير متاح	'
 'Invalid photo size': 'حجم الصورة كبير جداً'
 'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.': 'حجم الصورة كبير جداً'
+"please enter value": 'الرجاء تعبئة البيانات'
