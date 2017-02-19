@@ -28,6 +28,7 @@
 'list city': ' المدن'
 'Add new city': 'إدخال مدينه جديدة'
 edit city: تعديل مدينه
+cities: مدن
 
 # ############Buttons############
 'View One City': 'عرض المدينة'
