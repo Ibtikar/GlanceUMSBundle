@@ -77,6 +77,13 @@ class UserRepository extends DocumentRepository  implements UserProviderInterfac
         return $qb->getQuery()->execute();
     }
 
+    public function findstaffMemeber() {
+        return $this->dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
+                        ->field('type')->equals('staff')
+                        ->field('enabled')->equals(true)
+                        ->field('deleted')->equals(false);
+    }
+
     public function getMigratedStaff() {
         $qb = $this->dm->createQueryBuilder('IbtikarGlanceUMSBundle:Staff')
                         ->field('type')->equals('staff')
