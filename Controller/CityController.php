@@ -54,7 +54,7 @@ class CityController extends BackendController {
         $this->listViewOptions->setListQueryBuilder($queryBuilder);
 
         $this->listViewOptions->setActions(array("Edit"));
-        $this->listViewOptions->setBulkActions(array('Delete'));
+        $this->listViewOptions->setBulkActions(array());
 //        $this->listViewOptions->setRestorable(FALSE);
         $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:City:list.html.twig");
     }
