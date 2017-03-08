@@ -49,6 +49,7 @@ class RoleController extends BackendController {
                         'modules'=>array('COMPETITIONNEW'=>array(),'COMPETITIONPUBLISH'=>array(),'COMPETITIONUNPUBLISH'=>array()),
                         'permission'=>array()
                         )
+        
                 );
     protected $tabsnames=array('user','content');
     private $internalPermissions = array(
