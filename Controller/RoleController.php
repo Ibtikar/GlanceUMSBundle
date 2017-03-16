@@ -43,12 +43,12 @@ class RoleController extends BackendController {
                        'modules'=>array('STARS'=>array(), 'STARSNEW'=>array(),'STARSREJECTED'=>array(),'STARSAPPROVED'=>array()),
                        'permission'=>array()),
 
-                    'competition'=>array(
-                        'title'=>'Competition',
-                        'count'=>0,
-                        'modules'=>array('COMPETITION'=>array(),'COMPETITIONNEW'=>array(),'COMPETITIONPUBLISH'=>array(),'COMPETITIONUNPUBLISH'=>array()),
-                        'permission'=>array()
-                        )
+//                    'competition'=>array(
+//                        'title'=>'Competition',
+//                        'count'=>0,
+//                        'modules'=>array('COMPETITION'=>array(),'COMPETITIONNEW'=>array(),'COMPETITIONPUBLISH'=>array(),'COMPETITIONUNPUBLISH'=>array()),
+//                        'permission'=>array()
+//                        )
 
                 );
     protected $tabsnames=array('user','content');
