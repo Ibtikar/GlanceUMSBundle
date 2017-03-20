@@ -18,7 +18,7 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image dimension must be more than 200*200': 'يجب الا تقل ابعاد الصورة عن 200*200'
 'File size must be less than 3mb': 'يجب الا يزيد حجم الصوره عن 3 ميجا'
 'File size must be less than 4mb': 'يجب الا يزيد حجم الصوره عن 4 ميجا'
-'Please enter your number': 'الرجاء إدخال رقم صحيح'
+'Please enter your number': 'Please insert correct number'
 'Please enter your valid and true email address': 'Please enter valid and true email address'
 'username should contains characters, numbers or dash only': 'يجب أن يكون الإسم أكثر من 5 خانات ويحتوي على حروف أو أرقام أو - فقط.'
 'Image dimension must than 819*1091': 'يجب ان تكون ابعاد الصورة 819*1091'
