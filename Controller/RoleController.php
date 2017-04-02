@@ -28,7 +28,7 @@ class RoleController extends BackendController {
                     'content'=>array(
                         'title'=>'content',
                         'count'=>0,
-                        'modules'=>array('RECIPE'=>array(), 'BLOG'=>array(), 'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array()),
+                        'modules'=>array('RECIPE'=>array(), 'BLOG'=>array(), 'RECIPENEW'=>array(),'RECIPEDELETED'=>array(),'RECIPEAUTOPUBLISH'=>array(),'RECIPEPUBLISH'=>array(),'RECIPEDRAFT'=>array()),
                         'permission'=>array()
                         ),
                     'message'=>array(
