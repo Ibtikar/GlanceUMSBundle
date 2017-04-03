@@ -95,7 +95,13 @@ class UserController extends BackendController {
         }
         $form = $formBuilder->getForm();
         $user = $this->getUser();
-            return $this->render($this->loginView, array(
+        if ($this->loginFrom == 'frontend') {
+            $mobileDetector = $this->container->get('site_detection')->isMobileDisplayed();
+            if ($mobileDetector) {
+                $this->loginView = 'IbtikarGoodyFrontendBundle:User:login.html.twig';
+            }
+        }
+        return $this->render($this->loginView, array(
                         'form' => $form->createView(),
                         'error' => $error
             ));
