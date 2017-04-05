@@ -73,7 +73,7 @@ class UserController extends BackendController {
         $loginTrials = $session->get('loginTrials', 1);
         if ($error || $loginTrials > 1) {
             if ($error) {
-                $loginTrials++;
+//                $loginTrials++;
             }
             if ($loginTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
                 $session->set('secret', $this->container->getParameter('secret'));
