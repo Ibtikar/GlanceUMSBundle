@@ -6,7 +6,142 @@
 {% endblock %}
 
 {% block breadCrumb %}
-            {#        <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_staff_create')}}"><i class="icon-add"></i><span>إدخال موظف</span></a>
-                    <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span> الموظفين</span></a>#}
+    {#        <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_staff_create')}}"><i class="icon-add"></i><span>إدخال موظف</span></a>
+            <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span> الموظفين</span></a>#}
 
 {% endblock %}
+
+{% block actions %}
+    <a data-placement="bottom" title="" data-popup="tooltip"  data-toggle="modal"  href="javascript:void(0)" class="btn btn-default btn-sm dev-change-columns" type="button" data-original-title="خانات الجدول"><i class="icon-table2 "></i> <span class="hidden-sm"> </span></a>
+    <a id="advanced-search-Btn" data-placement="bottom" title="" data-popup="tooltip"  data-toggle="modal"  href="javascript:void(0)" class="btn btn-default btn-sm" type="button" data-original-title="البحث"><i class="icon-search4"></i> <span class="hidden-sm"> </span></a>
+    {% if list.hasBulkActions(listName) %}
+        <input type="hidden" id="dev-bulk-action" name="bulk-action" value=""/>
+        <span class="dev-bulk-action-container" data-list-name="{{listName|lower}}" data-href="{{ list.hasBulkActions(listName) ? path(prefixRoute|lower ~ '_bulk_actions') : '' }}" style="display: none;">
+            {% for action in list.bulkActions %}
+                {% if action == "Delete"  and (is_granted('ROLE_'~listName|upper~'_DELETE') or is_granted('ROLE_ADMIN')) %}
+                    <a data-action="{{action}}"  class="btn btn-default btn-sm dev-delete-bulk-recipe" data-placement="bottom"> <i class="icon-trash"></i> <span class="hidden-sm position-right">{{ 'delete'|trans }}</span></a>
+                    {% endif %}
+                {% endfor %}
+        </span>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block searchList %}
+    <div class='advanced-search {% if search is not defined or not search  %}searchhidden{% endif %}'>
+
+        <div id="search-form">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>{{ 'nickName'|trans({}, translationDomain) }}</label>
+                        <input type="text" name="form-title" placeholder="اسم المستخدم" class="form-control input-sm show dev-form-nickname" value="{{app.request.get('nickname')}}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>{{ 'email'|trans({}, translationDomain) }}</label>
+                        <input type="text" name="form-title" placeholder="البريد الالكترونى" class="form-control input-sm show dev-form-email" value="{{app.request.get('email')}}">
+                    </div>
+                </div>
+
+            </div><!-- row end -->
+
+
+
+            <div class="row">
+                <div class="col-xs-12">
+
+
+                    <button class="btn btn-primary btn-lg dev-search-submit" type="button" style="margin-left: 5px">بحث</button>
+                    <button class="btn btn-default btn-lg dev-search-clear" type="button">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/autocomplete/bootstrap3-typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function (e) {
+            $(".dev-form-nickname").typeahead({
+                items: 5,
+                source: function (typeahead, process) {
+                    return $.ajax({
+                        url: '{{path('ibtikar_glance_ums_visitor_users_names')}}',
+                        data: {
+                            name: $('.dev-form-nickname').val(),
+                            type: 'nickName',
+                        },
+                        success: function (json) {
+                            return  process(json);
+                        }
+                    });
+                }
+            });
+            $(".dev-form-email").typeahead({
+                items: 5,
+                source: function (typeahead, process) {
+                    return $.ajax({
+                        url: '{{path('ibtikar_glance_ums_visitor_users_names')}}',
+                        data: {
+                            name: $('.dev-form-email').val(),
+                            type: 'email',
+                        },
+                        success: function (json) {
+                            return  process(json);
+                        }
+                    });
+                }
+            });
+            $(document).on('click', '.dev-search-submit', function () {
+                parameterNotRemoved = "";
+                var url = window.location.pathname;
+                var qs = "";
+                var queryStringFlag = false;
+
+                var nickName = $('.dev-form-nickname').val();
+                if (nickName !== '') {
+                    qs += (queryStringFlag) ? "&" : "";
+                    qs += 'nickName=' + nickName;
+                    url += qs;
+                    queryStringFlag = true;
+                }
+                var email = $('.dev-form-email').val();
+                if (email !== '') {
+                    qs += (queryStringFlag) ? "&" : "";
+                    qs += 'email=' + email;
+                    url += qs;
+                    queryStringFlag = true;
+                }
+                parameterNotRemoved = qs;
+                if (queryStringFlag) {
+                    parameterNotRemoved += "&search=true"
+                }
+                table.ajax.reload(function () {
+                });
+            });
+
+
+            $(document).on('click', '.dev-search-clear', function () {
+                parameterNotRemoved = "";
+                var url = window.location.pathname;
+                var qs = "";
+                $("#advanced-search-Btn").click();
+                $('.advanced-search input').val('');
+
+                parameterNotRemoved = qs;
+                table.ajax.reload(function () {
+                }, false);
+            });
+
+
+        })
+    </script>
+
+{% endblock %}
+

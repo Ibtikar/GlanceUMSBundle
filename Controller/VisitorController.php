@@ -57,7 +57,12 @@ class VisitorController extends UserController
                 ->field('admin')->equals(false)
                 ->field('deleted')->equals(false)
                 ->field('id')->notEqual($this->getUser()->getId());
-
+        if ($request->get('email')) {
+            $queryBuilder->field('email')->equals(new \MongoRegex(('/' . preg_quote($request->get('email')) . '/i')));
+        }
+        if ($request->get('nickName')) {
+            $queryBuilder->field('nickName')->equals(new \MongoRegex(('/' . preg_quote($request->get('nickName')) . '/i')));
+        }
         $this->configureListColumns();
 
         $this->listViewOptions->setListQueryBuilder($queryBuilder);
@@ -292,5 +297,32 @@ class VisitorController extends UserController
                 'formType' => 'edit',
                 'translationDomain' => $this->translationDomain
         ));
+    }
+
+    public function getUsersNamesAction(Request $request) {
+
+        $loggedInUser = $this->getUser();
+        if (!$loggedInUser) {
+            return new JsonResponse(array('status' => 'login'));
+        }
+
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $names = array();
+        $query = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Visitor')
+                ->select($request->get('type','nickName'))
+                ->field($request->get('type','nickName'))->equals( new \MongoRegex('/' . preg_quote(trim($request->get('name'))) . '/i'))
+                ->limit(5)-> hydrate(false);
+
+
+
+        $result = $query->getQuery()->execute();
+
+        foreach ($result->toArray() as $row) {
+            if (isset($row[$request->get('type','nickName')])) {
+                $names[] = $row[$request->get('type','nickName')];
+            }
+        }
+        return new JsonResponse($names);
     }
 }

@@ -25,3 +25,7 @@ ibtikar_glance_ums_visitor_delete:
 ibtikar_glance_ums_visitor_delete_image:
     path:  /remove/image/{id}
     defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:deleteImage }
+
+ibtikar_glance_ums_visitor_users_names:
+    path: /users-names
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:getUsersNames}
