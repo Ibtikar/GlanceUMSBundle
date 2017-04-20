@@ -13,9 +13,12 @@ actions: العمليات
 Jobs:   الوظائف
 Cities:   المدن
 Roles:  الادوار
+visitor: عضو
 'staff member' : 'مستخدم'
 'Staff members' : 'الموظفين'
 'staff members' : 'موظفين'
+'Visitors' : 'اعضاء'
+'visitors' : 'اعضاء'
 'List Staff':  الموظفين
 'magazine': 'مجله'
 Magazines: 'المجلات'

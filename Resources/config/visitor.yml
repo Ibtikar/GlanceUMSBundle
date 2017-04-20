@@ -1,0 +1,27 @@
+ibtikar_glance_ums_visitor_create:
+    path: /create
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:create }
+
+ibtikar_glance_ums_visitor_edit:
+    path: /edit/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:edit ,id: id}
+
+ibtikar_glance_ums_visitor_change_list_columns:
+    path:  /change-list-columns
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:changeListColumns }
+
+ibtikar_glance_ums_visitor_list:
+    path:  /list
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:list }
+
+ibtikar_glance_ums_visitor_bulk_actions:
+    path: /bulk
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:bulk}
+
+ibtikar_glance_ums_visitor_delete:
+    path: /delete/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:delete ,id: id}
+
+ibtikar_glance_ums_visitor_delete_image:
+    path:  /remove/image/{id}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:deleteImage }

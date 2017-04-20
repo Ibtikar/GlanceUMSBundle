@@ -1,0 +1,99 @@
+{% extends 'IbtikarGlanceDashboardBundle::formLayout.html.twig' %}
+
+
+
+{% block javascripts %}
+    {{parent()}}
+
+    <script>
+        var countryCitiesOptionsUrl = '{{ path('ibtikar_glance_ums_backend_country_cities_options') }}';
+        var url;
+        var avatarImageUrl = '{{ asset('bundles/ibtikarshareeconomydashboarddesign/images/profile.jpg') }}';
+        var oldCity=$('#visitor_city').val();
+        var reset=false;
+
+
+
+        function filterCitySelectByCountry() {
+           $.ajax({
+                   url: countryCitiesOptionsUrl + '?countryCode=' + $('#visitor_country').val(),
+
+                   success: function(data) {
+                       var selectedValue = $('#visitor_city').val();
+                       $('#visitor_city').html(data).val('');
+                       if(reset){
+                       var $oldSelectedOption = $('#visitor_city option[value="' + oldCity + '"]');
+
+                       }else{
+                       var $oldSelectedOption = $('#visitor_city option[value="' + selectedValue + '"]');
+
+                       }
+                       reset=false;
+                       if($oldSelectedOption.length > 0) {
+                           $oldSelectedOption.prop('selected', true);
+                       }
+                        $('#visitor_city').trigger('change');
+                        unhighlightElement($('#visitor_city'))
+                   }
+               });
+                   }
+
+            jQuery(document).ready(function ($) {
+
+                       $('body').on('ajaxCallback', function () {
+                           filterCitySelectByCountry();
+
+                       });
+                       $(document).on('change', '#visitor_country', filterCitySelectByCountry);
+                               filterCitySelectByCountry();
+
+                               $('#visitor_mobile_phone').on("countrychange", function (e, countryData) {
+                                   $('#visitor_mobile_phone').val('');
+                               });
+                               $('#visitor_mobile_phone').on('blur', function () {
+                                   $('#visitor_mobile_phone').val($("#visitor_mobile_phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL));
+                               });
+
+                       $('body').on('click', '[data-dismiss="fileupload"]', function () {
+                           unhighlightElement($(this).closest('.fileupload').find('input:file').get(0));
+                       });
+
+                       //solve double click issue for upload plugin on ie
+                       if (navigator.userAgent.indexOf("MSIE") > 0) {
+
+                           $(document).livequery('#visitor_file', function () {
+                               $(this).bind('mousedown', function () {
+                                   $(this).trigger('click');
+                               });
+                           });
+
+
+                       }
+                       {% if formType =='edit' %}
+                        $('body').on('click','.dev-btn-fileupload-remove',function () {
+                               $.ajax({
+                            url: "{{ path('ibtikar_glance_ums_visitor_delete_image',{'id':app.request.get('id')})}}",
+                            method: 'post',
+                            success: function (data) {
+                                $('.fileupload').find('.dev-btn-fileupload-remove').removeAttr('style');
+                                $('.fileupload').find('.fileupload-new img:eq(0)').attr('src', avatarImageUrl);
+                                $('#visitor_file').attr('data-exist-img',false);
+                                }
+                                     });
+
+                        });
+
+
+                        $('.dev-form-reset-button').on('click', function () {
+                            reset=true;
+
+                        })
+                       {% endif %}
+
+                       $('body').on('preAjaxCallback', function () {
+                           $('.alert-danger').remove()
+
+                       });
+                   });
+    </script>
+{% endblock %}

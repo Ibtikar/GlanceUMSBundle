@@ -1,0 +1,51 @@
+'This value should not be blank.': 'الرجاء إدخال قيمة‎'
+'Please enter your email address': 'الرجاء إدخال قيمة'
+'Please enter your valid email address': 'يجب ان يكون الإيميل بهذه الصيغة: "email@domain.com"'
+'Email was not found, please provide correct email.': 'البريد الإلكتروني المدخل غير صحيح'
+'A message will be sent to your email containing a link to allow you to change your password.': 'سوف تصلك رسالة لإستعادة كلمة المرور'
+'email': 'البريد الإلكتروني'
+'your account was deactivated by the admin, contact your admin for more information.': ' لقد تم ايقاب حسابك من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
+'Nickname should be more than 5 characters': 'اسم المستخدم يجب ان يكون 5 احروف أو أكثر'
+'Nickname should be less than 50 ': 'اسم المستخدم يجب ألا يزيد عن 50 حرف'
+'Email': 'البريد الالكتروني '
+'email': 'البريد الالكتروني '
+'nickName': 'اسم المستخدم '
+'Nick name': 'اسم المستخدم '
+'Nickname': 'اسم المستخدم '
+'Country': 'البلد'
+'country': 'البلد'
+'City': 'المدينة'
+'city': 'المدينة'
+'Gender': 'النوع'
+'gender': 'النوع'
+'Choose Job': 'اختر الوظيفة'
+'Choose City': 'اختر المدينه'
+'male': ذكر
+'female' : انثى
+'add visitor':  إدخال عضو جديد
+'Password': 'كلمة المرور'
+'password': 'كلمة المرور'
+'Change Password': 'تغيير كلمة المرور'
+'Repeat Password': 'تأكيد كلمة المرور'
+'edit visitor': 'تعديل عضو'
+'Edit Visitor': 'تعديل عضو'
+'STAFF': 'موظف'
+'staff': 'موظف'
+'List Visitor' :   الاعضاء
+'list visitor' :   الاعضاء
+'visitor list' :   الاعضاء
+'editDate' :   تاريخ التعديل
+'Edit date' :   تاريخ التعديل
+'createdAt': تاريخ الإنشاء
+'Created at': تاريخ الإنشاء
+Delete Staff: حذف موظف
+'First name en': 'الاسم الاول بالإنجليزية'
+'Last name en': ' الاسم الاخير بالإنجليزية'
+'List Visitor': 'الاعضاء'
+'visitors': 'اعضاء'
+Created by:  قام بالإنشاء
+createdBy:  قام بالإنشاء
+'updatedAt': تاريخ التحديث
+'Updated at': تاريخ التحديث
+'Edit Visitor': 'تعديل عضو'
+'Delete Visitor': 'حذف عضو'

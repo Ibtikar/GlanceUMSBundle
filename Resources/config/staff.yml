@@ -49,3 +49,8 @@ ibtikar_glance_ums_staff_delete_image:
 ibtikar_glance_ums_staff_bulk_actions:
     path: /staff/bulk
     defaults: { _controller: IbtikarGlanceUMSBundle:Staff:bulk}
+
+
+ibtikar_glance_ums_backend_visitor:
+    resource: "@IbtikarGlanceUMSBundle/Resources/config/visitor.yml"
+    prefix:   /visitor

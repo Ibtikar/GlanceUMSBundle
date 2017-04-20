@@ -2,9 +2,9 @@ ibtikar_glance_ums_staff:
     resource: "@IbtikarGlanceUMSBundle/Resources/config/staff.yml"
     prefix:   /backend
 
-ibtikar_glance_ums_visitor:
-    resource: "@IbtikarGlanceUMSBundle/Resources/config/visitor.yml"
-    prefix:   /
+#ibtikar_glance_ums_visitor:
+#    resource: "@IbtikarGlanceUMSBundle/Resources/config/visitor.yml"
+#    prefix:   /
 
 ibtikar_glance_ums_city:
     resource: "@IbtikarGlanceUMSBundle/Resources/config/city.yml"

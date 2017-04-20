@@ -237,23 +237,7 @@ class Staff extends User {
         return false;
     }
 
-    function generate_password($length = 8) {
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' .
-                '-=~!@';
-        $number= '0123456789';
 
-        $str = '';
-        $max = strlen($chars) - 1;
-        $maxNo = strlen($number) - 1;
-
-        for ($i = 0; $i < $length-2; $i++)
-            $str .= $chars[mt_rand(0, $max)];
-
-        for ($i = 0; $i < 2; $i++)
-            $str .= $number[mt_rand(0, $maxNo)];
-
-        return $str;
-    }
 
     public function getRoles()
     {

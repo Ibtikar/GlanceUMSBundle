@@ -31,7 +31,6 @@ class Visitor extends User {
      * @Assert\Length(min=5, groups={"username", "visitorSignup", "Default"})
      * if you need to change the regex also change it in forgotPasswordAction
      * @Assert\Regex(pattern="/^([^_\W]-*)+$/u", message="username should contains characters, numbers or dash only", groups={"username", "visitorSignup", "Default"})
-     * @Assert\NotBlank(groups={"username", "Default"})
      * @MongoDB\String
      * @Assert\Length(
      *      max = 150,
@@ -41,7 +40,6 @@ class Visitor extends User {
     private $username;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "api-edit"})
      * @MongoDB\String
      */
     private $gender;

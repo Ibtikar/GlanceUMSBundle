@@ -16,7 +16,7 @@ class RoleController extends BackendController {
                     'user'=>array(
                         'title'=>'user',
                         'count'=>0,
-                        'modules'=>array('STAFF'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),
+                        'modules'=>array('STAFF'=>array(),'VISITOR'=>array(),'ROLE'=>array(),'JOB'=>array(),'CITY'=>array()),
                         'permission'=>array()
                         ),
                     'recipeAndCategory'=>array(
