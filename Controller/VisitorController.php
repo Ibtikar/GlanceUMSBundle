@@ -313,6 +313,7 @@ class VisitorController extends UserController
         $names = array();
         $query = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Visitor')
                 ->select($request->get('type','nickName'))
+                ->field('deleted')->equals(FALSE)
                 ->field($request->get('type','nickName'))->equals( new \MongoRegex('/' . preg_quote(trim($request->get('name'))) . '/i'))
                 ->limit(5)-> hydrate(false);
 
