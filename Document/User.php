@@ -21,7 +21,7 @@ use Ibtikar\GlanceDashboardBundle\Document\Document;
  * @MongoDB\DiscriminatorMap({"visitor"="Ibtikar\GlanceUMSBundle\Document\Visitor", "staff"="Ibtikar\GlanceUMSBundle\Document\Staff"})
  * @MongoDB\Document(repositoryClass="Ibtikar\GlanceUMSBundle\Document\UserRepository")
  * @MongoDB\HasLifecycleCallbacks
- * @MongoDBUnique(fields={"email"}, repositoryMethod="findUserByEmail", groups={"email", "Default", "visitorSignup", "api-edit"})
+ * @MongoDBUnique(fields={"email"}, repositoryMethod="findUserByEmail", groups={"email", "Default", "visitorSignup", "api-edit"}, message="not valid")
  * @MongoDB\Indexes({
  *  @MongoDB\Index(keys={"job"="asc", "deleted"="asc", "enabled"="asc", "fullname"="asc"}, options={"name"="staff members select"}),
  *  @MongoDB\Index(keys={"type"="asc"}, options={"name"="staff members"}),

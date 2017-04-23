@@ -73,7 +73,7 @@ class UserController extends BackendController {
         $loginTrials = $session->get('loginTrials', 1);
         if ($error || $loginTrials > 1) {
             if ($error) {
-                $loginTrials++;
+//                $loginTrials++;
             }
             if ($loginTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
                 $session->set('secret', $this->container->getParameter('secret'));
@@ -95,7 +95,13 @@ class UserController extends BackendController {
         }
         $form = $formBuilder->getForm();
         $user = $this->getUser();
-            return $this->render($this->loginView, array(
+        if ($this->loginFrom == 'frontend') {
+            $mobileDetector = $this->container->get('site_detection')->isMobileDisplayed();
+            if ($mobileDetector) {
+                $this->loginView = 'IbtikarGoodyFrontendBundle:User:login.html.twig';
+            }
+        }
+        return $this->render($this->loginView, array(
                         'form' => $form->createView(),
                         'error' => $error
             ));

@@ -1,6 +1,6 @@
 parameters:
 #    security.authentication.listener.form.class: Ibtikar\UserBundle\Listener\PreLogin
-    captcha_appear_after_failed_attempts: 4
+    captcha_appear_after_failed_attempts: 3
 services:
 #    ajax_listener:
 #        class: Ibtikar\GlanceUMSBundle\Listener\AjaxAuthenticationListener
