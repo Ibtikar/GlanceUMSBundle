@@ -170,6 +170,11 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     /**
      * @MongoDB\Boolean
      */
+    private $migrated;
+
+    /**
+     * @MongoDB\Boolean
+     */
     private $star = false;
 
     /**
@@ -774,6 +779,28 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set migrated
+     *
+     * @param boolean $migrated
+     * @return self
+     */
+    public function setMigrated($migrated)
+    {
+        $this->migrated = $migrated;
+        return $this;
+    }
+
+    /**
+     * Get migrated
+     *
+     * @return boolean $migrated
+     */
+    public function getMigrated()
+    {
+        return $this->migrated;
     }
 
     /**
