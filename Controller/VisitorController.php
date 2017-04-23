@@ -193,11 +193,13 @@ class VisitorController extends UserController
                 $body = str_replace(
                     array(
                     '%user-name%',
+                    '%email%',
                     '%password%',
                     '%loginUrlAr%',
                     '%loginUrlEn%',
                     ), array(
                     $visitor->getNickName(),
+                    $visitor->getEmail(),
                     $randPass,
                     $this->generateUrl('ibtikar_goody_frontend_login', array('_locale' => 'en'), UrlGeneratorInterface::ABSOLUTE_URL),
                     ), str_replace('%message%', $emailTemplate->getTemplate(), $this->container->get('frontend_base_email')->getBaseRender2($visitor->getPersonTitle(), false))
