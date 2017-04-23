@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block breadCrumb %}
-        <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_visitor_create')}}"><i class="icon-add"></i><span>إدخال عضو</span></a>
-            <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span> الاعضاء</span></a>
+    <a class="btn btn-link btn-float has-text" href="{{path('ibtikar_glance_ums_visitor_create')}}"><i class="icon-add"></i><span>إدخال عضو</span></a>
+    <a class="btn btn-link btn-float has-text activeLink" href="javascript:void(0)"><i class="icon-table2"></i> <span> الاعضاء</span></a>
 
 {% endblock %}
 
@@ -18,10 +18,23 @@
         <input type="hidden" id="dev-bulk-action" name="bulk-action" value=""/>
         <span class="dev-bulk-action-container" data-list-name="{{listName|lower}}" data-href="{{ list.hasBulkActions(listName) ? path(prefixRoute|lower ~ '_bulk_actions') : '' }}" style="display: none;">
             {% for action in list.bulkActions %}
-                {% if action == "Delete"  and (is_granted('ROLE_'~listName|upper~'_DELETE') or is_granted('ROLE_ADMIN')) %}
-                    <a data-action="{{action}}"  class="btn btn-default btn-sm dev-delete-bulk-recipe" data-placement="bottom"> <i class="icon-trash"></i> <span class="hidden-sm position-right">{{ 'delete'|trans }}</span></a>
-                    {% endif %}
-                {% endfor %}
+                {% if action == "Delete" and (is_granted('ROLE_'~listName|upper~'_DELETE') or is_granted('ROLE_ADMIN')) %}
+                    <a data-action="{{action}}" {{popover_factory({
+                                            question : "You are about to delete (%count%) (%type%), Are you sure?",
+                                            replaceAttr : true,
+                                            buttons : [
+                                                        {
+                                                            text : "Yes",
+                                                            class : "dev-bulk-delete-btn dev-bulk-action-btn btn-danger"
+                                                        },
+                                                        {
+                                                            text : "Cancel",
+                                                            class : "btn-default"
+                                                        }
+                                                    ]
+                                            })|replace({'%type%': (oneItem~"s")|lower|trans})|raw}} class="btn btn-default btn-sm" data-placement="bottom"> <i class="icon-trash"></i> <span class="hidden-sm position-right">{{ 'delete'|trans }} {{ ((oneItem|capitalize)~"s")|trans }}</span></a>
+                {% endif %}
+            {% endfor %}
         </span>
     {% endif %}
 
