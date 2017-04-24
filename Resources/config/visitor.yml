@@ -29,3 +29,11 @@ ibtikar_glance_ums_visitor_delete_image:
 ibtikar_glance_ums_visitor_users_names:
     path: /users-names
     defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:getUsersNames}
+
+ibtikar_glance_ums_visitor_export:
+    path: /export
+    defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:export }
+
+ibtikar_glance_ums_export_download:
+    path:  /download/{filename}/{filesavename}
+    defaults: { _controller: IbtikarGlanceUMSBundle:Export:download }

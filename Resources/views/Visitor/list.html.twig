@@ -14,6 +14,11 @@
 {% block actions %}
     <a data-placement="bottom" title="" data-popup="tooltip"  data-toggle="modal"  href="javascript:void(0)" class="btn btn-default btn-sm dev-change-columns" type="button" data-original-title="خانات الجدول"><i class="icon-table2 "></i> <span class="hidden-sm"> </span></a>
     <a id="advanced-search-Btn" data-placement="bottom" title="" data-popup="tooltip"  data-toggle="modal"  href="javascript:void(0)" class="btn btn-default btn-sm" type="button" data-original-title="البحث"><i class="icon-search4"></i> <span class="hidden-sm"> </span></a>
+    {% if is_granted('ROLE_'~listName|upper~'_EXPORT') or is_granted('ROLE_ADMIN') %}
+        <a data-original-title="{% trans from translationDomain %}export to excel{% endtrans %}" data-placement="bottom" data-popup="tooltip" href="javascript:void(0)" class="btn btn-default btn-sm export-btn" type="button" >
+            <i class="glyphicon glyphicon-export"></i>
+        </a>
+    {% endif %}
     {% if list.hasBulkActions(listName) %}
         <input type="hidden" id="dev-bulk-action" name="bulk-action" value=""/>
         <span class="dev-bulk-action-container" data-list-name="{{listName|lower}}" data-href="{{ list.hasBulkActions(listName) ? path(prefixRoute|lower ~ '_bulk_actions') : '' }}" style="display: none;">
@@ -34,6 +39,7 @@
                                                     ]
                                             })|replace({'%type%': (oneItem~"s")|lower|trans})|raw}} class="btn btn-default btn-sm" data-placement="bottom"> <i class="icon-trash"></i> <span class="hidden-sm position-right">{{ 'delete'|trans }} {{ ((oneItem|capitalize)~"s")|trans }}</span></a>
                 {% endif %}
+
             {% endfor %}
         </span>
     {% endif %}
@@ -81,6 +87,16 @@
     <script src="{{ asset('bundles/ibtikarglancedashboard/js/plugins/autocomplete/bootstrap3-typeahead.min.js') }}"></script>
     <script>
         $(document).ready(function (e) {
+
+            // export btn
+            $('.export-btn').attr('data-href', window.location.href.replace('/list', '/export'));
+
+            $(document).on("click", "a.export-btn", function (e) {
+                e.preventDefault();
+                exportToExcel($('[name^=ids]').serialize());
+                return false; //this is critical to stop the click event which will trigger a normal file download!
+            });
+
             $(".dev-form-nickname").typeahead({
                 items: 5,
                 source: function (typeahead, process) {
@@ -154,6 +170,33 @@
 
 
         })
+
+        function exportToExcel(ids) {
+            ids = (typeof ids !== "undefined" ? (window.location.search !== "" ? "&" + ids : "?" + ids) : "");
+
+            var url = window.location.pathname.replace('/list', '/export') + window.location.search + ids;
+
+            if (url.indexOf('visitor') != -1) {
+//        iconElm.attr('class', 'fa fa-spinner fa-spin');
+                url += url.indexOf('?') != -1 ? '&' : '?';
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        if (data.status === 'success') {
+                            table.ajax.reload(function () {
+                                showNotificationMsg(data.message, "", data.status);
+
+                            }, false);
+                        }
+                    }
+                });
+
+            }
+        }
+
+
     </script>
 
 {% endblock %}

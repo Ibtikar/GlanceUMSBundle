@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Ibtikar\GlanceDashboardBundle\Document\Export;
 
 class VisitorController extends UserController
 {
@@ -40,7 +41,7 @@ class VisitorController extends UserController
             "country" => array("isSortable" => false, "searchFieldType" => "country"),
             "city" => array("isSortable" => false, "searchFieldType" => "city"),
             "createdBy" => array("isSortable" => false),
-            "gender" => array("type"=>"translated"),
+            "gender" => array("type" => "translated"),
             "updatedAt" => array("type" => "date", "searchFieldType" => "date"),
             "createdAt" => array("type" => "date", "searchFieldType" => "date")
         );
@@ -70,7 +71,7 @@ class VisitorController extends UserController
         $this->listViewOptions->setDefaultSortBy("createdAt");
         $this->listViewOptions->setDefaultSortOrder("desc");
         $this->listViewOptions->setActions(array("Edit", "Delete"));
-        $this->listViewOptions->setBulkActions(array("Delete"));
+        $this->listViewOptions->setBulkActions(array("Delete", "Export"));
         $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:Visitor:list.html.twig");
     }
 
@@ -301,7 +302,8 @@ class VisitorController extends UserController
         ));
     }
 
-    public function getUsersNamesAction(Request $request) {
+    public function getUsersNamesAction(Request $request)
+    {
 
         $loggedInUser = $this->getUser();
         if (!$loggedInUser) {
@@ -312,26 +314,27 @@ class VisitorController extends UserController
         $dm = $this->get('doctrine_mongodb')->getManager();
         $names = array();
         $query = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Visitor')
-                ->select($request->get('type','nickName'))
+                ->select($request->get('type', 'nickName'))
                 ->field('deleted')->equals(FALSE)
-                ->field($request->get('type','nickName'))->equals( new \MongoRegex('/' . preg_quote(trim($request->get('name'))) . '/i'))
-                ->limit(5)-> hydrate(false);
+                ->field($request->get('type', 'nickName'))->equals(new \MongoRegex('/' . preg_quote(trim($request->get('name'))) . '/i'))
+                ->limit(5)->hydrate(false);
 
 
 
         $result = $query->getQuery()->execute();
 
         foreach ($result->toArray() as $row) {
-            if (isset($row[$request->get('type','nickName')])) {
-                $names[] = $row[$request->get('type','nickName')];
+            if (isset($row[$request->get('type', 'nickName')])) {
+                $names[] = $row[$request->get('type', 'nickName')];
             }
         }
         return new JsonResponse($names);
     }
 
-    protected function postDelete($ids) {
+    protected function postDelete($ids)
+    {
 
-        if(!is_array($ids)){
+        if (!is_array($ids)) {
             $ids = array($ids);
         }
 
@@ -342,27 +345,70 @@ class VisitorController extends UserController
         $dm->getFilterCollection()->disable('soft_delete');
 
         $users = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Visitor')
-                    ->field('admin')->equals(false)
-                    ->field('deleted')->equals(true)
-                    ->field('id')->in($ids)
-                    ->getQuery()->execute();
+                ->field('admin')->equals(false)
+                ->field('deleted')->equals(true)
+                ->field('id')->in($ids)
+                ->getQuery()->execute();
 
-        foreach($users as $visitor){
+        foreach ($users as $visitor) {
             $body = str_replace(
-                    array(
+                array(
                 '%user-name%',
-                    ), array(
+                ), array(
                 $visitor,
-                    ), str_replace('%message%', $emailTemplate->getTemplate(), $this->container->get('frontend_base_email')->getBaseRender2($visitor->getPersonTitle(), false))
+                ), str_replace('%message%', $emailTemplate->getTemplate(), $this->container->get('frontend_base_email')->getBaseRender2($visitor->getPersonTitle(), false))
             );
             $mailer = $this->get('swiftmailer.mailer.spool_mailer');
             $message = \Swift_Message::newInstance()
-                    ->setSubject($emailTemplate->getSubject())
-                    ->setFrom($this->container->getParameter('mailer_user'))
-                    ->setTo($visitor->getEmail())
-                    ->setBody($body, 'text/html')
+                ->setSubject($emailTemplate->getSubject())
+                ->setFrom($this->container->getParameter('mailer_user'))
+                ->setTo($visitor->getEmail())
+                ->setBody($body, 'text/html')
             ;
             $mailer->send($message);
         }
+    }
+
+    public function exportAction(Request $request)
+    {
+
+
+        $this->listViewOptions = $this->get("list_view");
+        $this->listViewOptions->setListType("list");
+        $renderingParams = $this->doList($request);
+        $securityContext = $this->container->get('security.authorization_checker');
+
+        $loggedInUser = $this->getUser();
+        if (!$loggedInUser) {
+            return new JsonResponse(array('status' => 'login'));
+        }
+
+        if (!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
+            return new JsonResponse(array('status' => 'denied'));
+        }
+
+        $ids = $request->get('ids', array());
+
+        $params = $request->query->all();
+        if (!empty($ids)) {
+            $params['ids'] = $ids;
+        }
+//
+//        $ext = $params['ext'];
+//        unset($params['ext']);
+
+        $export = new Export();
+        $export->setName(uniqid("visitors-"));
+        $export->setParams($params);
+        $export->setExtension('xls');
+        $export->setFields($this->getCurrentColumns('ibtikar_glance_ums_visitor_list'));
+        $export->setState(Export::READY);
+        $export->setType(Export::VISITORS);
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm->persist($export);
+        $dm->flush();
+
+        return new JsonResponse(array('status' => 'success', 'message' => $this->get('translator')->trans('file export will take sometime', array(), $this->translationDomain)));
     }
 }
