@@ -328,4 +328,41 @@ class VisitorController extends UserController
         }
         return new JsonResponse($names);
     }
+
+    protected function postDelete($ids) {
+
+        if(!is_array($ids)){
+            $ids = array($ids);
+        }
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $emailTemplate = $dm->getRepository('IbtikarGlanceDashboardBundle:EmailTemplate')->findOneByName('visitor delete');
+
+        $dm->getFilterCollection()->disable('soft_delete');
+
+        $users = $dm->createQueryBuilder('IbtikarGlanceUMSBundle:Visitor')
+                    ->field('admin')->equals(false)
+                    ->field('deleted')->equals(true)
+                    ->field('id')->in($ids)
+                    ->getQuery()->execute();
+
+        foreach($users as $visitor){
+            $body = str_replace(
+                    array(
+                '%user-name%',
+                    ), array(
+                $visitor,
+                    ), str_replace('%message%', $emailTemplate->getTemplate(), $this->container->get('frontend_base_email')->getBaseRender2($visitor->getPersonTitle(), false))
+            );
+            $mailer = $this->get('swiftmailer.mailer.spool_mailer');
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($emailTemplate->getSubject())
+                    ->setFrom($this->container->getParameter('mailer_user'))
+                    ->setTo($visitor->getEmail())
+                    ->setBody($body, 'text/html')
+            ;
+            $mailer->send($message);
+        }
+    }
 }
