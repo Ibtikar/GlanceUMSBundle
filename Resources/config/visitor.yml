@@ -35,5 +35,5 @@ ibtikar_glance_ums_visitor_export:
     defaults: { _controller: IbtikarGlanceUMSBundle:Visitor:export }
 
 ibtikar_glance_ums_export_download:
-    path:  /download/{filename}/{filesavename}
+    path:  /download/{id}/{filename}/{filesavename}
     defaults: { _controller: IbtikarGlanceUMSBundle:Export:download }

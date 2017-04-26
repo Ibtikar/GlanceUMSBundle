@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ExportController extends BackendController
 {
 
-    public function downloadAction(Request $request, $filename, $filesavename)
+    public function downloadAction(Request $request,$id, $filename, $filesavename)
     {
         $securityContext = $this->container->get('security.authorization_checker');
         $files = glob($this->container->getParameter('xls_temp_path') . $filename . "\[*\].*");
@@ -18,7 +18,8 @@ class ExportController extends BackendController
             $request->getSession()->set('redirectUrl', $request->getRequestUri());
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
-        if (!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
+
+        if ($this->getUser()->getId()!= $id &&!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
             throw $this->createNotFoundException('Access Denied');
         }
         if (count($files) <= 0) {
