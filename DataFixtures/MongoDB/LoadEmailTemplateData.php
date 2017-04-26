@@ -298,8 +298,7 @@ class LoadEmailTemplateData implements FixtureInterface
 
         $manager->persist($staffDelete);
 
-
-
+      
 
         $manager->flush();
     }
