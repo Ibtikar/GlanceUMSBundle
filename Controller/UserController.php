@@ -198,7 +198,7 @@ class UserController extends BackendController {
                     }
                 } else {
                     if ($this->getUser()->getMustChangePassword()) {
-                        $rediretUrl = $this->generateUrl('change_password');
+                        $rediretUrl = $this->generateUrl('ibtikar_goody_frontend_edit_profile');
                     } else {
                         $locale = $session->get('_locale');
                         if (!$locale) {
@@ -317,7 +317,7 @@ class UserController extends BackendController {
                 } else {
                     $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                     if ($this->get('security.authorization_checker')->isGranted('ROLE_VISITOR')) {
-                        $redirectUrl = $this->generateUrl('visitor_view_profile');
+                        $redirectUrl = $this->generateUrl('ibtikar_goody_frontend_edit_profile');
                     } else {
                         $redirectUrl = $request->getUri();
                     }
