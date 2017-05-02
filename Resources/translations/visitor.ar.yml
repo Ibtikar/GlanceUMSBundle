@@ -5,7 +5,7 @@
 'A message will be sent to your email containing a link to allow you to change your password.': 'سوف تصلك رسالة لإستعادة كلمة المرور'
 'email': 'البريد الإلكتروني'
 'your account was deactivated by the admin, contact your admin for more information.': ' لقد تم ايقاب حسابك من قبل الإدارة للإستفسار نرجو مراجعة الإدارة'
-'file export will take sometime': 'سوف يستغرق تصدير ملف الاعضاء مدة من الزمن لذلك سوف نقوم بإرسال الملف على الايميل عند الانتهاء من تصديره'
+'file export will take sometime': 'سوف يتم إرسال ملف الأعضاء إلى البريد الإلكتروني الخاص بك خلال دقائق '
 'Nickname should be more than 5 characters': 'يجب أن يكون الإسم أكثر من 5 خانات'
 'Nickname should be less than 50 characters': 'الحد الأقصى للأحرف هو 50 حرف'
 'Email': 'البريد الالكتروني '
