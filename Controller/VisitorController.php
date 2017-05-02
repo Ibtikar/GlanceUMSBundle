@@ -257,7 +257,7 @@ class VisitorController extends UserController
         $dm = $this->get('doctrine_mongodb')->getManager();
 
         $visitor = $dm->getRepository('IbtikarGlanceUMSBundle:Visitor')->find($id);
-        if (!$visitor) {
+        if (!$visitor || $visitor->getDeleted()) {
             throw $this->createNotFoundException($this->trans('Wrong id'));
         }
 
