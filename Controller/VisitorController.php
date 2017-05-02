@@ -215,11 +215,12 @@ class VisitorController extends UserController
                 $mailer->send($message);
                 $this->addFlash('success', $this->get('translator')->trans('done sucessfully'));
                 return $this->redirect($request->getUri());
-            } else {
-
-                \Doctrine\Common\Util\Debug::dump((string) $form->getErrors(true, false));
-                exit;
             }
+//            else {
+//
+//                \Doctrine\Common\Util\Debug::dump((string) $form->getErrors(true, false));
+//                exit;
+//            }
         }
         return $this->render('IbtikarGlanceUMSBundle:Visitor:create.html.twig', array(
                 'form' => $form->createView(),
