@@ -75,72 +75,7 @@ class VisitorController extends UserController
         $this->listViewOptions->setTemplate("IbtikarGlanceUMSBundle:Visitor:list.html.twig");
     }
 
-    /**
-     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function forgotPasswordAction(Request $request)
-    {
-        $session = $request->getSession();
-        $error = null;
-        $success = null;
-        $registeration = null;
-        $captchaTrials = $session->get('forgotPasswordTrials', 1);
-        $formBuilder = $this->createFormBuilder(null, array(
-                'translation_domain' => $this->translationDomain
-            ))
-            ->setMethod('POST')
-            ->add('email', 'email', array('attr' => array('autocomplete' => 'off', 'class' => 'email'), 'constraints' => array(
-                new Constraints\NotBlank(),
-                new Constraints\Email()
-        )));
-        if ($captchaTrials > $this->container->getParameter('captcha_appear_after_failed_attempts')) {
-            // the form add needs edit at the end of the function
-            $formBuilder->add('captcha', 'genemu_captcha', array('label' => 'captcha', 'attr' => array('autocomplete' => 'off', 'class' => 'captcha')));
-        }
-        // the form add needs edit at the end of the function
-        $formBuilder->add('send', 'submit', array('label' => 'Retrieve my password'));
-        $form = $formBuilder->getForm();
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $email = $data['email'];
-                $forgotPasswordData = $this->get('user_operations')->forgotPassword($email);
-                if ($forgotPasswordData['status'] === 'success') {
-                    // reset the form data and remove the captcha field
-                    $session->remove('forgotPasswordTrials');
-                    $formBuilder->remove('captcha');
-                    $form = $formBuilder->getForm();
-                    $success = $forgotPasswordData['message'];
-                } else {
-                    $error = $forgotPasswordData['message'];
-                    $registeration = $forgotPasswordData['registeration'];
-                }
-            }
-            if ($success === null) {
-                $captchaTrials++;
-                $session->set('forgotPasswordTrials', $captchaTrials);
-                // check if this is the first time to show the captcha field
-                if ($captchaTrials == ($this->container->getParameter('captcha_appear_after_failed_attempts') + 1)) {
-                    $formBuilder->remove('send');
-                    // the form add needs edit at the start of the function
-                    $formBuilder->add('captcha', 'genemu_captcha', array('label' => 'captcha', 'attr' => array('autocomplete' => 'off', 'class' => 'captcha', 'data-noerror' => '')));
-                    $formBuilder->add('send', 'submit', array('label' => 'Retrieve my password'));
-                    $form = $formBuilder->getForm();
-                    $form->handleRequest($request);
-                }
-            }
-        }
-        return $this->render('IbtikarGlanceUMSBundle:Visitor:forgotPassword.html.twig', array(
-                'success' => $success,
-                'error' => $error,
-                'registeration' => $registeration,
-                'form' => $form->createView(),
-                'translationDomain' => $this->translationDomain
-        ));
-    }
+
 
     public function createAction(Request $request)
     {
@@ -202,6 +137,7 @@ class VisitorController extends UserController
                     $visitor->getNickName(),
                     $visitor->getEmail(),
                     $randPass,
+                    $this->generateUrl('ibtikar_goody_frontend_login', array('_locale' => 'ar'), UrlGeneratorInterface::ABSOLUTE_URL),
                     $this->generateUrl('ibtikar_goody_frontend_login', array('_locale' => 'en'), UrlGeneratorInterface::ABSOLUTE_URL),
                     ), str_replace('%message%', $emailTemplate->getTemplate(), $this->container->get('frontend_base_email')->getBaseRender2($visitor->getPersonTitle(), false))
                 );
