@@ -184,12 +184,16 @@
                     url: url,
                     method: 'GET',
                     success: function (data) {
-                        if (data.status === 'success') {
+                        if (data.status === 'success' ) {
                             table.ajax.reload(function () {
                                 showNotificationMsg(data.message, "", data.status);
 
                             }, false);
-                        }
+                        }else{
+                        table.ajax.reload(function () {
+                            showNotificationMsg(data.message, "", 'error');
+
+                        }, false)
                     }
                 });
 
