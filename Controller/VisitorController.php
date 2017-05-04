@@ -321,7 +321,8 @@ class VisitorController extends UserController
         }
 
         if (!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
-            return new JsonResponse(array('status' => 'denied'));
+            $result = array('status' => 'reload-table', 'message' => $this->trans('You are not authorized to do this action any more'));
+            return new JsonResponse($result);
         }
 
         $ids = $request->get('ids', array());
