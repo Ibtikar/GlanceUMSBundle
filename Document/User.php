@@ -1184,7 +1184,7 @@ class User extends Document implements AdvancedUserInterface, EquatableInterface
      * @param Ibtikar\GlanceUMSBundle\Document\City $city
      * @return self
      */
-    public function setCity(\Ibtikar\GlanceUMSBundle\Document\City $city)
+    public function setCity(\Ibtikar\GlanceUMSBundle\Document\City $city =NULL)
     {
         $this->city = $city;
         return $this;
