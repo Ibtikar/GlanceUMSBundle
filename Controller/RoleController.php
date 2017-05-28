@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type as formType;
 class RoleController extends BackendController {
 
     protected $translationDomain = 'role';
-    //,'RECIPETAG'=>array()
     protected  $tabs=array(
                     'user'=>array(
                         'title'=>'user',
@@ -23,7 +22,7 @@ class RoleController extends BackendController {
                     'recipeAndCategory'=>array(
                         'title'=>'recipeAndCategory',
                         'count'=>0,
-                        'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array()),
+                        'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array(),'RECIPETAG'=>array()),
                         'permission'=>array()
                         ),
                     'content'=>array(
