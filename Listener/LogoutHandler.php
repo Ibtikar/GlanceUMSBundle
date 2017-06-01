@@ -58,23 +58,19 @@ class LogoutHandler implements LogoutHandlerInterface {
         }
 //        $locale = $session->get('_locale');
 //        var_dump($locale);exit;
+
+        $referer_url = $request->headers->get('referer');
+        if ($referer_url) {
+            $response->headers->set('Location', $referer_url);
+            $response = new RedirectResponse($referer_url);
+            return $response;
+        }
         if ($locale) {
 
             $request->setLocale($locale);
-            $response->headers->set('Location', $this->container->get('router')->generate('ibtikar_goody_frontend_homepage',array('_locale'=>$locale)));
-            $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage',array('_locale'=>$locale)));
+            $response->headers->set('Location', $this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale' => $locale)));
+            $response = new RedirectResponse($this->container->get('router')->generate('ibtikar_goody_frontend_homepage', array('_locale' => $locale)));
             return $response;
-        }
-
-        // this must be the last one so it can remove the location header set by previous actions
-        $referer_url = $request->headers->get('referer');
-        if ($request->isXmlHttpRequest()) {
-            $response->setContent(json_encode(array(
-                'status' => "success",
-                'target_path' => $referer_url
-            )));
-//            $response->headers->remove('Location');
-            $response->headers->set('Content-Type', 'application/json');
         }
     }
 }
