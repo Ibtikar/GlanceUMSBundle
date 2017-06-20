@@ -18,6 +18,7 @@ class ExportController extends BackendController
             $request->getSession()->set('redirectUrl', $request->getRequestUri());
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
+        
 
         if ($this->getUser()->getId()!= $id &&!$securityContext->isGranted('ROLE_ADMIN') ) {
             throw $this->createNotFoundException('Access Denied');
