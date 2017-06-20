@@ -19,7 +19,7 @@ class ExportController extends BackendController
             return $this->redirect($this->generateUrl('ibtikar_glance_ums_staff_login'));
         }
 
-        if ($this->getUser()->getId()!= $id &&!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
+        if ($this->getUser()->getId()!= $id &&!$securityContext->isGranted('ROLE_ADMIN') ) {
             throw $this->createNotFoundException('Access Denied');
         }
         if (count($files) <= 0) {
