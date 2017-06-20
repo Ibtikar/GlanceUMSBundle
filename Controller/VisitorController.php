@@ -309,17 +309,17 @@ class VisitorController extends UserController
     public function exportAction(Request $request)
     {
 
+        $loggedInUser = $this->getUser();
+        if (!$loggedInUser) {
+            return new JsonResponse(array('status' => 'login'));
+        }
 
         $this->listViewOptions = $this->get("list_view");
         $this->listViewOptions->setListType("list");
         $renderingParams = $this->doList($request);
         $securityContext = $this->container->get('security.authorization_checker');
 
-        $loggedInUser = $this->getUser();
-        if (!$loggedInUser) {
-            return new JsonResponse(array('status' => 'login'));
-        }
-
+    
         if (!$securityContext->isGranted('ROLE_ADMIN') && !$securityContext->isGranted('ROLE_VISITOR_EXPORT')) {
             $result = array('status' => 'reload-table', 'message' => $this->trans('You are not authorized to do this action any more'));
             return new JsonResponse($result);
