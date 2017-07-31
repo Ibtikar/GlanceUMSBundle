@@ -58,10 +58,11 @@ class StaffType extends AbstractType
                 'class' => 'IbtikarGlanceUMSBundle:Job', 'placeholder' => $options['container']->get('translator')->trans('Choose Job',array(),'staff'),
                 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container')
         ));
-
-        $builder
-            ->add('role', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Role',
-                'multiple' => TRUE, 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container')));
+         if (!$options['updateProfile']) {
+            $builder
+                    ->add('role', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Role',
+                        'multiple' => TRUE, 'attr' => array('class' => 'select', 'data-error-after-selector' => '.select2-container')));
+        }
         $builder->add('country', \Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType::class, array('class' => 'IbtikarGlanceUMSBundle:Country', 'query_builder' => function(DocumentRepository $repo) {
 
                     return $repo->findCountrySorted();
@@ -126,6 +127,7 @@ class StaffType extends AbstractType
       'errorMessage' => null,
       'edit' => FALSE,
       'userImage' => '',
+      'updateProfile'=>FALSE,
 
         ]);
     }

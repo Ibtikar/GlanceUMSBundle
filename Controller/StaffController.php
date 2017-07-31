@@ -429,13 +429,18 @@ class StaffController extends UserController {
         $userImage = $staff->getWebPath();
         $userImageAlt = $staff->__toString();
         $securityContext = $this->get('security.authorization_checker');
+        $updateProfile=FALSE;
+         if($id === $this->getUser()->getId()){
+            $updateProfile=true;
+         }
         $form = $this->createForm(StaffType::class, $staff, array(
             'translation_domain' => $this->translationDomain, 'attr' => array('class' => 'dev-page-main-form dev-js-validation form-horizontal'),
             'validation_groups' => array('edit', 'Default','city'),
             'container' => $this->container,
             'errorMessage' => $ErrorMessage,
             'edit' => true,
-            'userImage' => &$userImage
+            'userImage' => &$userImage,
+            'updateProfile'=>$updateProfile
         ));
         $countries = $dm->getRepository('IbtikarGlanceUMSBundle:Country')->findCountrySorted()->getQuery()->execute();
         $countryArray = array();
