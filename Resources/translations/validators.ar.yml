@@ -15,6 +15,7 @@ This value should be the user's current password. : 'كلمة المرور ال�
 'Image dimension must be more than 1000*700': 'يجب الا تقل ابعاد الصورة عن 1170*600'
 'Image dimension must be more than 1170*600': 'يجب الا تقل ابعاد الصورة عن 1170*600'
 'Image dimension must be more than 300*600': 'يجب الا تقل ابعاد الصورة عن 300*600'
+'Image dimension must be more than 1170*200': 'يجب الا تقل ابعاد الصورة عن 1170*200'
 'File size must be less than 3mb': 'يجب الا يزيد حجم الصوره عن 3 ميجا'
 'File size must be less than 2mb': 'يجب الا يزيد حجم الصوره عن 2 ميجا'
 'File size must be less than 4mb': 'يجب الا يزيد حجم الصوره عن 4 ميجا'
