@@ -22,7 +22,9 @@ class RoleController extends BackendController {
                     'recipeAndCategory'=>array(
                         'title'=>'recipeAndCategory',
                         'count'=>0,
-                        'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array(),'RECIPETAG'=>array(),'CAUSEPAGE'=>array(),'SEASON'=>array()),
+                        'modules'=>array('PRODUCT'=>array(),'SUBPRODUCT'=>array(),'CATEGORY'=>array(),'MAGAZINE'=>array(),'RECIPETAG'=>array(),
+//                            'CAUSEPAGE'=>array(),'SEASON'=>array()
+                            ),
                         'permission'=>array()
                         ),
                     'content'=>array(
