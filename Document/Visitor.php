@@ -49,6 +49,10 @@ class Visitor extends User {
      */
     private $registeredFrom;
 
+    /**
+     * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceDashboardBundle\Document\Phone")
+     */
+    private $mobile;
 
     /**
      * @Assert\Valid
@@ -67,6 +71,13 @@ class Visitor extends User {
      * @MongoDB\EmbedOne(targetDocument="Ibtikar\GlanceUMSBundle\Document\Social\Google")
      */
     private $google;
+
+    /**
+     * @Assert\NotBlank
+     * @MongoDB\String
+     */
+    private $age;
+
 
 
       /**
@@ -265,6 +276,48 @@ class Visitor extends User {
     public function getFacebook() {
         return $this->facebook;
     }
+    /**
+     * Set mobile
+     *
+     * @param Ibtikar\GlanceDashboardBundle\Document\Phone $mobile
+     * @return self
+     */
+    public function setMobile(\Ibtikar\GlanceDashboardBundle\Document\Phone $mobile)
+    {
+        $this->mobile = $mobile;
+        return $this;
+    }
 
+    /**
+     * Get mobile
+     *
+     * @return Ibtikar\GlanceDashboardBundle\Document\Phone $mobile
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * Set age
+     *
+     * @param string $age
+     * @return self
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+        return $this;
+    }
+
+    /**
+     * Get age
+     *
+     * @return string $age
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
 
 }
