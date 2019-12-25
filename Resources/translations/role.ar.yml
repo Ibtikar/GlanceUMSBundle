@@ -71,8 +71,9 @@ recipe: 'وصفات'
 'Goody messages': 'رسائل قودي'
 'module 4': 'رسائل قودي'
 'module 5': ' نجمات مطبخ قودي'
-'module 6': 'مسابقه مطبخ قودى'
+'module 6': 'دورات الطهى'
 'Competition': 'مسابقه مطبخ قودى'
+'Course': 'دورات الطهى'
 'MESSAGE': 'رسالة'
 'MESSAGENEW': 'الجديده'
 'MESSAGEINPROGRESS': 'تحت التشغيل'
@@ -95,3 +96,7 @@ recipe: 'وصفات'
 'EXPORT': 'تصدير'
 'CAUSEPAGE': 'مطبخ العطاء'
 SEASON: موسم
+COURSE: دوره الطهى
+COURSENEW: دوره الطهى الجديدة
+COURSEPUBLISH: دوره الطهى المنشورة
+COURSEUNPUBLISH:    دوره الطهى الغير منشورة
